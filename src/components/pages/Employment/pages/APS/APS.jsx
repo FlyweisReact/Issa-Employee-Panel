@@ -1,0 +1,157 @@
+import React from "react";
+import { useState } from "react";
+import { Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+export const APS = () => {
+  const navigate = useNavigate();
+  const [currentDate, setCurrentDate] = useState("______________");
+  const [recipientName, setRecipientName] = useState("______________");
+  const [startingPay, setStartingPay] = useState("______________");
+  const [startDate, setStartDate] = useState("______________");
+
+  const [isChecked, setIsChecked] = useState("");
+
+  const handleCheckboxChange = (value) => {
+    setIsChecked(value);
+  };
+  return (
+    <div className="main-div-personal important">
+      <div className="nav-wrap-personal">
+        <div className="nav-div-personal1">
+          <img onClick={() => navigate(-1)} src="/back_button2.png" alt="da" />
+        </div>
+        <div className="nav-div-personal">
+          <p style={{ fontSize: ".9rem", fontWeight: "bold" }}>
+            APS CONSENT FORM
+          </p>
+        </div>
+      </div>
+      <div className="top-div-personal">
+        <Form
+          id="form-appendix"
+          className="form-personal offer-letter appendix1"
+        >
+          <p style={{ fontWeight: "500" }}>
+            Company Name conducts adult protective service search through the
+            department of health services APS search registry. These searches
+            are conducted randomly and also yearly thereafter.
+          </p>
+          <p style={{ fontWeight: "500" }}>
+            <li>
+              Administrator will conduct a search on the APS registry through he
+              department of health services AZ Care Check using employee’s first
+              name, last name and date of birth. Search results will fall into
+              the following categories:
+            </li>
+          </p>
+          <p>i.Record Found With</p>
+          <p style={{ fontWeight: "500" }}>(a) Classification </p>
+          <p style={{ fontWeight: "500" }}>(b) Date of the incident</p>
+          <p>ii. No APS Registry Record Found.</p>
+          <p style={{ fontWeight: "500" }}>
+            <li>
+              Employees or subcontractors shall be prohibited from providing
+              services to Company Name residents if the search of the APS
+              Registry contains any substantiated report of abuse, neglect, or
+              exploitation of vulnerable adults or children.
+            </li>
+          </p>
+          <p style={{ fontWeight: "500" }}>
+            By Signing this, Employee gives Company Name consent to conduct a
+            search on the AZ Department of Health APS search registry
+          </p>
+
+          <Form.Group className="mb-3">
+            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
+              Employee Name:
+            </Form.Label>
+            <Form.Control type="text" placeholder="Enter  text" />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
+              Employer Signature:
+            </Form.Label>
+          </Form.Group>
+          <div className="save-as-draft-btn-personal">
+            <div>
+              <img
+                style={{ height: "80%", width: "100%", border: "1px " }}
+                src="/Dashboard/save.png"
+                alt=""
+              />
+            </div>
+            <div className="save-as-draft-btn">
+              <button style={{ border: "1px solid #0C5C75", color: "#0C5C75" }}>
+                SAVE AS DRAFT
+              </button>
+              <button style={{ backgroundColor: "#0C5C75", color: "white" }}>
+                SAVED AND SAVED
+              </button>
+            </div>
+          </div>
+          <Form.Group className="mb-3">
+            <Form.Label
+              style={{
+                fontWeight: "bold",
+                fontSize: ".9rem",
+                marginTop: "2rem",
+              }}
+            >
+              Company Administrator Name:
+            </Form.Label>
+            <Form.Control type="text" placeholder="Enter  text" />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
+              Company Administrator Signature:
+            </Form.Label>
+          </Form.Group>
+          <div className="save-as-draft-btn-personal">
+            <div>
+              <img
+                style={{ height: "80%", width: "100%", border: "1px " }}
+                src="/Dashboard/save.png"
+                alt=""
+              />
+            </div>
+            <div className="save-as-draft-btn">
+              <button style={{ border: "1px solid #0C5C75", color: "#0C5C75" }}>
+                SAVE AS DRAFT
+              </button>
+              <button style={{ backgroundColor: "#0C5C75", color: "white" }}>
+                SAVED AND SAVED
+              </button>
+            </div>
+          </div>
+
+          <Form.Group className="mb-3">
+            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
+              Date:
+            </Form.Label>
+            <Form.Control type="Date" placeholder="Enter  text" />
+          </Form.Group>
+
+          <div style={{ textAlign: "center", width: "100%", margin: "auto" }}>
+            <button
+              style={{
+                padding: "10px 24px",
+                backgroundColor: "#1A9FB2",
+                color: "white",
+                marginTop: "1rem",
+                borderRadius: "10px",
+              }}
+              type="submit"
+            >
+              PRINT REPORT
+            </button>
+          </div>
+          <div className="save-as-draft-btn123">
+            <button className="btn1233" type="submit">
+              SUBMIT
+            </button>
+          </div>
+        </Form>
+      </div>
+    </div>
+  );
+};

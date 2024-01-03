@@ -1,0 +1,5 @@
+.offer-letter {}
+
+.offer-letter>p {
+    font-weight: 700;
+}
