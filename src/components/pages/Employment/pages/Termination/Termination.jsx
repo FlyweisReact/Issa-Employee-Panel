@@ -2,12 +2,46 @@ import React from "react";
 import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { Auth, showMsg ,Baseurl} from "../../../../../Baseurl";
+import axios from "axios";
 export const Termination = () => {
   const navigate = useNavigate();
-  const [currentDate, setCurrentDate] = useState("______________");
-  const [recipientName, setRecipientName] = useState("______________");
-  const [startingPay, setStartingPay] = useState("______________");
-  const [startDate, setStartDate] = useState("______________");
+  const [checked, setChecked] = useState(false);
+  const [daction, setDaction] = useState("None");
+  const [formData, setFormData] = useState({
+    date: "",
+    terminatedEmployeeName: "",
+    hireDate: "",
+    terminationDate: "",
+    voluntaryReason: "",
+    involuntaryReason: "",
+    disciplinaryAction: "",
+    copyProvidedToEmployee: "",
+    eligibleForRehire: "",
+    explanationForNoRehire: "",
+    employeeSignature: "",
+    employeeDate: "",
+    administratorSignature: ""
+  });
+
+  const updateField = (fieldName, value) => {
+    setFormData({ ...formData, [fieldName]: value });
+  };
+  const submitHandler = (e) => {
+    
+    e.preventDefault();
+    try {
+      axios
+        .post(`${Baseurl}employee/createTermination`, formData, Auth())
+        .then((res) => {
+          console.log(res);
+          showMsg("Success", res.data.message, "success");
+        });
+    } catch (error) {
+      showMsg("Error", error?.response?.data?.message || "An error occurred", "danger");
+    }
+  }
+  
   return (
     <div className="main-div-personal important">
       <div className="nav-wrap-personal">
@@ -29,25 +63,25 @@ export const Termination = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Date :
             </Form.Label>
-            <Form.Control type="date" placeholder="Enter  Name" />
+            <Form.Control required onChange={(e) => updateField("date", e.target.value)} type="date" placeholder="Enter  Name" />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Name of Terminated Employee:
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  name" />
+            <Form.Control required onChange={(e) => updateField("terminatedEmployeeName", e.target.value)} type="text" placeholder="Enter  name" />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Hire Date:
             </Form.Label>
-            <Form.Control type="date" placeholder="Enter  name" />
+            <Form.Control required onChange={(e) => updateField("hireDate", e.target.value)} type="date" placeholder="Enter  name" />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Termination Date:
             </Form.Label>
-            <Form.Control type="date" placeholder="Enter  name" />
+            <Form.Control required onChange={(e) => updateField("terminationDate", e.target.value)} type="date" placeholder="Enter  name" />
           </Form.Group>
 
           <p style={{ fontSize: "1rem" }}>Reason for Termination</p>
@@ -56,13 +90,31 @@ export const Termination = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Voluntary:
             </Form.Label>
-            <Form.Control type="text" placeholder="Please Enter  " />
+            <Form.Select required onChange={(e) => updateField("voluntaryReason", e.target.value)}  >
+              <option value="">Select</option>
+              <option value="1">Moved out of area</option>
+              <option value="2">No call no show</option>
+              <option value="3">Personal</option>
+              <option value="4">Resigned without notice</option>
+              <option value="5">Retirement</option>
+              <option value="6">In lieu of Discharge</option>
+            </Form.Select>
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Involuntary:
             </Form.Label>
-            <Form.Control type="text" placeholder="Please Enter  " />
+            <Form.Select required onChange={(e) => updateField("involuntaryReason", e.target.value)}  >
+              <option value="">Select</option>
+              <option value="1">Contract work ended</option>
+              <option value="2">Laid off</option>
+              <option value="3">Personal</option>
+              <option value="4">Policy Violation</option>
+              <option value="5">Poor Performance</option>
+              <option value="6">Transferred</option>
+              <option value="6">Absenteeism or Tardiness</option>
+              <option value="6">Job Abandonment</option>
+            </Form.Select>
           </Form.Group>
 
           <Form.Group className="mb-3">
@@ -77,9 +129,9 @@ export const Termination = () => {
               <span style={{ marginRight: "10px" }}>
                 Documents disciplinary action prior to termination
               </span>
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div  onChange={(e) => updateField("disciplinaryAction", e.target.value)}  style={{ display: "flex", alignItems: "center" }}>
                 <Form.Check type={"radio"} id={`check-api-night-sweats-yes`}>
-                  <Form.Check.Input name="nightSweats" type={"radio"} isValid />
+                  <Form.Check.Input name="nightSweats" type={"radio"}  isValid />
                   <Form.Check.Label
                     style={{
                       marginLeft: "5px",
@@ -121,9 +173,9 @@ export const Termination = () => {
               <span style={{ marginRight: "10px" }}>
                 Copy Provided to employee
               </span>
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div onChange={(e) => updateField("copyProvided", e.target.value)} style={{ display: "flex", alignItems: "center" }}>
                 <Form.Check type={"radio"} id={`check-api-night-sweats-yes`}>
-                  <Form.Check.Input name="nightSweats" type={"radio"} isValid />
+                  <Form.Check.Input name="r" type={"radio"} isValid />
                   <Form.Check.Label
                     style={{
                       marginLeft: "5px",
@@ -135,7 +187,7 @@ export const Termination = () => {
                   </Form.Check.Label>
                 </Form.Check>
                 <Form.Check type={"radio"} id={`check-api-night-sweats-no`}>
-                  <Form.Check.Input name="nightSweats" type={"radio"} isValid />
+                  <Form.Check.Input name="r" type={"radio"} isValid />
                   <Form.Check.Label style={{ marginBottom: "0" }}>
                     Employee File
                   </Form.Check.Label>
@@ -145,7 +197,7 @@ export const Termination = () => {
                   type={"radio"}
                   id={`check-api-night-sweats-no`}
                 >
-                  <Form.Check.Input name="nightSweats" type={"radio"} isValid />
+                  <Form.Check.Input name="r" type={"radio"} isValid />
                   <Form.Check.Label style={{ marginBottom: "0" }}>
                     Other
                   </Form.Check.Label>
@@ -165,10 +217,10 @@ export const Termination = () => {
               <span style={{ marginRight: "10px" }}>
                 Eligible for rehire and date
               </span>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <Form.Check type={"radio"} id={`check-api-night-sweats-yes`}>
-                  <Form.Check.Input name="nightSweats" type={"radio"} isValid />
-                  <Form.Check.Label
+              <div onChange={(e) => updateField("eligibleForRehire", e.target.value)} style={{ display: "flex", alignItems: "center" }}>
+                <Form.Check    checked={checked} value={checked ?"yes":"no"} type={"radio"} id={`check-api-night-sweats-yes`}>
+                  <Form.Check.Input name="s" type={"radio"} isValid />
+                  <Form.Check.Label 
                     style={{
                       marginLeft: "5px",
                       marginRight: "15px",
@@ -178,9 +230,9 @@ export const Termination = () => {
                     Yes
                   </Form.Check.Label>
                 </Form.Check>
-                <Form.Check type={"radio"} id={`check-api-night-sweats-no`}>
-                  <Form.Check.Input name="nightSweats" type={"radio"} isValid />
-                  <Form.Check.Label style={{ marginBottom: "0" }}>
+                <Form.Check    checked={!checked} type={"radio"} id={`check-api-night-sweats-no`}>
+                  <Form.Check.Input name="s" type={"radio"} isValid />
+                  <Form.Check.Label  style={{ marginBottom: "0" }}>
                     No
                   </Form.Check.Label>
                 </Form.Check>
@@ -189,13 +241,14 @@ export const Termination = () => {
           </Form.Group>
           <p>If no, Please Explain</p>
           <Form.Group className="mb-3">
-            <Form.Control as="textarea" rows={3} placeholder="Please Explain" />
+            <Form.Control onChange={(e) => updateField("explanation", e.target.value)} as="textarea" rows={3} placeholder="Please Explain" />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Employee Signature :
             </Form.Label>
+            <Form.Control onChange={(e) => updateField("employeeSignature", e.target.value)} type="text" placeholder="Enter Employee Signature" />
           </Form.Group>
           <div className="save-as-draft-btn-personal">
             <div>
@@ -218,13 +271,14 @@ export const Termination = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Date :
             </Form.Label>
-            <Form.Control type="date" placeholder="Enter  dATE" />
+            <Form.Control onChange={(e) => updateField("date", e.target.value)} type="date"  />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Administrator Signature :
             </Form.Label>
+            <Form.Control onChange={(e) => updateField("adminSignature", e.target.value)} type="text" />
           </Form.Group>
           <div className="save-as-draft-btn-personal">
             <div>
@@ -259,7 +313,7 @@ export const Termination = () => {
             </button>
           </div>
           <div className="save-as-draft-btn123">
-            <button className="btn1233" type="submit">
+            <button onClick={submitHandler} className="btn1233" type="submit">
               SUBMIT
             </button>
           </div>

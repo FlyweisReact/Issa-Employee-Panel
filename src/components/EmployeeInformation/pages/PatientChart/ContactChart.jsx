@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Form, Table } from "react-bootstrap";
+import { Button, Form, Table } from "react-bootstrap";
+import { FaRegEdit } from "react-icons/fa";
+import { RiDeleteBin5Fill } from "react-icons/ri";
 const ContactChart = () => {
   const navigate = useNavigate();
   return (
@@ -11,160 +13,121 @@ const ContactChart = () => {
         </div>
         <div
           className="nav-div-personal"
-          style={{ width: "80%", marginBottom: "1rem" }}
+          style={{
+            width: "80%",
+            marginBottom: "1rem",
+            display: "flex",
+            paddingRight: "1rem",
+          }}
         >
-          <p style={{ fontSize: ".9rem", fontWeight: "bold" }}>CONTACT NOTE</p>
-          <p></p>
+          <p style={{ fontWeight: "bold", flex: "1" }}>
+          CONTACT NOTE
+          </p>
+          <p>
+            <Button
+              style={{
+                fontSize: ".9rem",
+                fontWeight: "bold",
+                backgroundColor: "#1A9FB2",
+                padding: ".5rem 1.5rem",
+                border: "none",
+              }}
+              onClick={() => navigate("/employee/patient-chart/contact-chart2")}
+            >
+              + NEW
+            </Button>
+          </p>
         </div>
       </div>
       <div>
         <div className="top-div-personal">
-          <p style={{ fontWeight: "bold" }}>Part I – Description of Incident</p>
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Resident’s Name:
-            </Form.Label>
-            <Form.Control type="date" placeholder="Enter text" />
-          </Form.Group>
-          <p>Person contacted:</p>
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Guardian :
-            </Form.Label>
-            <Form.Control type="date" placeholder="Enter text" />
-          </Form.Group>
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Case Manager:
-            </Form.Label>
-            <Form.Control type="text" placeholder="Enter text" />
-          </Form.Group>
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Pharmacy:
-            </Form.Label>
-            <Form.Control type="text" placeholder="Enter text" />
-          </Form.Group>
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Family member
-            </Form.Label>
-            <Form.Control type="text" placeholder="Enter text" />
-          </Form.Group>
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Doctors office
-            </Form.Label>
-            <Form.Control type="text" placeholder="Enter text" />
-          </Form.Group>
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Other
-            </Form.Label>
-            <Form.Control type="text" placeholder="Enter text" />
-          </Form.Group>
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Contact Name:
-            </Form.Label>
-            <Form.Control type="text" placeholder="Enter text" />
-          </Form.Group>
-          <p>Mode of contact:</p>
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Email
-            </Form.Label>
-            <Form.Control type="text" placeholder="Enter text" />
-          </Form.Group>
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Text message
-            </Form.Label>
-            <Form.Control type="text" placeholder="Enter text" />
-          </Form.Group>
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Phone call
-            </Form.Label>
-            <Form.Control type="text" placeholder="Enter text" />
-          </Form.Group>
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              In person
-            </Form.Label>
-            <Form.Control type="text" placeholder="Enter text" />
-          </Form.Group>
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Other, please specify:
-            </Form.Label>
-            <Form.Control type="text" placeholder="Enter text" />
-          </Form.Group>
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Contact Summary Note:
-            </Form.Label>
-            <Form.Control as="textarea" rows={3} placeholder="Enter text" />
-          </Form.Group>
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Emergency issue:
-            </Form.Label>
-            <div className="d-flex">
-              <Form.Check
-                type="checkbox"
-                label="Yes"
-                name="formHorizontalRadios"
-                id="formHorizontalRadios1"
-              />
-              <Form.Check
-                type="checkbox"
-                label="No"
-                name="formHorizontalRadios"
-                id="formHorizontalRadios2"
-              />
-            </div>
-            {/* <Form.Control as="textarea" rows={3} placeholder="Enter text" /> */}
-          </Form.Group>
+          <Table responsive>
+            <thead>
+              <tr>
+                <th
+                  style={{
+                    backgroundColor: "#D1ECF0",
+                    borderRadius: "5px 0 0 0",
+                  }}
+                >
+                  <input type="checkbox" />
+                </th>
+                <th style={{ backgroundColor: "#D1ECF0" }}>Date</th>
+                <th style={{ backgroundColor: "#D1ECF0" }}>
+                  Selecting Clothes
+                </th>
+                <th style={{ backgroundColor: "#D1ECF0" }}>
+                  Bathing or Showering
+                </th>
+                <th style={{ backgroundColor: "#D1ECF0" }}>Staff Initials</th>
+                <th style={{ backgroundColor: "#D1ECF0" }}>Resident’s Name</th>
 
-          <div
-            style={{ maxWidth: "370px", width: "auto" }}
-            className="save-as-draft-btn-personal"
-          >
-            <div>
-              <img
-                style={{ height: "80%", width: "100%", border: "1px " }}
-                src="/Dashboard/save.png"
-                alt=""
-              />
-            </div>
-            <div className="save-as-draft-btn">
-              <button style={{ border: "1px solid #0C5C75", color: "#0C5C75" }}>
-                SAVE AS DRAFT
-              </button>
-              <button style={{ backgroundColor: "#0C5C75", color: "white" }}>
-                SAVED AND SAVED
-              </button>
-            </div>
-          </div>
+                <th style={{ backgroundColor: "#D1ECF0" }}></th>
+                <th
+                  style={{
+                    backgroundColor: "#D1ECF0",
+                    borderRadius: "0 5px 0 0",
+                  }}
+                ></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <input type="checkbox" />
+                </td>
+                <td>Dr. Colter</td>
+                <td>10/10/2022</td>
+                <td>7am-3pm</td>
+                <td>Text</td>
+                <td>Text</td>
+                <td
+                  style={{
+                    display: "flex",
+                    gap: "1rem",
+                    fontWeight: "bold",
+                    color: "#1A9FB2",
+                    alignItems: "center",
+                    fontSize: "1.4rem",
+                  }}
+                >
+                  <span>
+                    {" "}
+                    <FaRegEdit />
+                  </span>
+                  <span
+                    style={{
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    {" "}
+                    <RiDeleteBin5Fill style={{ color: "red" }} />
+                    <span style={{ color: "red", fontSize: "1.1.1rem" }}>
+                      DELETE
+                    </span>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </Table>
 
-          <div style={{ textAlign: "center", width: "100%", margin: "auto" }}>
-            <button
-              style={{
-                padding: "10px 24px",
-                backgroundColor: "#1A9FB2",
-                color: "white",
-                marginTop: "1rem",
-              }}
-              type="submit"
-            >
-              PRINT REPORT
-            </button>
-          </div>
-          <div className="save-as-draft-btn123">
-            <button className="btn1233" type="submit">
-              SUBMIT
-            </button>
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            {/* <span></span> */}
+            <span>
+              <Button
+                style={{
+                  fontSize: ".9rem",
+                  fontWeight: "bold",
+                  backgroundColor: "#1A9FB2",
+                  padding: ".5rem 1.5rem",
+                  border: "none",
+                }}
+              >
+                SAVE
+              </Button>
+            </span>
           </div>
         </div>
       </div>

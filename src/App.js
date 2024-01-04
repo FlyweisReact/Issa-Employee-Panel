@@ -76,6 +76,7 @@ import Financial2 from "./components/EmployeeInformation/pages/PatientChart/Fien
 import Staffing2 from "./components/EmployeeInformation/pages/PatientChart/Fiencial/Staffing/Staffing2";
 import Authorization2 from "./components/EmployeeInformation/pages/PatientChart/Fiencial/Authorization2";
 import Incident2 from "./components/EmployeeInformation/pages/PatientChart/Incident2";
+import ContactChart2 from "./components/EmployeeInformation/pages/PatientChart/ContactChart2";
 function App() {
   return (
     <>
@@ -214,6 +215,10 @@ function App() {
         <Route
           path="/employee/patient-chart/contact-chart"
           element={<ContactChart />}
+        />
+        <Route
+          path="/employee/patient-chart/contact-chart2"
+          element={<ContactChart2 />}
         />
         <Route path="/employee/patient-chart/upload" element={<Upload />} />
         <Route

@@ -54,15 +54,15 @@ const Activites = () => {
                 </th>
                 <th style={{ backgroundColor: "#D1ECF0" }}>Date</th>
                 <th style={{ backgroundColor: "#D1ECF0" }}>
-                  Selecting Clothes
+                Resident's Name
                 </th>
                 <th style={{ backgroundColor: "#D1ECF0" }}>
-                  Bathing or Showering
+                 Family member
                 </th>
-                <th style={{ backgroundColor: "#D1ECF0" }}>Staff Initials</th>
-                <th style={{ backgroundColor: "#D1ECF0" }}>Resident’s Name</th>
+                <th style={{ backgroundColor: "#D1ECF0" }}>Email</th>
+                <th style={{ backgroundColor: "#D1ECF0" }}>Date</th>
 
-                <th style={{ backgroundColor: "#D1ECF0" }}></th>
+                <th style={{ backgroundColor: "#D1ECF0" }}>Case Manager</th>
                 <th
                   style={{
                     backgroundColor: "#D1ECF0",
@@ -76,10 +76,10 @@ const Activites = () => {
                 <td>
                   <input type="checkbox" />
                 </td>
-                <td>Dr. Colter</td>
-                <td>10/10/2022</td>
-                <td>7am-3pm</td>
-                <td>Text</td>
+                <td>Name</td>
+                <td>5</td>
+                <td>abc@gmail.com</td>
+                <td>DD/MM/YYYY</td>
                 <td>Text</td>
                 <td
                   style={{
@@ -125,7 +125,7 @@ const Activites = () => {
                   border: "none",
                 }}
               >
-                SAVE
+                PRINT REPORT
               </Button>
             </span>
           </div>

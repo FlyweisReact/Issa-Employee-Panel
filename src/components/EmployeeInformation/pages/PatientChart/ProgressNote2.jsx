@@ -1,8 +1,83 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form } from "react-bootstrap";
+import axios from "axios";
+import { Baseurl, Auth, showMsg } from "../../../../Baseurl";
 const ProgressNote2 = () => {
   const navigate = useNavigate();
+const [patients, setPatients] = useState([]);
+  const [formData, setFormData] = useState({
+    patientId: "",
+    residentName: "",
+    dateOfBirth: "",
+    admitDate: "",
+    date: "",
+    shift: "",
+    medicationAdministrationCompleted: "",
+    assistanceInMedicationAdministrationCompleted: "",
+    healthAndWelfareChecksCompleted: "",
+    communityLivingSupport: "",
+    groupTherapy: "",
+    individualTherapy: "",
+    refusedTherapy: "",
+    isolation: "",
+    anxious: "",
+    depressed: "",
+    excited: "",
+    respondingToInternalStimuli: "",
+    inappropriateSexualComment: "",
+    paranoia: "",
+    verballyAggressive: "",
+    physicallyAggressive: "",
+    agitated: "",
+    suicidalIdeation: "",
+    PCP: "",
+    psychiatric: "",
+    otherSpecialist: "",
+    none: "",
+    emergencyRoomVisit: "",
+    inpatient: "",
+    urgentCare: "",
+    communityOutings: "",
+    religiousService: "",
+    adlsCompleted: "",
+    mealPreparation: "",
+    transportation: "",
+    residentRedirectedOnBehaviors: "",
+    awolElopement: "",
+    noteSummary: "",
+    bhtName: "",
+    bhtSignature: ""
+  });
+
+  const updateField = (fieldName, value) => {
+    setFormData({ ...formData, [fieldName]: value });
+  };
+
+  const getAllpatients = () => {
+    axios
+      .get(`${Baseurl}admin/getUser`, Auth())
+      .then((res) => {
+        console.log(res.data);
+        const filteredData = res.data.filter(
+          (item) => item.role === "Patient"
+        )
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  useEffect(() => {
+    getAllpatients()
+  },[])
+  const submitHandler = (e) => {
+    e.preventDefault();
+    console.log(formData);
+  }
+
+
+
   return (
     <>
       <div className="nav-wrap-personal">
@@ -40,26 +115,26 @@ const ProgressNote2 = () => {
               <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
                 Admit Date :
               </Form.Label>
-              <Form.Control type="date" placeholder="Enter  dATE" />
+              <Form.Control onChange={(e) => updateField("admitDate", e.target.value)} type="date" placeholder="Enter  dATE" />
             </Form.Group>
 
             <Form.Group className="mb-3">
               <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
                 Date of Birth:
               </Form.Label>
-              <Form.Control type="date" placeholder="Enter text" />
+              <Form.Control onChange={(e) => updateField("dateOfBirth", e.target.value)} type="date" placeholder="Enter text" />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
                 Date :
               </Form.Label>
-              <Form.Control type="date" placeholder="Enter text" />
+              <Form.Control onChange={(e) => updateField("date", e.target.value)} type="date" placeholder="Enter text" />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
                 Shift :
               </Form.Label>
-              <Form.Select aria-label="Default select example">
+              <Form.Select aria-label="Default select example" onChange={(e) => updateField("shift", e.target.value)}>
                 <option>Select</option>
                 <option value="1">7am-3pm</option>
                 <option value="2">3pm-11pm</option>
@@ -90,7 +165,7 @@ const ProgressNote2 = () => {
                 Was Assistance in the self administration of medication
                 completed?
               </Form.Label>
-              <Form.Select aria-label="Default select example">
+              <Form.Select onChange={(e) => updateField("medication", e.target.value)} aria-label="Default select example">
                 <option>Select</option>
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
@@ -101,7 +176,7 @@ const ProgressNote2 = () => {
                 Were Health and Welfare Checks completed every 15 minutes to 1
                 hour?
               </Form.Label>
-              <Form.Select aria-label="Default select example">
+              <Form.Select onChange={(e) => updateField("healthWelfare", e.target.value)} aria-label="Default select example">
                 <option>Select</option>
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
@@ -111,18 +186,18 @@ const ProgressNote2 = () => {
               <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
                 Therapy:
               </Form.Label>
-              <Form.Select aria-label="Default select example">
+              <Form.Select aria-label="Default select example" onChange={(e) => updateField("therapy", e.target.value)}>
                 <option>Select</option>
                 <option value="1">Group Therapy</option>
                 <option value="2">Individual Therapy</option>
                 <option value="3">Refused</option>
               </Form.Select>
             </Form.Group>
-            <Form.Group className="mb-3">
+            <Form.Group  className="mb-3">
               <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
                 Mood:
               </Form.Label>
-              <Form.Select aria-label="Default select example">
+              <Form.Select onChange={(e) => updateField("mood", e.target.value)} aria-label="Default select example">
                 <option>Select</option>
                 <option value="1">Isolation</option>
                 <option value="2"> anxious</option>
@@ -141,7 +216,7 @@ const ProgressNote2 = () => {
               <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
                 Appointment:
               </Form.Label>
-              <Form.Select aria-label="Default select example">
+              <Form.Select onChange={(e) => updateField("appointment", e.target.value)} aria-label="Default select example">
                 <option>Select</option>
                 <option value="1">Emergency Room Visit</option>
                 <option value="2">Inpatient </option>
@@ -202,13 +277,14 @@ const ProgressNote2 = () => {
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>BHT’s Name and Credentials:</Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control onChange={(e) => updateField("bht", e.target.value)} type="text" placeholder="Enter  text" />
             </Form.Group>
 
             <Form.Group className="mb-3 mt-5">
               <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
                 Signature:{" "}
               </Form.Label>
+              <Form.Control type="text" placeholder="Enter text" onChange={(e) => updateField("signature", e.target.value)} />
             </Form.Group>
             <div
               style={{ maxWidth: "370px", width: "auto" }}
