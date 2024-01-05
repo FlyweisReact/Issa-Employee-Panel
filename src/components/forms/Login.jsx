@@ -19,7 +19,7 @@ const Login = () => {
       .then((res) => {
         localStorage.setItem("token", res.data.accessToken);
         showMsg("Success", res.data.msg, "success");
-        navigate("/dashboard");
+        navigate("/dashboard/");
       })
       .catch((error) => {
         console.error(error.response);

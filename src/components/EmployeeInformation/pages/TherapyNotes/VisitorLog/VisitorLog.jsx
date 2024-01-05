@@ -1,8 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Form, Table } from "react-bootstrap";
+import { Button, Form, Table } from "react-bootstrap";
+import { FaRegEdit } from "react-icons/fa";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+import { Auth, showMsg, Baseurl } from "../../../../../Baseurl";
+import axios from "axios";
 const VisitorLog = () => {
   const navigate = useNavigate();
+  const [visitorLog, setVisitorLog] = useState([]);
+  const getAllVisitorLog = () => {
+    axios
+      .get(`${Baseurl}employee/getAllVisitLog`, Auth())
+      .then((res) => {
+        console.log(res.data?.data);
+        setVisitorLog(res.data?.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  useEffect(() => {
+    getAllVisitorLog();
+  }, []);
   return (
     <>
       <div className="nav-wrap-personal">
@@ -11,12 +30,28 @@ const VisitorLog = () => {
         </div>
         <div
           className="nav-div-personal"
-          style={{ width: "80%", marginBottom: "1rem" }}
+          style={{
+            width: "80%",
+            marginBottom: "1rem",
+            display: "flex",
+            paddingRight: "1rem",
+          }}
         >
-          <p style={{ fontSize: ".9rem", fontWeight: "bold" }}>
-            VISITOR SIGN IN LOG
+          <p style={{ fontWeight: "bold", flex: "1" }}> VISITOR SIGN IN LOG</p>
+          <p>
+            <Button
+              style={{
+                fontSize: ".9rem",
+                fontWeight: "bold",
+                backgroundColor: "#1A9FB2",
+                padding: ".5rem 1.5rem",
+                border: "none",
+              }}
+              onClick={() => navigate("/employee/therapy-notes/visitor-log2")}
+            >
+              + NEW
+            </Button>
           </p>
-          <p></p>
         </div>
       </div>
       <div>
@@ -31,89 +66,21 @@ const VisitorLog = () => {
                 <th>Date</th>
                 <th> Name</th>
                 <th>Time In</th>
-                <th>Person For Visit</th>
                 <th>Time Out</th>
+                <th>Reason</th>
               </tr>
             </thead>
             <tbody>
+            {visitorLog && visitorLog.map((item, index) => (
+          
               <tr style={{ border: "1px solid black" }}>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
+                <td>{item.date}</td>
+                <td>{item.visitorName}</td>
+                <td>{item.timeIn}</td>
+                <td>{item.timeOut}</td>
+                <td>{item.reason}</td>
+              </tr> ))}
+              
             </tbody>
           </Table>
           <div style={{ textAlign: "center", width: "100%", margin: "auto" }}>

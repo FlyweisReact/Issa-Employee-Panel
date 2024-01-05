@@ -1,20 +1,60 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Form, Table } from "react-bootstrap";
+import { Button, Form, Table } from "react-bootstrap";
+import { FaRegEdit } from "react-icons/fa";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+import { Auth, showMsg, Baseurl } from "../../../../../Baseurl";
+import axios from "axios";
 const MilageLog = () => {
   const navigate = useNavigate();
+  const [logs, setLogs] = useState([]);
+  const getAllLogs = () => {
+    
+
+    axios
+      .get(`${Baseurl}employee/getAllMileageLog`, Auth())
+      .then((res) => {
+        console.log(res.data?.data);  
+        setLogs(res.data?.data);
+        
+      })  
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+useEffect(() => {
+  getAllLogs()
+}, [])
   return (
     <>
-      <div className="nav-wrap-personal">
+       <div className="nav-wrap-personal">
         <div className="nav-div-personal1">
           <img onClick={() => navigate(-1)} src="/back_button2.png" alt="da" />
         </div>
         <div
           className="nav-div-personal"
-          style={{ width: "80%", marginBottom: "1rem" }}
+          style={{
+            width: "80%",
+            marginBottom: "1rem",
+            display: "flex",
+            paddingRight: "1rem",
+          }}
         >
-          <p style={{ fontSize: ".9rem", fontWeight: "bold" }}>MILEAGE LOG</p>
-          <p></p>
+          <p style={{ fontWeight: "bold", flex: "1" }}> MILEAGE LOG</p>
+          <p>
+            <Button
+              style={{
+                fontSize: ".9rem",
+                fontWeight: "bold",
+                backgroundColor: "#1A9FB2",
+                padding: ".5rem 1.5rem",
+                border: "none",
+              }}
+              onClick={() => navigate("/employee/therapy-notes/milage-log2")}
+            >
+            + NEW
+            </Button>
+          </p>
         </div>
       </div>
       <div>
@@ -25,6 +65,7 @@ const MilageLog = () => {
             bordered
           >
             <thead>
+            
               <tr>
                 <th>Date</th>
                 <th> Resident Initials</th>
@@ -37,37 +78,19 @@ const MilageLog = () => {
               </tr>
             </thead>
             <tbody>
+            
+              {console.log(logs)}
+           
+           
               <tr style={{ border: "1px solid black" }}>
-                <td>am to pm </td>
+                <td></td>
                 <td>Mark</td>
                 <td>Otto</td>
                 <td>@mdo</td>
               </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td>pm to am</td>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
+            
+             
+             
             </tbody>
           </Table>
 

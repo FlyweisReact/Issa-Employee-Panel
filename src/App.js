@@ -77,6 +77,8 @@ import Staffing2 from "./components/EmployeeInformation/pages/PatientChart/Fienc
 import Authorization2 from "./components/EmployeeInformation/pages/PatientChart/Fiencial/Authorization2";
 import Incident2 from "./components/EmployeeInformation/pages/PatientChart/Incident2";
 import ContactChart2 from "./components/EmployeeInformation/pages/PatientChart/ContactChart2";
+import VisitorLog2 from "./components/EmployeeInformation/pages/TherapyNotes/VisitorLog/VisitorLog2";
+import MilageLog2 from "./components/EmployeeInformation/pages/TherapyNotes/MilageLog/MilageLog2";
 function App() {
   return (
     <>
@@ -135,12 +137,20 @@ function App() {
           element={<VisitorLog />}
         />
         <Route
+          path="/employee/therapy-notes/visitor-log2"
+          element={<VisitorLog2 />}
+        />
+        <Route
           path="/employee/therapy-notes/staff-schedule"
           element={<StaffSchedule />}
         />
         <Route
           path="/employee/therapy-notes/milage-log"
           element={<MilageLog />}
+        />
+        <Route
+          path="/employee/therapy-notes/milage-log2"
+          element={<MilageLog2 />}
         />
         <Route path="/employee/notes-library" element={<NotesLibrary />} />
         <Route path="/employee/training/on-site" element={<OnSite />} />

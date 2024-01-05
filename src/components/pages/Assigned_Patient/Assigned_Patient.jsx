@@ -1,7 +1,9 @@
 import React from "react";
 import HOC from "../../layout/HOC";
 import "./Assigned.css";
+
 const Assigned_Patient = () => {
+  const getAllUpcomingPatients = () => {};
   return (
     <div className="main-div-assigned important">
       <div className="upcoming-assigned">
