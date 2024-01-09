@@ -5,12 +5,14 @@ import { useNavigate } from "react-router-dom";
 import "./OfferLetter.css";
 export const OfferLetter = () => {
   const navigate = useNavigate();
-  const [currentDate, setCurrentDate] = useState("______________");
-  const [recipientName, setRecipientName] = useState("______________");
-  const [startingPay, setStartingPay] = useState("______________");
-  const [startDate, setStartDate] = useState("______________");
+  const [date, setDate] = useState("");
+  const [name, setName] = useState("");
+  const [pay, setPay] = useState("");
+  const [firstday, setFirstday] = useState("");
+  const [administratorName, setAdministratorName] = useState("");
+  const [administratorSign, setAdministratorSign] = useState("");
   return (
-    <div className="main-div-personal important">
+    <div style={{fontSize:".8rem"}} className="main-div-personal important">
       <div className="nav-wrap-personal">
         <div className="nav-div-personal1">
           <img onClick={() => navigate(-1)} src="/back_button2.png" alt="da" />
@@ -21,18 +23,20 @@ export const OfferLetter = () => {
       </div>
       <div className="top-div-personal">
         <Form className="form-personal offer-letter">
-          <p>
-            Today’s Date: <span>{currentDate} </span>
+          <p style={{display:"flex"}}>
+            Today’s Date: <span><input type="date" value={date} style={{border:"none"}} onChange={(e) => setDate(e.target.value)} placeholder="__________"></input> </span>
           </p>
-          <p>
-            Dear <span>{recipientName}</span>,
+          <p style={{display:"flex"}}>
+            Dear <span><input type="text" value={name} style={{border:"none"}} onChange={(e) => setName(e.target.value)} placeholder="__________" /></span>,
           </p>
-          <p>
+          <p >
             Congratulations! Company Name is pleased to offer you the position
             of Behavior Health Technician. We trust that this offer will be met
             with your approval. As per our discussion, this position is full
-            time, and your starting pay is <span>{startingPay}</span>. Your
-            first day of work will be on <span>{startDate}</span>. This offer is
+            time, and your starting pay<p > is <span > <input type="text" value={pay} style={{border:"none"}} onChange={(e) => setPay(e.target.value)} placeholder="__________" /></span></p>. Your
+            first day of work will be on <span style={{display:"flex"}}>
+              <input type="date" value={firstday} style={{border:"none",width:"150px"}} onChange={(e) => setFirstday(e.target.value)} placeholder="__________" />
+            </span>. This offer is
             conditional upon satisfactory completion of your reference checks
             and obtaining copies of all required documentation. The entire team
             at Company Name is looking forward to working with you. We are
