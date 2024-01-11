@@ -4,11 +4,46 @@ import { Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 export const Forms2023 = () => {
   const navigate = useNavigate();
-  const [currentDate, setCurrentDate] = useState("______________");
-  const [recipientName, setRecipientName] = useState("______________");
-  const [startingPay, setStartingPay] = useState("______________");
-  const [startDate, setStartDate] = useState("______________");
+  const [employeeData, setEmployeeData] = useState({
+    employeeId: '',
+    adminId: '',
+    fullName: '',
+    socialSecurityNumber: '',
+    numberAndStreet: '',
+    cityOrTown: '',
+    state: '',
+    zipCode: '',
+    withholdingOption: {
+      option: '',
+      percentage: 0.0,
+      checkBox: false,
+      extraAmount: 0,
+    },
+    signature: '',
+    date: '',
+  });
 
+  // Handler function to update state on input change
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+
+    setEmployeeData((prevData) => {
+      if (type === 'checkbox') {
+        return {
+          ...prevData,
+          withholdingOption: {
+            ...prevData.withholdingOption,
+            [name]: checked,
+          },
+        };
+      }
+
+      return {
+        ...prevData,
+        [name]: value,
+      };
+    });
+  };
   const [isChecked, setIsChecked] = useState("");
 
   const handleCheckboxChange = (value) => {
@@ -360,6 +395,7 @@ export const Forms2023 = () => {
                 marginTop: "1rem",
                 borderRadius: "10px",
               }}
+              
               type="submit"
             >
               PRINT REPORT

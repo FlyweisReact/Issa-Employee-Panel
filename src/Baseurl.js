@@ -1,7 +1,8 @@
 /** @format */
 
 import { Store } from "react-notifications-component";
-
+import axios from "axios";
+import { Popover } from "react-bootstrap";
 export const Baseurl = "https://issa-backend.vercel.app/api/v1/";
 
 export const Auth = () => ({
@@ -23,3 +24,17 @@ export const showMsg = (title, message, type) =>
       onScreen: true,
     },
   });
+
+export const getSingleUserData = (url) => {
+  return axios.get(Baseurl + url, Auth());
+};
+
+export const postSingleUserData = (url, data) => {
+  return axios.post(Baseurl + url, data, Auth());
+};
+
+export const postData = (url, data) => {
+  return axios.post(`${Baseurl}${url}`, data, Auth());
+};
+
+

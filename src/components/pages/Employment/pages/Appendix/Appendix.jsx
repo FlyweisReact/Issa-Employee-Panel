@@ -3,12 +3,98 @@ import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./Appendix.css";
+import { postData, showMsg } from "../../../../../Baseurl";
 export const Appendix = () => {
   const navigate = useNavigate();
-  const [currentDate, setCurrentDate] = useState("______________");
-  const [recipientName, setRecipientName] = useState("______________");
-  const [startingPay, setStartingPay] = useState("______________");
-  const [startDate, setStartDate] = useState("______________");
+  const [closeContact, setCloseContact] = useState(null);
+  const [symptoms, setSymptoms] = useState(null);
+  const [cough, setCough] = useState(null);
+  const [bloody, setBloody] = useState(null);
+  const [weight, setWeight] = useState(null);
+  const [drenching, setDrenching] = useState(null);
+  const [Unexplained, setUnexplained] = useState(null);
+  const [fatigue, setFatigue] = useState(null);
+  const [activeTB1, setActiveTB1] = useState(null);
+  const [latentTB, setLatentTB] = useState(null);
+  const [treatment, setTreatment] = useState(null);
+  const [immunization, setImmunization] = useState(null);
+  const [spentMore, setSpentMore] = useState(null);
+  const [employeeData, setEmployeeData] = useState({
+    name: "",
+    date: "",
+    preferredContactInformation: "",
+    positionHiredFor: "",
+    startDate: "",
+    spentMoreThan30DaysAbroad: "",
+    closeContactWithActiveTB: "",
+    symptomsFever: "",
+    symptomsCough: "",
+    symptomsBloodySputum: "",
+    symptomsUnintendedWeightLoss: "",
+    symptomsNightSweats: "",
+    symptomsUnexplainedFatigue: "",
+    diagnosedWithActiveTB: "",
+    diagnosedWithLatentTB: "",
+    tbTreatmentHistoryYear: "",
+    tbTreatmentHistoryMedication: "",
+    tbTreatmentHistoryDuration: "",
+    tbTreatmentHistoryCompletedTreatment: "",
+    weakenedImmuneSystem: "",
+    reviewerSignature: "",
+    reviewDate: "",
+  });
+
+  const handleChange = (field, value) => {
+    setEmployeeData((prevData) => ({
+      ...prevData,
+      [field]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (closeContact) {
+      employeeData.closeContactWithActiveTB = closeContact;
+    }
+    if (symptoms) {
+      employeeData.symptomsFever = symptoms;
+    }
+    if (cough) {
+      employeeData.symptomsCough = cough;
+    }
+    if (bloody) {
+      employeeData.symptomsBloodySputum = bloody;
+    }
+    if (weight) {
+      employeeData.symptomsUnintendedWeightLoss = weight;
+    }
+    if (drenching) {
+      employeeData.symptomsNightSweats = drenching;
+    }
+    if (Unexplained) {
+      employeeData.symptomsUnexplainedFatigue = Unexplained;
+    }
+    if (fatigue) {
+      employeeData.diagnosedWithActiveTB = fatigue;
+    }
+    if (latentTB) {
+      employeeData.diagnosedWithLatentTB = latentTB;
+    }
+    if (treatment) {
+      employeeData.tbTreatmentHistoryYear = treatment;
+    }
+    if (immunization) {
+      employeeData.weakenedImmuneSystem = immunization;
+    }
+    if (spentMore) {
+      employeeData.spentMoreThan30DaysAbroad = spentMore;
+    }
+postData("employee/createAppendix",employeeData).then((res)=>{
+  console.log(res)
+  showMsg("Success", "Appendix Created Successfully", "success");
+})
+    console.log(employeeData);
+  };
   return (
     <div className="main-div-personal important">
       <div className="nav-wrap-personal">
@@ -33,13 +119,21 @@ export const Appendix = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Name :
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  Name" />
+            <Form.Control
+              onChange={(e) => handleChange("name", e.target.value)}
+              type="text"
+              placeholder="Enter  Name"
+            />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Today's Date :
             </Form.Label>
-            <Form.Control type="date" placeholder="Enter  dATE" />
+            <Form.Control
+              onChange={(e) => handleChange("date", e.target.value)}
+              type="date"
+              placeholder="Enter  dATE"
+            />
           </Form.Group>
 
           <Form.Group className="mb-3">
@@ -49,19 +143,30 @@ export const Appendix = () => {
             <Form.Control
               type="text"
               placeholder="Enter  Preferred Contact Information"
+              onChange={(e) =>
+                handleChange("preferredContactInformation", e.target.value)
+              }
             />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               1. What position are you hired for?:
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control
+              onChange={(e) => handleChange("positionHiredFor", e.target.value)}
+              type="text"
+              placeholder="Enter  text"
+            />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               What is your start date? :
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control
+              onChange={(e) => handleChange("startDate", e.target.value)}
+              type="text"
+              placeholder="Enter  text"
+            />
           </Form.Group>
 
           <p>
@@ -71,7 +176,12 @@ export const Appendix = () => {
           </p>
           <div key={"radio"} className="mb-3">
             <Form.Check type={"radio"} id={`check-api-${"radio"}`}>
-              <Form.Check.Input name="radio" type={"radio"} isValid />
+              <Form.Check.Input
+                onChange={(e) => setSpentMore("YES")}
+                name="radio"
+                type={"radio"}
+                isValid
+              />
               <Form.Check.Label>
                 {" "}
                 <p>
@@ -83,12 +193,17 @@ export const Appendix = () => {
           </div>
           <div key={"radio"} className="mb-3">
             <Form.Check type={"radio"} id={`check-api-${"radio"}`}>
-              <Form.Check.Input name="radio" type={"radio"} isValid />
+              <Form.Check.Input
+                onChange={(e) => setSpentMore("NO")}
+                name="radio"
+                type={"radio"}
+                isValid
+              />
               <Form.Check.Label>
                 {" "}
                 <p>
-                  NO I have not been in any country for >30 days except the ones
-                  listed above
+                  NO I have not been in any country for {">"}30 days except the
+                  ones listed above
                 </p>
               </Form.Check.Label>
             </Form.Check>
@@ -107,15 +222,25 @@ export const Appendix = () => {
               3. Have you had close contact with anyone who had active TB since
               your last TB test?
             </Form.Label>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <Form.Check type={"radio"} id={`check-api-yes`}>
-                <Form.Check.Input name="radio1" type={"radio"} isValid />
+            <div>
+              <Form.Check value={"yes"} type={"radio"} id={`check-api-yes`}>
+                <Form.Check.Input
+                  onChange={(e) => setCloseContact("YES")}
+                  name="radio1"
+                  type={"radio"}
+                  isValid
+                />
                 <Form.Check.Label style={{ marginRight: "15px" }}>
                   Yes
                 </Form.Check.Label>
               </Form.Check>
               <Form.Check type={"radio"} id={`check-api-no`}>
-                <Form.Check.Input name="radio1" type={"radio"} isValid />
+                <Form.Check.Input
+                  onChange={(e) => setCloseContact("NO")}
+                  name="radio1"
+                  type={"radio"}
+                  isValid
+                />
                 <Form.Check.Label>No</Form.Check.Label>
               </Form.Check>
             </div>
@@ -139,11 +264,12 @@ export const Appendix = () => {
                 Unexplained fever for more than 3 weeks
               </p>
               <Form.Check
+                
                 style={{ marginLeft: "10px" }}
                 type={"radio"}
                 id={`check-api-fever-yes`}
               >
-                <Form.Check.Input name="fever" type={"radio"} isValid />
+                <Form.Check.Input onChange={(e) => setSymptoms("YES")} name="fever" type={"radio"} isValid />
                 <Form.Check.Label
                   style={{ marginBottom: "0", marginLeft: "5px" }}
                 >
@@ -151,11 +277,12 @@ export const Appendix = () => {
                 </Form.Check.Label>
               </Form.Check>
               <Form.Check
+               
                 style={{ marginLeft: "10px" }}
                 type={"radio"}
                 id={`check-api-fever-no`}
               >
-                <Form.Check.Input name="fever" type={"radio"} isValid />
+                <Form.Check.Input  onChange={(e) => setSymptoms("NO")} name="fever" type={"radio"} isValid />
                 <Form.Check.Label style={{ marginBottom: "0" }}>
                   No
                 </Form.Check.Label>
@@ -182,7 +309,12 @@ export const Appendix = () => {
                 type={"radio"}
                 id={`check-api-cough-yes`}
               >
-                <Form.Check.Input name="cough" type={"radio"} isValid />
+                <Form.Check.Input
+                  onChange={(e) => setCough("YES")}
+                  name="cough"
+                  type={"radio"}
+                  isValid
+                />
                 <Form.Check.Label
                   style={{ marginBottom: "0", marginLeft: "5px" }}
                 >
@@ -194,7 +326,12 @@ export const Appendix = () => {
                 type={"radio"}
                 id={`check-api-cough-no`}
               >
-                <Form.Check.Input name="cough" type={"radio"} isValid />
+                <Form.Check.Input
+                  onChange={(e) => setCough("NO")}
+                  name="cough"
+                  type={"radio"}
+                  isValid
+                />
                 <Form.Check.Label style={{ marginBottom: "0" }}>
                   No
                 </Form.Check.Label>
@@ -219,7 +356,12 @@ export const Appendix = () => {
                 type={"radio"}
                 id={`check-api-bloody-sputum-yes`}
               >
-                <Form.Check.Input name="bloodySputum" type={"radio"} isValid />
+                <Form.Check.Input
+                  onChange={(e) => setBloody("YES")}
+                  name="bloodySputum"
+                  type={"radio"}
+                  isValid
+                />
                 <Form.Check.Label
                   style={{ marginBottom: "0", marginLeft: "5px" }}
                 >
@@ -231,7 +373,12 @@ export const Appendix = () => {
                 type={"radio"}
                 id={`check-api-bloody-sputum-no`}
               >
-                <Form.Check.Input name="bloodySputum" type={"radio"} isValid />
+                <Form.Check.Input
+                  onChange={(e) => setBloody("NO")}
+                  name="bloodySputum"
+                  type={"radio"}
+                  isValid
+                />
                 <Form.Check.Label style={{ marginBottom: "0" }}>
                   No
                 </Form.Check.Label>
@@ -258,7 +405,12 @@ export const Appendix = () => {
                 type={"radio"}
                 id={`check-api-weight-loss-yes`}
               >
-                <Form.Check.Input name="weightLoss" type={"radio"} isValid />
+                <Form.Check.Input
+                  onChange={(e) => setWeight("YES")}
+                  name="weightLoss"
+                  type={"radio"}
+                  isValid
+                />
                 <Form.Check.Label
                   style={{ marginBottom: "0", marginLeft: "5px" }}
                 >
@@ -270,7 +422,12 @@ export const Appendix = () => {
                 type={"radio"}
                 id={`check-api-weight-loss-no`}
               >
-                <Form.Check.Input name="weightLoss" type={"radio"} isValid />
+                <Form.Check.Input
+                  onChange={(e) => setWeight("NO")}
+                  name="weightLoss"
+                  type={"radio"}
+                  isValid
+                />
                 <Form.Check.Label style={{ marginBottom: "0" }}>
                   No
                 </Form.Check.Label>
@@ -292,7 +449,12 @@ export const Appendix = () => {
               </span>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <Form.Check type={"radio"} id={`check-api-night-sweats-yes`}>
-                  <Form.Check.Input name="nightSweats" type={"radio"} isValid />
+                  <Form.Check.Input
+                    onChange={(e) => setDrenching("YES")}
+                    name="nightSweats"
+                    type={"radio"}
+                    isValid
+                  />
                   <Form.Check.Label
                     style={{
                       marginLeft: "5px",
@@ -304,7 +466,12 @@ export const Appendix = () => {
                   </Form.Check.Label>
                 </Form.Check>
                 <Form.Check type={"radio"} id={`check-api-night-sweats-no`}>
-                  <Form.Check.Input name="nightSweats" type={"radio"} isValid />
+                  <Form.Check.Input
+                    onChange={(e) => setDrenching("NO")}
+                    name="nightSweats"
+                    type={"radio"}
+                    isValid
+                  />
                   <Form.Check.Label style={{ marginBottom: "0" }}>
                     No
                   </Form.Check.Label>
@@ -327,7 +494,12 @@ export const Appendix = () => {
               </span>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <Form.Check type={"radio"} id={`check-api-fatigue-yes`}>
-                  <Form.Check.Input name="fatigue" type={"radio"} isValid />
+                  <Form.Check.Input
+                    onChange={(e) => setFatigue("YES")}
+                    name="fatigue"
+                    type={"radio"}
+                    isValid
+                  />
                   <Form.Check.Label
                     style={{
                       marginLeft: "5px",
@@ -339,7 +511,12 @@ export const Appendix = () => {
                   </Form.Check.Label>
                 </Form.Check>
                 <Form.Check type={"radio"} id={`check-api-fatigue-no`}>
-                  <Form.Check.Input name="fatigue" type={"radio"} isValid />
+                  <Form.Check.Input
+                    onChange={(e) => setFatigue("NO")}
+                    name="fatigue"
+                    type={"radio"}
+                    isValid
+                  />
                   <Form.Check.Label style={{ marginBottom: "0" }}>
                     No
                   </Form.Check.Label>
@@ -362,7 +539,12 @@ export const Appendix = () => {
               </span>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <Form.Check type={"radio"} id={`check-api-active-tb-yes`}>
-                  <Form.Check.Input name="activeTB" type={"radio"} isValid />
+                  <Form.Check.Input
+                    onChange={(e) => setActiveTB1("YES")}
+                    name="activeTB"
+                    type={"radio"}
+                    isValid
+                  />
                   <Form.Check.Label
                     style={{
                       marginLeft: "5px",
@@ -374,7 +556,12 @@ export const Appendix = () => {
                   </Form.Check.Label>
                 </Form.Check>
                 <Form.Check type={"radio"} id={`check-api-active-tb-no`}>
-                  <Form.Check.Input name="activeTB" type={"radio"} isValid />
+                  <Form.Check.Input
+                    onChange={(e) => setActiveTB1("NO")}
+                    name="activeTB"
+                    type={"radio"}
+                    isValid
+                  />
                   <Form.Check.Label style={{ marginBottom: "0" }}>
                     No
                   </Form.Check.Label>
@@ -391,14 +578,24 @@ export const Appendix = () => {
               </p>
             </Form.Label>
             <Form.Check type={"radio"} id={`check-api-${"radio"}`}>
-              <Form.Check.Input name="radio1" type={"radio"} isValid />
+              <Form.Check.Input
+                onChange={(e) => setLatentTB("YES")}
+                name="radio1"
+                type={"radio"}
+                isValid
+              />
               <Form.Check.Label>
                 {" "}
                 <p>YES one or more of these is true for me</p>
               </Form.Check.Label>
             </Form.Check>
             <Form.Check type={"radio"} id={`check-api-${"radio"}`}>
-              <Form.Check.Input name="radio1" type={"radio"} isValid />
+              <Form.Check.Input
+                onChange={(e) => setLatentTB("NO")}
+                name="radio1"
+                type={"radio"}
+                isValid
+              />
               <Form.Check.Label>
                 {" "}
                 <p>NO none of these is true for me</p>
@@ -426,7 +623,12 @@ export const Appendix = () => {
                 type={"radio"}
                 id={`check-api-radio-yes`}
               >
-                <Form.Check.Input name="radio1" type={"radio"} isValid />
+                <Form.Check.Input
+                  onChange={(e) => setTreatment("YES")}
+                  name="radio1"
+                  type={"radio"}
+                  isValid
+                />
                 <Form.Check.Label
                   style={{ marginBottom: "0", marginLeft: "5px" }}
                 >
@@ -438,7 +640,12 @@ export const Appendix = () => {
                 type={"radio"}
                 id={`check-api-radio-no`}
               >
-                <Form.Check.Input name="radio1" type={"radio"} isValid />
+                <Form.Check.Input
+                  name="radio1"
+                  onChange={(e) => setTreatment("NO")}
+                  type={"radio"}
+                  isValid
+                />
                 <Form.Check.Label style={{ marginBottom: "0" }}>
                   NO
                 </Form.Check.Label>
@@ -451,7 +658,13 @@ export const Appendix = () => {
               If YES, what year, with which medication, for how long, and did
               you complete the treatment course?
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control
+              onChange={(e) =>
+                handleChange("tbTreatmentHistoryYear", e.target.value)
+              }
+              type="text"
+              placeholder="Enter  text"
+            />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
@@ -465,14 +678,24 @@ export const Appendix = () => {
               </p>
             </Form.Label>
             <Form.Check type={"radio"} id={`check-api-${"radio"}`}>
-              <Form.Check.Input name="radio1" type={"radio"} isValid />
+              <Form.Check.Input
+                onChange={(e) => setImmunization("YES")}
+                name="radio1"
+                type={"radio"}
+                isValid
+              />
               <Form.Check.Label>
                 {" "}
                 <p>YES, one or more of these is true for me </p>
               </Form.Check.Label>
             </Form.Check>
             <Form.Check type={"radio"} id={`check-api-${"radio"}`}>
-              <Form.Check.Input name="radio1" type={"radio"} isValid />
+              <Form.Check.Input
+                onChange={(e) => setImmunization("NO")}
+                name="radio1"
+                type={"radio"}
+                isValid
+              />
               <Form.Check.Label>
                 {" "}
                 <p>NO none of these is true for me</p>
@@ -485,6 +708,16 @@ export const Appendix = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Occupation Health Reviewer Signature :
             </Form.Label>
+            <Form.Control
+              type="text"
+              onChange={(e) =>
+                handleChange(
+                  "occupationHealthReviewerSignature",
+                  e.target.value
+                )
+              }
+              placeholder="Enter  text"
+            />
           </Form.Group>
           <div className="save-as-draft-btn-personal">
             <div>
@@ -507,7 +740,11 @@ export const Appendix = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Date :
             </Form.Label>
-            <Form.Control type="date" placeholder="Enter  dATE" />
+            <Form.Control
+              onChange={(e) => handleChange("reviewDate", e.target.value)}
+              type="date"
+              placeholder="Enter  dATE"
+            />
           </Form.Group>
           <div style={{ textAlign: "center", width: "100%", margin: "auto" }}>
             <button
@@ -524,7 +761,7 @@ export const Appendix = () => {
             </button>
           </div>
           <div className="save-as-draft-btn123">
-            <button className="btn1233" type="submit">
+            <button onClick={handleSubmit} className="btn1233" type="submit">
               SUBMIT
             </button>
           </div>

@@ -2,17 +2,38 @@ import React from "react";
 import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import Sign from "../../../../../Loader/Sign";
+import { postData, showMsg } from "../../../../../Baseurl";
 export const APS = () => {
   const navigate = useNavigate();
-  const [currentDate, setCurrentDate] = useState("______________");
-  const [recipientName, setRecipientName] = useState("______________");
-  const [startingPay, setStartingPay] = useState("______________");
-  const [startDate, setStartDate] = useState("______________");
+  const [formData, setFormData] = useState({
+    employeeName: "",
+    employeeSignature: "",
+    administratorName: "",
+    administratorSignature: "",
+    date: "",
+  });
 
-  const [isChecked, setIsChecked] = useState("");
+  const handleChange = (name, value) => {
+    // const { name, value } = e.target;
 
-  const handleCheckboxChange = (value) => {
-    setIsChecked(value);
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    // return console.log(formData);
+    postData("employee/createApsConsent", formData)
+      .then((res) => {
+        console.log(res);
+        showMsg("Success", res.data.message, "success");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <div className="main-div-personal important">
@@ -65,12 +86,23 @@ export const APS = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Employee Name:
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control
+              onChange={(e) => handleChange("employeeName", e.target.value)}
+              type="text"
+              placeholder="Enter  text"
+            />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Employer Signature:
             </Form.Label>
+            <Form.Control
+              onChange={(e) =>
+                handleChange("employeeSignature", e.target.value)
+              }
+              type="text"
+              placeholder="Enter  text"
+            />
           </Form.Group>
           <div className="save-as-draft-btn-personal">
             <div>
@@ -84,7 +116,14 @@ export const APS = () => {
               <button style={{ border: "1px solid #0C5C75", color: "#0C5C75" }}>
                 SAVE AS DRAFT
               </button>
-              <button style={{ backgroundColor: "#0C5C75", color: "white" }}>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  console.log("Clicked");
+                  <Sign />;
+                }}
+                style={{ backgroundColor: "#0C5C75", color: "white" }}
+              >
                 SAVED AND SAVED
               </button>
             </div>
@@ -99,12 +138,25 @@ export const APS = () => {
             >
               Company Administrator Name:
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control
+              onChange={(e) =>
+                handleChange("administratorName", e.target.value)
+              }
+              type="text"
+              placeholder="Enter  text"
+            />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Company Administrator Signature:
             </Form.Label>
+            <Form.Control
+              onChange={(e) =>
+                handleChange("administratorSignature", e.target.value)
+              }
+              type="text"
+              placeholder="Enter  text"
+            />
           </Form.Group>
           <div className="save-as-draft-btn-personal">
             <div>
@@ -128,7 +180,11 @@ export const APS = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Date:
             </Form.Label>
-            <Form.Control type="Date" placeholder="Enter  text" />
+            <Form.Control
+              onChange={(e) => handleChange("date", e.target.value)}
+              type="Date"
+              placeholder="Enter  text"
+            />
           </Form.Group>
 
           <div style={{ textAlign: "center", width: "100%", margin: "auto" }}>
@@ -146,7 +202,7 @@ export const APS = () => {
             </button>
           </div>
           <div className="save-as-draft-btn123">
-            <button className="btn1233" type="submit">
+            <button onClick={submitHandler} className="btn1233" type="submit">
               SUBMIT
             </button>
           </div>

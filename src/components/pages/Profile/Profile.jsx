@@ -1,9 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import HOC from "../../layout/HOC";
 import "./profile.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { getSingleUserData } from "../../../Baseurl";
 const Profile = () => {
+  const [profileData, setProfileData] = useState({});
+
+const getProfile = async () => {
+  getSingleUserData('employee/getProfile').then((res) => {
+    setProfileData(res.data?.data)
+    console.log(res.data)
+  })
+}
+useEffect(() => {
+  getProfile()
+},[])
+
   return (
     <div className="main-div-profile important">
       <div className="profile">
@@ -11,9 +24,9 @@ const Profile = () => {
         <div className="profile-img">
           <img src="/Profile/Profile.png" alt="Profile_Image" />'
         </div>
-        <h4>Jacob Smith</h4>
+        <h4>{profileData?.fullName}</h4>
         <p style={{ color: "#787878" }}>
-          STATUS : <span style={{ color: "#4DAF4E" }}>Doctor</span>
+          STATUS : <span style={{ color: "#4DAF4E" }}> {profileData?.userType?.toUpperCase()}</span>
         </p>
         <div
           className="profile-div-1"
@@ -30,7 +43,7 @@ const Profile = () => {
               <span style={{ color: "#787878", paddingRight: "10px" }}>
                 DATE OF BIRTH :
               </span>
-              <span>DD/MM/YYYY</span>
+              <span>{profileData?.dateOfBirth?.split("T")[0].split("-").reverse().join("/")}</span>
             </p>
           </div>
           <div>
