@@ -79,6 +79,7 @@ import Incident2 from "./components/EmployeeInformation/pages/PatientChart/Incid
 import ContactChart2 from "./components/EmployeeInformation/pages/PatientChart/ContactChart2";
 import VisitorLog2 from "./components/EmployeeInformation/pages/TherapyNotes/VisitorLog/VisitorLog2";
 import MilageLog2 from "./components/EmployeeInformation/pages/TherapyNotes/MilageLog/MilageLog2";
+import Vitals2 from "./components/EmployeeInformation/pages/Vitals/Vitals2";
 function App() {
   return (
     <>
@@ -158,6 +159,7 @@ function App() {
         <Route path="/employee/training/skills" element={<Skills />} />
         <Route path="/employee/time-of-request" element={<TimeOfRequest />} />
         <Route path="/employee/vitals" element={<Vitals />} />
+        <Route path="/employee/vitals/add" element={<Vitals2 />} />
         <Route path="/employee/medications" element={<Medications />} />
         <Route
           path="/employee/medications/reconciliations"

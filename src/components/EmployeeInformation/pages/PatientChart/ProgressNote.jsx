@@ -5,6 +5,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 const ProgressNote = () => {
   const navigate = useNavigate();
+  
   return (
     <>
       <div className="nav-wrap-personal">
