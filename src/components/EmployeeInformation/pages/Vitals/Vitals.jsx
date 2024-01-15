@@ -136,7 +136,7 @@ const Vitals = () => {
   }, []);
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(formData);
+    // console.log(formData);
   };
 
   const getPatitentData = (id) => {

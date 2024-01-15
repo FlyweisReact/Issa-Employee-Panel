@@ -77,7 +77,7 @@ useEffect(() => {
 }, []);
 const submitHandler = (e) => {
   e.preventDefault();
-  console.log(formData);
+  // console.log(formData);
 };
 const handleSubmit=(e)=>{
   e.preventDefault();
