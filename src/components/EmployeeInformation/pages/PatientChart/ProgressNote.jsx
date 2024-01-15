@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Table } from "react-bootstrap";
 import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
+
+import { getData } from "../../../api/api";
 const ProgressNote = () => {
   const navigate = useNavigate();
-  
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    getData(setData, "employee/getAllProgressNote");
+  }, []);
+
   return (
     <>
       <div className="nav-wrap-personal">

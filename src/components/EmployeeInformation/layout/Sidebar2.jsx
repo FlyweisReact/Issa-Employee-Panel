@@ -1,6 +1,6 @@
 /** @format */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BiLogOutCircle, BiCategory } from "react-icons/bi";
@@ -11,11 +11,13 @@ import { BsFillCartFill } from "react-icons/bs";
 import { MdDashboardCustomize } from "react-icons/md";
 import { toast } from "react-toastify";
 import { Button } from "react-bootstrap";
+import axios from "axios";
+import { Auth, Baseurl } from "../../../Baseurl";
 
 const Sidebar2 = ({ hamb, setHamb }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location.pathname);
+
   const nav = [
     {
       icon: <img src="/Dashboard2/1.png" alt="fdn" />,
@@ -101,6 +103,16 @@ const Sidebar2 = ({ hamb, setHamb }) => {
     navigate("/");
     toast.success("Log -Out Successful");
   };
+  const [employeeData, setEmployeeData] = useState({});
+  const getEmployeeData = () => {
+    axios.get(`${Baseurl}employee/getProfile`, Auth()).then((res) => {
+      setEmployeeData(res.data?.data);
+      console.log(res.data.data);
+    });
+  };
+  useEffect(() => {
+    getEmployeeData();
+  }, []);
   return (
     <>
       <aside
@@ -136,12 +148,12 @@ const Sidebar2 = ({ hamb, setHamb }) => {
             />
             <div class="text-sm" style={{ lineHeight: ".6rem" }}>
               <span>
-                <p>Jacob Smith</p>
+                <p>{employeeData?.fullName}</p>
                 <p style={{ fontWeight: "500" }}>
                   <span style={{ opacity: "60%", color: "white" }}>
                     Status:
                   </span>{" "}
-                  Employee
+                  {employeeData?.userType}
                 </p>
                 <Button
                   style={{

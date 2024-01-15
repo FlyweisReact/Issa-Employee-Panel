@@ -19,6 +19,8 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import chatting1 from "./chatting1.png";
 
 import ChattingModal from "./ChattingModel";
+import { Baseurl, Auth } from "../../Baseurl";
+import axios from "axios";
 function MyVerticallyCenteredModal(props) {
   return (
     <Modal
@@ -65,7 +67,7 @@ const Navbar = ({ hamb, setHamb }) => {
   const [modalShow, setModalShow] = useState(false);
   const [showA, setShowA] = useState(false);
   const drColterRef = useRef(null);
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   //
   const [showD, setShowD] = useState(false);
 
@@ -132,6 +134,18 @@ const Navbar = ({ hamb, setHamb }) => {
   const notify = () => {
     setShowA(!showA);
   };
+
+  const [employeeData, setEmployeeData] = useState({});
+
+  const getEmployeeData = () => {
+    axios.get(`${Baseurl}employee/getProfile`, Auth()).then((res) => {
+      setEmployeeData(res.data.data);
+      console.log(res.data.data);
+    });
+  };
+  useEffect(() => {
+    getEmployeeData();
+  }, []);
   return (
     <>
       {" "}
@@ -373,7 +387,7 @@ const Navbar = ({ hamb, setHamb }) => {
               cursor: window.innerWidth < 768 ? "pointer" : "default",
             }}
           >
-            Dr,Colter👋!
+            {employeeData?.fullName}👋!
           </p>
         </div>
 
@@ -405,7 +419,7 @@ const Navbar = ({ hamb, setHamb }) => {
             borderRadius: "50%",
             color: "white",
           }}
-          src="/Profile/Profile.png"
+          src={employeeData?.profilePic}
           alt="notification_off"
         />
         <img
