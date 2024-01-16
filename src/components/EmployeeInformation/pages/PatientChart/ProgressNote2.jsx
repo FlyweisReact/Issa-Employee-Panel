@@ -67,7 +67,18 @@ const ProgressNote2 = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(patientData);
-    postData("employee/createProgressNote",patientData);
+    postData(
+      "employee/createProgressNote",
+      patientData,
+      getData(setPatients, "employee/getPatient")
+    )
+      .then((res) => {
+        showMsg("Success", res.data?.message, "success");
+      })
+      .catch((err) => {
+        console.log(err);
+        showMsg("Error", err.response.data.message, "danger");
+      });
   };
 
   return (
@@ -99,8 +110,9 @@ const ProgressNote2 = () => {
                 name="patientId"
                 onChange={(e) => {
                   setPatientData({
-                     patientId: e.target.value
-                  })
+                    patientId: e.target.value,
+                    ...patientData,
+                  });
                 }}
                 aria-label="Default select example"
               >
@@ -117,11 +129,12 @@ const ProgressNote2 = () => {
               </Form.Label>
               <Form.Control
                 name="admitDate"
-               onChange={(e) => {
-                 setPatientData({
-                   admitDate: e.target.value
-                 })
-               }}
+                onChange={(e) => {
+                  setPatientData({
+                    admitDate: e.target.value,
+                    ...patientData,
+                  });
+                }}
                 type="date"
                 placeholder="Enter  dATE"
               />
@@ -132,10 +145,11 @@ const ProgressNote2 = () => {
                 Date of Birth:
               </Form.Label>
               <Form.Control
-                onChange={( e) => {
+                onChange={(e) => {
                   setPatientData({
-                    dateOfBirth: e.target.value
-                  })
+                    dateOfBirth: e.target.value,
+                    ...patientData,
+                  });
                 }}
                 name="dateOfBirth"
                 type="date"
@@ -149,8 +163,9 @@ const ProgressNote2 = () => {
               <Form.Control
                 onChange={(e) => {
                   setPatientData({
-                    date: e.target.value
-                  })
+                    date: e.target.value,
+                    ...patientData,
+                  });
                 }}
                 name="date"
                 type="date"
@@ -165,8 +180,9 @@ const ProgressNote2 = () => {
                 aria-label="Default select example"
                 onChange={(e) => {
                   setPatientData({
-                    shift: e.target.value
-                  })
+                    shift: e.target.value,
+                    ...patientData,
+                  });
                 }}
                 name="shift"
               >
@@ -197,8 +213,8 @@ const ProgressNote2 = () => {
               <Form.Select
                 onChange={(e) => {
                   setPatientData({
-                    medicationAdministrationCompleted: e.target.value
-                  })
+                    medicationAdministrationCompleted: e.target.value,
+                  });
                 }}
                 name="healthAndWelfareChecksCompleted"
                 aria-label="Default select example"
@@ -216,8 +232,10 @@ const ProgressNote2 = () => {
               <Form.Select
                 onChange={(e) => {
                   setPatientData({
-                    assistanceInMedicationAdministrationCompleted: e.target.value
-                  })
+                    assistanceInMedicationAdministrationCompleted:
+                      e.target.value,
+                    ...patientData,
+                  });
                 }}
                 name="assistanceInMedicationAdministrationCompleted"
                 aria-label="Default select example"
@@ -235,8 +253,9 @@ const ProgressNote2 = () => {
               <Form.Select
                 onChange={(e) => {
                   setPatientData({
-                    healthAndWelfareChecksCompleted: e.target.value
-                  })
+                    healthAndWelfareChecksCompleted: e.target.value,
+                    ...patientData,
+                  });
                 }}
                 name="healthAndWelfareChecksCompleted"
                 aria-label="Default select example"
@@ -254,8 +273,9 @@ const ProgressNote2 = () => {
                 aria-label="Default select example"
                 onChange={(e) => {
                   setPatientData({
-                    therapy: e.target.value
-                  })
+                    therapy: e.target.value,
+                    ...patientData,
+                  });
                 }}
                 name="therapy"
               >
@@ -272,8 +292,9 @@ const ProgressNote2 = () => {
               <Form.Select
                 onChange={(e) => {
                   setPatientData({
-                    mood: e.target.value
-                  })
+                    mood: e.target.value,
+                    ...patientData,
+                  });
                 }}
                 name="mood"
                 aria-label="Default select example"
@@ -304,8 +325,9 @@ const ProgressNote2 = () => {
               <Form.Select
                 onChange={(e) => {
                   setPatientData({
-                    appointment: e.target.value
-                  })
+                    appointment: e.target.value,
+                    ...patientData,
+                  });
                 }}
                 aria-label="Default select example"
               >
@@ -325,8 +347,9 @@ const ProgressNote2 = () => {
               <Form.Check
                 onChange={(e) => {
                   setPatientData({
-                    religiousServices: e.target.value
-                  })
+                    religiousServices: e.target.value,
+                    ...patientData,
+                  });
                 }}
                 name="religiousServices"
                 type="checkbox"
@@ -339,8 +362,9 @@ const ProgressNote2 = () => {
               <Form.Select
                 onChange={(e) => {
                   setPatientData({
-                    adlsCompleted: e.target.value
-                  })
+                    adlsCompleted: e.target.value,
+                    ...patientData,
+                  });
                 }}
                 name="adlsCompleted"
                 aria-label="Default select example"
@@ -355,8 +379,9 @@ const ProgressNote2 = () => {
               <Form.Select
                 onChange={(e) => {
                   setPatientData({
-                    transportation: e.target.value
-                  })
+                    transportation: e.target.value,
+                    ...patientData,
+                  });
                 }}
                 name="transportation"
                 aria-label="Default select example"
@@ -371,8 +396,9 @@ const ProgressNote2 = () => {
               <Form.Select
                 onChange={(e) => {
                   setPatientData({
-                    residentRedirectedOnBehaviors: e.target.value
-                  })
+                    residentRedirectedOnBehaviors: e.target.value,
+                    ...patientData,
+                  });
                 }}
                 name="residentRedirectedOnBehaviors"
                 aria-label="Default select example"
@@ -384,7 +410,17 @@ const ProgressNote2 = () => {
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>AWOL/Elopement</Form.Label>
-              <Form.Select onChange={(e)=>{setPatientData({awolElopement:e.target.value})}} name="awolElopement" as={"select"} aria-label="Default select example">
+              <Form.Select
+                onChange={(e) => {
+                  setPatientData({
+                    awolElopement: e.target.value,
+                    ...patientData,
+                  });
+                }}
+                name="awolElopement"
+                as={"select"}
+                aria-label="Default select example"
+              >
                 <option>Select</option>
                 <option value={true}>Yes</option>
                 <option value={false}>No</option>
@@ -400,8 +436,9 @@ const ProgressNote2 = () => {
               <Form.Control
                 onChange={(e) => {
                   setPatientData({
-                    noteSummary: e.target.value
-                  })
+                    noteSummary: e.target.value,
+                    ...patientData,
+                  });
                 }}
                 name="noteSummary"
                 as={"textarea"}
@@ -414,8 +451,9 @@ const ProgressNote2 = () => {
               <Form.Control
                 onChange={(e) => {
                   setPatientData({
-                    bhtNameAndCredentials: e.target.value
-                  })
+                    bhtNameAndCredentials: e.target.value,
+                    ...patientData,
+                  });
                 }}
                 name="bhtNameAndCredentials"
                 type="text"
@@ -432,8 +470,9 @@ const ProgressNote2 = () => {
                 placeholder="Enter text"
                 onChange={(e) => {
                   setPatientData({
-                    bhtSignature: e.target.value
-                  })
+                    bhtSignature: e.target.value,
+                    ...patientData,
+                  });
                 }}
                 name="bhtSignature"
               />

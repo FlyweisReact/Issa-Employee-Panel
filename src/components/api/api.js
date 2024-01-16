@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Baseurl, Auth } from "../../Baseurl";
-import { showMsg } from "./ShowMsg";
+import { showMsg } from "../../components/api/ShowMsg";
 
 export const getData = (setData, url) => {
   return axios
@@ -24,13 +24,29 @@ const postData = (url, data, getData) => {
   axios
     .post(`${Baseurl}${url}`, data, Auth())
     .then((res) => {
-      console.log(res);
-      showMsg("Success", res.message, "success");
-      if (getData) {
-        getData();
+      console.log(res, "api Data");
+
+      if (res.status === 200 && getData === undefined) {
+     return   showMsg("Success", res.data.message, "success");
+      }
+     if (getData) {
+       showMsg("Success", res.data.message, "success");
+      return getData();
+
       }
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
+
+      if (err.response && err.response.data && err.response.data.message) {
+        showMsg("Error", err.response.data.message, "danger");
+      } else {
+        showMsg(
+          "Error",
+          "An error occurred while processing your request.",
+          "danger"
+        );
+      }
     });
 };
+

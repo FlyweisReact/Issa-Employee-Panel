@@ -73,45 +73,49 @@ const ProgressNote = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>
-                  <input type="checkbox" />
-                </td>
-                <td>Dr. Colter</td>
-                <td>10/10/2022</td>
-                <td>7am-3pm</td>
-                <td>Text</td>
-                <td>Text</td>
-                <td>Text</td>
-                <td
-                  style={{
-                    display: "flex",
-                    gap: "1rem",
-                    fontWeight: "bold",
-                    color: "#1A9FB2",
-                    alignItems: "center",
-                    fontSize: "1.4rem",
-                  }}
-                >
-                  <span>
-                    {" "}
-                    <FaRegEdit />
-                  </span>
-                  <span
-                    style={{
-                      cursor: "pointer",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    {" "}
-                    <RiDeleteBin5Fill style={{ color: "red" }} />
-                    <span style={{ color: "red", fontSize: "1.1.1rem" }}>
-                      DELETE
-                    </span>
-                  </span>
-                </td>
-              </tr>
+              {console.log(data)}
+              {data.data?.length > 0 &&
+                data?.data?.map((data) => (
+                  <tr key={data?._id}>
+                    <td>
+                      <input type="checkbox" />
+                    </td>
+                    <td>Dr. Colter</td>
+                    <td>10/10/2022</td>
+                    <td>7am-3pm</td>
+                    <td>Text</td>
+                    <td>Text</td>
+                    <td>Text</td>
+                    <td
+                      style={{
+                        display: "flex",
+                        gap: "1rem",
+                        fontWeight: "bold",
+                        color: "#1A9FB2",
+                        alignItems: "center",
+                        fontSize: "1.4rem",
+                      }}
+                    >
+                      <span>
+                        {" "}
+                        <FaRegEdit />
+                      </span>
+                      <span
+                        style={{
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        {" "}
+                        <RiDeleteBin5Fill style={{ color: "red" }} />
+                        <span style={{ color: "red", fontSize: "1.1.1rem" }}>
+                          DELETE
+                        </span>
+                      </span>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </Table>
 
