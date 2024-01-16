@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Table } from "react-bootstrap";
 import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
+import { deleteData, getData } from "../../../api/api";
 const Activites = () => {
   const navigate = useNavigate();
+  const [data, setData] = React.useState([]);
+
+  useEffect(() => {
+   
+    getData(setData, "employee/getAllADLTrackingForm", );
+  }, []);
+
+  const handleDelete = (id) => {
+    const newDataFn=()=>{
+      return getData(setData, "employee/getAllADLTrackingForm",newDataFn);
+    }
+    deleteData("employee/deleteADLTrackingForm", id, newDataFn);
+  }
   return (
     <>
       <div className="nav-wrap-personal">
@@ -54,15 +68,14 @@ const Activites = () => {
                 </th>
                 <th style={{ backgroundColor: "#D1ECF0" }}>Date</th>
                 <th style={{ backgroundColor: "#D1ECF0" }}>
-                Resident's Name
+                  Selecting Clothes
                 </th>
                 <th style={{ backgroundColor: "#D1ECF0" }}>
-                 Family member
+                  Bathing or Showering
                 </th>
-                <th style={{ backgroundColor: "#D1ECF0" }}>Email</th>
-                <th style={{ backgroundColor: "#D1ECF0" }}>Date</th>
+                <th style={{ backgroundColor: "#D1ECF0" }}>Staff Initials</th>
+                <th style={{ backgroundColor: "#D1ECF0" }}>Resident's Name</th>
 
-                <th style={{ backgroundColor: "#D1ECF0" }}>Case Manager</th>
                 <th
                   style={{
                     backgroundColor: "#D1ECF0",
@@ -72,44 +85,49 @@ const Activites = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>
-                  <input type="checkbox" />
-                </td>
-                <td>Name</td>
-                <td>5</td>
-                <td>abc@gmail.com</td>
-                <td>DD/MM/YYYY</td>
-                <td>Text</td>
-                <td
-                  style={{
-                    display: "flex",
-                    gap: "1rem",
-                    fontWeight: "bold",
-                    color: "#1A9FB2",
-                    alignItems: "center",
-                    fontSize: "1.4rem",
-                  }}
-                >
-                  <span>
-                    {" "}
-                    <FaRegEdit />
-                  </span>
-                  <span
-                    style={{
-                      cursor: "pointer",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    {" "}
-                    <RiDeleteBin5Fill style={{ color: "red" }} />
-                    <span style={{ color: "red", fontSize: "1.1.1rem" }}>
-                      DELETE
-                    </span>
-                  </span>
-                </td>
-              </tr>
+              {data?.data?.length > 0 &&
+                data?.data?.map((item) => {
+                  return (
+                    <tr key={item.id}>
+                      <td>
+                        <input type="checkbox" />
+                      </td>
+                      <td>{item.date?.split("T")[0].split("-").reverse().join("-")}</td>
+                      <td>{item.selectingClothes?.someAssistanceNeeded===true? "Yes" : "No"}</td>
+                      <td>{item.bathingOrShowering?.someAssistanceNeeded===true? "Yes" : "No"}</td>
+                      <td>{item?.bathingOrShowering?.staffInitials}</td>
+                      <td>Text</td>
+                      <td
+                        style={{
+                          display: "flex",
+                          gap: "1rem",
+                          fontWeight: "bold",
+                          color: "#1A9FB2",
+                          alignItems: "center",
+                          fontSize: "1.4rem",
+                        }}
+                      >
+                        <span>
+                          {" "}
+                          <FaRegEdit />
+                        </span>
+                        <span
+                          style={{
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                          }} onClick={()=>handleDelete(item._id)}
+                        >
+                          {" "}
+                          <RiDeleteBin5Fill  style={{ color: "red" }} />
+                          <span style={{ color: "red", fontSize: "1.1.1rem" }}>
+                            DELETE
+                          </span>
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </Table>
 

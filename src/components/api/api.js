@@ -20,7 +20,7 @@ export const getData = (setData, url) => {
     });
 };
 
-const postData = (url, data, getData) => {
+export const postData = (url, data, getData) => {
   axios
     .post(`${Baseurl}${url}`, data, Auth())
     .then((res) => {
@@ -50,3 +50,33 @@ const postData = (url, data, getData) => {
     });
 };
 
+
+export const deleteData=(url,id,getData)=>{
+ 
+  axios
+  .delete(`${Baseurl}${url}/${id}`, Auth())
+  .then((res) => {
+    console.log(res, "api Data");
+    if (res.status === 200 && getData === undefined) {
+      return showMsg("Success", res.data.message, "success");
+    }
+    if (getData) {
+      showMsg("Success", res.data.message, "success");
+      return getData();
+
+    }
+  })
+  .catch((err) => {
+    console.error(err);
+
+    if (err.response && err.response.data && err.response.data.message) {
+      showMsg("Error", err.response.data.message, "danger");
+    } else {
+      showMsg(
+        "Error",
+        "An error occurred while processing your request.",
+        "danger"
+      );
+    }
+  });
+}

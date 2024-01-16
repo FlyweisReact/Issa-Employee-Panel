@@ -1,8 +1,208 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form } from "react-bootstrap";
+import { getData, postData } from "../../../api/api";
+import { showMsg } from "../../../api/ShowMsg";
 const Activities2 = () => {
   const navigate = useNavigate();
+  const [patients, setPatients] = useState([]);
+
+  useEffect(() => {
+    getData(setPatients, "employee/getPatient");
+  }, []);
+
+  const initialFormData = {
+    patientId: "",
+    date: "",
+    selectingClothes: {
+      requiresNoAssistance: false,
+      someAssistanceNeeded: false,
+      completeAssistanceNeeded: false,
+      notApplicable: false,
+      refused: false,
+      staffInitials: "",
+    },
+    bathingOrShowering: {
+      requiresNoAssistance: false,
+      someAssistanceNeeded: false,
+      completeAssistanceNeeded: false,
+      notApplicable: false,
+      refused: false,
+      staffInitials: "",
+    },
+    combingHair: {
+      requiresNoAssistance: false,
+      someAssistanceNeeded: false,
+      completeAssistanceNeeded: false,
+      notApplicable: false,
+      refused: false,
+      staffInitials: "",
+    },
+    applyingLotion: {
+      requiresNoAssistance: false,
+      someAssistanceNeeded: false,
+      completeAssistanceNeeded: false,
+      notApplicable: false,
+      refused: false,
+      staffInitials: "",
+    },
+    laundry: {
+      requiresNoAssistance: false,
+      someAssistanceNeeded: false,
+      completeAssistanceNeeded: false,
+      notApplicable: false,
+      refused: false,
+      staffInitials: "",
+    },
+    dressing: {
+      requiresNoAssistance: false,
+      someAssistanceNeeded: false,
+      completeAssistanceNeeded: false,
+      notApplicable: false,
+      refused: false,
+      staffInitials: "",
+    },
+    shampooingHair: {
+      requiresNoAssistance: false,
+      someAssistanceNeeded: false,
+      completeAssistanceNeeded: false,
+      notApplicable: false,
+      refused: false,
+      staffInitials: "",
+    },
+    oralCareMorning: {
+      requiresNoAssistance: false,
+      someAssistanceNeeded: false,
+      completeAssistanceNeeded: false,
+      notApplicable: false,
+      refused: false,
+      staffInitials: "",
+    },
+
+    oralCareEvening: {
+      requiresNoAssistance: false,
+      someAssistanceNeeded: false,
+      completeAssistanceNeeded: false,
+      notApplicable: false,
+      refused: false,
+      staffInitials: "",
+    },
+    lunch: {
+      requiresNoAssistance: false,
+      someAssistanceNeeded: false,
+      completeAssistanceNeeded: false,
+      notApplicable: false,
+      refused: false,
+      staffInitials: "",
+    },
+    breakfast: {
+      requiresNoAssistance: false,
+      someAssistanceNeeded: false,
+      completeAssistanceNeeded: false,
+      notApplicable: false,
+      refused: false,
+      staffInitials: "",
+    },
+    dinner: {
+      requiresNoAssistance: false,
+      someAssistanceNeeded: false,
+      completeAssistanceNeeded: false,
+      notApplicable: false,
+      refused: false,
+      staffInitials: "",
+    },
+    amSnacks: {
+      requiresNoAssistance: false,
+      someAssistanceNeeded: false,
+      completeAssistanceNeeded: false,
+      notApplicable: false,
+      refused: false,
+      staffInitials: "",
+    },
+    pmSnack: {
+      requiresNoAssistance: false,
+      someAssistanceNeeded: false,
+      completeAssistanceNeeded: false,
+      notApplicable: false,
+      refused: false,
+      staffInitials: "",
+    },
+    amBowelMovement: {
+      requiresNoAssistance: false,
+      someAssistanceNeeded: false,
+      completeAssistanceNeeded: false,
+      notApplicable: false,
+      refused: false,
+      staffInitials: "",
+    },
+    pmBowelMovement: {
+      requiresNoAssistance: false,
+      someAssistanceNeeded: false,
+      completeAssistanceNeeded: false,
+      notApplicable: false,
+      refused: false,
+      staffInitials: "",
+    },
+    overnightBowelMovement: {
+      requiresNoAssistance: false,
+      someAssistanceNeeded: false,
+      completeAssistanceNeeded: false,
+      notApplicable: false,
+      refused: false,
+      staffInitials: "",
+    },
+    handAndFootNailCare: {
+      requiresNoAssistance: false,
+      someAssistanceNeeded: false,
+      completeAssistanceNeeded: false,
+      notApplicable: false,
+      refused: false,
+      staffInitials: "",
+    },
+    bedMobility: {
+      requiresNoAssistance: false,
+      someAssistanceNeeded: false,
+      completeAssistanceNeeded: false,
+      notApplicable: false,
+      refused: false,
+      staffInitials: "",
+    },
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  const handleCategoryInputChange = (category, categoryValue) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [category]: {
+        ...prevFormData[category],
+        ...categoryValue,
+      },
+    }));
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const emptyFields = Object.keys(formData).filter(key => formData[key] === "");
+
+    if (emptyFields.length > 0) {
+      const errorMessage = `Please fill in the following fields: ${emptyFields.join(', ')}`;
+      return showMsg("Error", errorMessage, "danger");
+    }
+ postData("employee/createADLTrackingForm", formData)
+ navigate('/employee/patient-chart/activities')
+   
+  }
+
+
   return (
     <>
       <div className="nav-wrap-personal">
@@ -21,14 +221,39 @@ const Activities2 = () => {
       </div>
       <div>
         <div className="top-div-personal">
-          <Form
+          <Form onSubmit={submitHandler}
             style={{ width: "100%" }}
             id="form-appendix"
             className="form-personal offer-letter appendix1"
           >
             <Form.Group className="mb-3">
+              <Form.Label style={{ fontWeight: "bold" }}>
+                Select Patient
+              </Form.Label>
+              <Form.Select
+                onChange={handleInputChange}
+                name="patientId"
+                aria-label="Default select example"
+              >
+                <option>Select Patient</option>
+                {patients?.data?.map((item) => {
+                  return (
+                    <option value={item._id} key={item._id}>
+                      {item.fullName}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
               <Form.Label>Date:</Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control
+                name="date"
+                onChange={handleInputChange}
+                type="date"
+                placeholder="Enter  text"
+              />
             </Form.Group>
             <p>ADLS:</p>
             <Form.Group className="mb-3">
@@ -46,34 +271,69 @@ const Activities2 = () => {
               >
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.selectingClothes.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("selectingClothes", {
+                      requiresNoAssistance: e.target.checked,
+                    })
+                  }
                   label="Requires No Assistance"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.selectingClothes.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("selectingClothes", {
+                      someAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Some Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.selectingClothes.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("selectingClothes", {
+                      completeAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Complete Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.selectingClothes.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("selectingClothes", {
+                      notApplicable: e.target.checked,
+                    })
+                  }
                   label="Not Applicable"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.selectingClothes.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("selectingClothes", {
+                      refused: e.target.checked,
+                    })
+                  }
                   label="Refused"
                 />
               </div>
               <Form.Label style={{ fontWeight: "bold" }}>
                 Staff Initials
               </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control
+                name="staffInitials"
+               value={formData.selectingClothes.staffInitials}
+                onChange={(e) =>
+                  handleCategoryInputChange("selectingClothes", {
+                    staffInitials: e.target.value,
+                  })
+                }
+                type="text"
+                placeholder="Enter  text"
+              />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label style={{ fontWeight: "bold" }}>
@@ -90,34 +350,68 @@ const Activities2 = () => {
               >
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.bathingOrShowering.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("bathingOrShowering", {
+                      requiresNoAssistance: e.target.checked,
+                    })
+                  }
                   label="Requires No Assistance"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.bathingOrShowering.someAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("bathingOrShowering", {
+                      someAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Some Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.bathingOrShowering.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("bathingOrShowering", {
+                      completeAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Complete Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.bathingOrShowering.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("bathingOrShowering", {
+                      notApplicable: e.target.checked,
+                    })
+                  }
                   label="Not Applicable"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.bathingOrShowering.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("bathingOrShowering", {
+                      refused: e.target.checked,
+                    })
+                  }
                   label="Refused"
                 />
               </div>
               <Form.Label style={{ fontWeight: "bold" }}>
                 Staff Initials
               </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control
+                type="text"
+                name="staffInitials"
+                onChange={(e) =>
+                  handleCategoryInputChange("bathingOrShowering", {
+                    staffInitials: e.target.value,
+                  })
+                }
+                placeholder="Enter  text"
+              />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label style={{ fontWeight: "bold" }}>
@@ -134,34 +428,68 @@ const Activities2 = () => {
               >
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.combingHair.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("combingHair", {
+                      requiresNoAssistance: e.target.checked,
+                    })
+                  }
                   label="Requires No Assistance"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.combingHair.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("combingHair", {
+                      someAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Some Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.combingHair.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("combingHair", {
+                      completeAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Complete Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.combingHair.notApplicable}
+                  onChange={(e) =>
+                    handleCategoryInputChange("combingHair", {
+                      notApplicable: e.target.checked,
+                    })
+                  }
                   label="Not Applicable"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.combingHair.refused}
+                  onChange={(e) =>
+                    handleCategoryInputChange("combingHair", {
+                      refused: e.target.checked,
+                    })
+                  }
                   label="Refused"
                 />
               </div>
               <Form.Label style={{ fontWeight: "bold" }}>
                 Staff Initials
               </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control
+                name="staffInitials"
+                onChange={(e) =>
+                  handleCategoryInputChange("combingHair", {
+                    staffInitials: e.target.value,
+                  })
+                }
+                type="text"
+                placeholder="Enter  text"
+              />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label style={{ fontWeight: "bold" }}>
@@ -178,34 +506,68 @@ const Activities2 = () => {
               >
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.combingHair.applyingLotion}
+                  onChange={(e) =>
+                    handleCategoryInputChange("applyingLotion", {
+                      applyingLotion: e.target.checked,
+                    })
+                  }
                   label="Requires No Assistance"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.combingHair.someAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("someAssistanceNeeded", {
+                      someAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Some Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.combingHair.completeAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("completeAssistanceNeeded", {
+                      completeAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Complete Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.combingHair.notApplicable}
+                  onChange={(e) =>
+                    handleCategoryInputChange("notApplicable", {
+                      notApplicable: e.target.checked,
+                    })
+                  }
                   label="Not Applicable"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.combingHair.refused}
+                  onChange={(e) =>
+                    handleCategoryInputChange("refused", {
+                      refused: e.target.checked,
+                    })
+                  }
                   label="Refused"
                 />
               </div>
               <Form.Label style={{ fontWeight: "bold" }}>
                 Staff Initials
               </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control
+                name="staffInitials"
+                onChange={(e) =>
+                  handleCategoryInputChange("applyingLotion", {
+                    staffInitials: e.target.value,
+                  })
+                }
+                type="text"
+                placeholder="Enter  text"
+              />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label style={{ fontWeight: "bold" }}>Laundry</Form.Label>
@@ -220,34 +582,67 @@ const Activities2 = () => {
               >
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.laundry.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("laundry", {
+                      requiresNoAssistance: e.target.checked,
+                    })
+                  }
                   label="Requires No Assistance"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.laundry.someAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("laundry", {
+                      someAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Some Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.laundry.completeAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("laundry", {
+                      completeAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Complete Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.laundry.notApplicable}
+                  onChange={(e) =>
+                    handleCategoryInputChange("laundry", {
+                      notApplicable: e.target.checked,
+                    })
+                  }
                   label="Not Applicable"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.laundry.refused}
+                  onChange={(e) =>
+                    handleCategoryInputChange("laundry", {
+                      refused: e.target.checked,
+                    })
+                  }
                   label="Refused"
                 />
               </div>
               <Form.Label style={{ fontWeight: "bold" }}>
                 Staff Initials
               </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control
+                type="text"
+                onChange={(e) =>
+                  handleCategoryInputChange("laundry", {
+                    staffInitials: e.target.value,
+                  })
+                }
+                placeholder="Enter  text"
+              />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label style={{ fontWeight: "bold" }}>Dressing</Form.Label>
@@ -262,34 +657,68 @@ const Activities2 = () => {
               >
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.dressing.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("dressing", {
+                      requiresNoAssistance: e.target.checked,
+                    })
+                  }
                   label="Requires No Assistance"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.dressing.someAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("dressing", {
+                      someAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Some Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.dressing.completeAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("dressing", {
+                      completeAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Complete Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.dressing.notApplicable}
+                  onChange={(e) =>
+                    handleCategoryInputChange("dressing", {
+                      notApplicable: e.target.checked,
+                    })
+                  }
                   label="Not Applicable"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.dressing.refused}
+                  onChange={(e) =>
+                    handleCategoryInputChange("dressing", {
+                      refused: e.target.checked,
+                    })
+                  }
                   label="Refused"
                 />
               </div>
               <Form.Label style={{ fontWeight: "bold" }}>
                 Staff Initials
               </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control
+                name="staffInitials"
+                onChange={(e) =>
+                  handleCategoryInputChange("dressing", {
+                    staffInitials: e.target.value,
+                  })
+                }
+                type="text"
+                placeholder="Enter  text"
+              />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label style={{ fontWeight: "bold" }}>
@@ -306,34 +735,67 @@ const Activities2 = () => {
               >
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.shampooingHair.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("shampooingHair", {
+                      requiresNoAssistance: e.target.checked,
+                    })
+                  }
                   label="Requires No Assistance"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.shampooingHair.someAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("shampooingHair", {
+                      someAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Some Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.shampooingHair.completeAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("shampooingHair", {
+                      completeAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Complete Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.shampooingHair.notApplicable}
+                  onChange={(e) =>
+                    handleCategoryInputChange("shampooingHair", {
+                      notApplicable: e.target.checked,
+                    })
+                  }
                   label="Not Applicable"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.shampooingHair.refused}
+                  onChange={(e) =>
+                    handleCategoryInputChange("shampooingHair", {
+                      refused: e.target.checked,
+                    })
+                  }
                   label="Refused"
                 />
               </div>
               <Form.Label style={{ fontWeight: "bold" }}>
                 Staff Initials
               </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control
+                type="text"
+                onChange={(e) =>
+                  handleCategoryInputChange("shampooingHair", {
+                    staffInitials: e.target.value,
+                  })
+                }
+                placeholder="Enter  text"
+              />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label style={{ fontWeight: "bold" }}>
@@ -350,34 +812,67 @@ const Activities2 = () => {
               >
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.oralCareMorning.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("oralCareMorning", {
+                      requiresNoAssistance: e.target.checked,
+                    })
+                  }
                   label="Requires No Assistance"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.oralCareMorning.someAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("oralCareMorning", {
+                      someAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Some Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.oralCareMorning.completeAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("oralCareMorning", {
+                      completeAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Complete Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.oralCareMorning.notApplicable}
+                  onChange={(e) =>
+                    handleCategoryInputChange("oralCareMorning", {
+                      notApplicable: e.target.checked,
+                    })
+                  }
                   label="Not Applicable"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.oralCareMorning.refused}
+                  onChange={(e) =>
+                    handleCategoryInputChange("oralCareMorning", {
+                      refused: e.target.checked,
+                    })
+                  }
                   label="Refused"
                 />
               </div>
               <Form.Label style={{ fontWeight: "bold" }}>
                 Staff Initials
               </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control
+                type="text"
+                onChange={(e) =>
+                  handleCategoryInputChange("oralCareMorning", {
+                    staffInitials: e.target.value,
+                  })
+                }
+                placeholder="Enter  text"
+              />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label style={{ fontWeight: "bold" }}>Breakfast</Form.Label>
@@ -392,34 +887,67 @@ const Activities2 = () => {
               >
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.breakfast.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("breakfast", {
+                      requiresNoAssistance: e.target.checked,
+                    })
+                  }
                   label="Requires No Assistance"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.breakfast.someAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("breakfast", {
+                      someAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Some Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.breakfast.completeAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("breakfast", {
+                      completeAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Complete Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.breakfast.notApplicable}
+                  onChange={(e) =>
+                    handleCategoryInputChange("breakfast", {
+                      notApplicable: e.target.checked,
+                    })
+                  }
                   label="Not Applicable"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.breakfast.refused}
+                  onChange={(e) =>
+                    handleCategoryInputChange("breakfast", {
+                      refused: e.target.checked,
+                    })
+                  }
                   label="Refused"
                 />
               </div>
               <Form.Label style={{ fontWeight: "bold" }}>
                 Staff Initials
               </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control
+                type="text"
+                onChange={(e) =>
+                  handleCategoryInputChange("breakfast", {
+                    staffInitials: e.target.value,
+                  })
+                }
+                placeholder="Enter  text"
+              />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label style={{ fontWeight: "bold" }}>Lunch</Form.Label>
@@ -434,34 +962,67 @@ const Activities2 = () => {
               >
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.lunch.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("lunch", {
+                      requiresNoAssistance: e.target.checked,
+                    })
+                  }
                   label="Requires No Assistance"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.lunch.someAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("lunch", {
+                      someAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Some Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.lunch.completeAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("lunch", {
+                      completeAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Complete Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.lunch.notApplicable}
+                  onChange={(e) =>
+                    handleCategoryInputChange("lunch", {
+                      notApplicable: e.target.checked,
+                    })
+                  }
                   label="Not Applicable"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.lunch.refused}
+                  onChange={(e) =>
+                    handleCategoryInputChange("lunch", {
+                      refused: e.target.checked,
+                    })
+                  }
                   label="Refused"
                 />
               </div>
               <Form.Label style={{ fontWeight: "bold" }}>
                 Staff Initials
               </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control
+                type="text"
+                onChange={(e) =>
+                  handleCategoryInputChange("lunch", {
+                    staffInitials: e.target.value,
+                  })
+                }
+                placeholder="Enter  text"
+              />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label style={{ fontWeight: "bold" }}>Dinner</Form.Label>
@@ -476,34 +1037,67 @@ const Activities2 = () => {
               >
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.dinner.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("dinner", {
+                      requiresNoAssistance: e.target.checked,
+                    })
+                  }
                   label="Requires No Assistance"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.dinner.someAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("dinner", {
+                      someAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Some Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.dinner.completeAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("dinner", {
+                      completeAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Complete Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.dinner.notApplicable}
+                  onChange={(e) =>
+                    handleCategoryInputChange("dinner", {
+                      notApplicable: e.target.checked,
+                    })
+                  }
                   label="Not Applicable"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.dinner.refused}
+                  onChange={(e) =>
+                    handleCategoryInputChange("dinner", {
+                      refused: e.target.checked,
+                    })
+                  }
                   label="Refused"
                 />
               </div>
               <Form.Label style={{ fontWeight: "bold" }}>
                 Staff Initials
               </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control
+                type="text"
+                onChange={(e) =>
+                  handleCategoryInputChange("dinner", {
+                    staffInitials: e.target.value,
+                  })
+                }
+                placeholder="Enter  text"
+              />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label style={{ fontWeight: "bold" }}>
@@ -520,77 +1114,69 @@ const Activities2 = () => {
               >
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.dinner.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("dinner", {
+                      requiresNoAssistance: e.target.checked,
+                    })
+                  }
                   label="Requires No Assistance"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.dinner.someAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("dinner", {
+                      someAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Some Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.dinner.completeAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("dinner", {
+                      completeAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Complete Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.dinner.notApplicable}
+                  onChange={(e) =>
+                    handleCategoryInputChange("dinner", {
+                      notApplicable: e.target.checked,
+                    })
+                  }
                   label="Not Applicable"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.dinner.refused}
+                  onChange={(e) =>
+                    handleCategoryInputChange("dinner", {
+                      refused: e.target.checked,
+                    })
+                  }
                   label="Refused"
                 />
               </div>
               <Form.Label style={{ fontWeight: "bold" }}>
                 Staff Initials
               </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control
+                type="text"
+                onChange={(e) =>
+                  handleCategoryInputChange("dinner", {
+                    staffInitials: e.target.value,
+                  })
+                }
+                placeholder="Enter  text"
+              />
             </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold" }}>Lunch</Form.Label>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "1rem",
-                  flexWrap: "wrap",
-                  opacity: "60%",
-                  marginBottom: "1.2rem",
-                }}
-              >
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Requires No Assistance"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Some Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Complete Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Not Applicable"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Refused"
-                />
-              </div>
-              <Form.Label style={{ fontWeight: "bold" }}>
-                Staff Initials
-              </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
-            </Form.Group>
+
             <Form.Group className="mb-3">
               <Form.Label style={{ fontWeight: "bold" }}>AM Snack</Form.Label>
               <div
@@ -604,250 +1190,74 @@ const Activities2 = () => {
               >
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.amSnacks.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("amSnacks", {
+                      refused: e.target.checked,
+                    })
+                  }
                   label="Requires No Assistance"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  
+                  checked={formData.amSnacks.someAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("amSnacks", {
+                      someAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Some Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  
+                  checked={formData.amSnacks.completeAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("amSnacks", {
+                      completeAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Complete Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  
+                  checked={formData.amSnacks.notApplicable}
+                  onChange={(e) =>
+                    handleCategoryInputChange("amSnacks", {
+                      notApplicable: e.target.checked,
+                    })
+                  }
                   label="Not Applicable"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  
+                  checked={formData.amSnacks.refused}
+                  onChange={(e) =>
+                    handleCategoryInputChange("amSnacks", {
+                      refused: e.target.checked,
+                    })
+                  }
                   label="Refused"
                 />
               </div>
               <Form.Label style={{ fontWeight: "bold" }}>
                 Staff Initials
               </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control
+                type="text"
+                onChange={(e) =>
+                  handleCategoryInputChange("amSnacks", {
+                    staffInitials: e.target.value,
+                  })
+                }
+                value={formData.dinner.staffInitials}
+                placeholder="Enter  text"
+              />
             </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold" }}>
-                Selecting Clothes
-              </Form.Label>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "1rem",
-                  flexWrap: "wrap",
-                  opacity: "60%",
-                  marginBottom: "1.2rem",
-                }}
-              >
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Requires No Assistance"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Some Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Complete Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Not Applicable"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Refused"
-                />
-              </div>
-              <Form.Label style={{ fontWeight: "bold" }}>
-                Staff Initials
-              </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold" }}>Lunch</Form.Label>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "1rem",
-                  flexWrap: "wrap",
-                  opacity: "60%",
-                  marginBottom: "1.2rem",
-                }}
-              >
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Requires No Assistance"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Some Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Complete Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Not Applicable"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Refused"
-                />
-              </div>
-              <Form.Label style={{ fontWeight: "bold" }}>
-                Staff Initials
-              </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold" }}>PM Snack</Form.Label>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "1rem",
-                  flexWrap: "wrap",
-                  opacity: "60%",
-                  marginBottom: "1.2rem",
-                }}
-              >
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Requires No Assistance"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Some Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Complete Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Not Applicable"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Refused"
-                />
-              </div>
-              <Form.Label style={{ fontWeight: "bold" }}>
-                Staff Initials
-              </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold" }}>
-                Selecting Clothes
-              </Form.Label>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "1rem",
-                  flexWrap: "wrap",
-                  opacity: "60%",
-                  marginBottom: "1.2rem",
-                }}
-              >
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Requires No Assistance"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Some Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Complete Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Not Applicable"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Refused"
-                />
-              </div>
-              <Form.Label style={{ fontWeight: "bold" }}>
-                Staff Initials
-              </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold" }}>Lunch</Form.Label>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "1rem",
-                  flexWrap: "wrap",
-                  opacity: "60%",
-                  marginBottom: "1.2rem",
-                }}
-              >
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Requires No Assistance"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Some Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Complete Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Not Applicable"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Refused"
-                />
-              </div>
-              <Form.Label style={{ fontWeight: "bold" }}>
-                Staff Initials
-              </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
-            </Form.Group>
-            <Form.Group className="mb-3">
+             <Form.Group className="mb-3">
               <Form.Label style={{ fontWeight: "bold" }}>
                 AM Bowel Movement
               </Form.Label>
@@ -862,121 +1272,61 @@ const Activities2 = () => {
               >
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.amBowelMovement.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("amBowelMovement", {
+                      requiresNoAssistance: e.target.checked,
+                    })
+                  }
                   label="Requires No Assistance"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.amBowelMovement.someAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("amBowelMovement", {
+                      someAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Some Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.amBowelMovement.completeAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("amBowelMovement", {
+                      completeAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Complete Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.amBowelMovement.notApplicable}
+                  onChange={(e) =>
+                    handleCategoryInputChange("amBowelMovement", {
+                      notApplicable: e.target.checked,
+                    })
+                  }
                   label="Not Applicable"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.amBowelMovement.refused}
+                  onChange={(e) =>
+                    handleCategoryInputChange("amBowelMovement", {
+                      refused: e.target.checked,
+                    })
+                  }
                   label="Refused"
                 />
               </div>
               <Form.Label style={{ fontWeight: "bold" }}>
                 Staff Initials
               </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control onChange={(e) => handleCategoryInputChange("amBowelMovement", { staffInitials: e.target.value })} type="text" placeholder="Enter  text" />
             </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold" }}>
-                Selecting Clothes
-              </Form.Label>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "1rem",
-                  flexWrap: "wrap",
-                  opacity: "60%",
-                  marginBottom: "1.2rem",
-                }}
-              >
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Requires No Assistance"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Some Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Complete Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Not Applicable"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Refused"
-                />
-              </div>
-              <Form.Label style={{ fontWeight: "bold" }}>
-                Staff Initials
-              </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold" }}>Lunch</Form.Label>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "1rem",
-                  flexWrap: "wrap",
-                  opacity: "60%",
-                  marginBottom: "1.2rem",
-                }}
-              >
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Requires No Assistance"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Some Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Complete Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Not Applicable"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Refused"
-                />
-              </div>
-              <Form.Label style={{ fontWeight: "bold" }}>
-                Staff Initials
-              </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
-            </Form.Group>
+            
             <Form.Group className="mb-3">
               <Form.Label style={{ fontWeight: "bold" }}>
                 PM Bowel Movement
@@ -992,121 +1342,61 @@ const Activities2 = () => {
               >
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.pmBowelMovement.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("pmBowelMovement", {
+                      requiresNoAssistance: e.target.checked,
+                    })
+                  }
                   label="Requires No Assistance"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.pmBowelMovement.someAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("pmBowelMovement", {
+                      someAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Some Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.pmBowelMovement.completeAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("pmBowelMovement", {
+                      completeAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Complete Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.pmBowelMovement.notApplicable}
+                  onChange={(e) =>
+                    handleCategoryInputChange("pmBowelMovement", {
+                      notApplicable: e.target.checked,
+                    })
+                  }
                   label="Not Applicable"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.pmBowelMovement.refused}
+                  onChange={(e) =>
+                    handleCategoryInputChange("pmBowelMovement", {
+                      refused: e.target.checked,
+                    })
+                  }
                   label="Refused"
                 />
               </div>
               <Form.Label style={{ fontWeight: "bold" }}>
                 Staff Initials
               </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control onChange={(e) => handleCategoryInputChange("pmBowelMovement", { staffInitials: e.target.value })} type="text" placeholder="Enter  text" />
             </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold" }}>
-                Selecting Clothes
-              </Form.Label>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "1rem",
-                  flexWrap: "wrap",
-                  opacity: "60%",
-                  marginBottom: "1.2rem",
-                }}
-              >
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Requires No Assistance"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Some Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Complete Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Not Applicable"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Refused"
-                />
-              </div>
-              <Form.Label style={{ fontWeight: "bold" }}>
-                Staff Initials
-              </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold" }}>Lunch</Form.Label>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "1rem",
-                  flexWrap: "wrap",
-                  opacity: "60%",
-                  marginBottom: "1.2rem",
-                }}
-              >
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Requires No Assistance"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Some Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Complete Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Not Applicable"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Refused"
-                />
-              </div>
-              <Form.Label style={{ fontWeight: "bold" }}>
-                Staff Initials
-              </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
-            </Form.Group>
+            
             <Form.Group className="mb-3">
               <Form.Label style={{ fontWeight: "bold" }}>
                 Overnight Bowel Movement
@@ -1122,34 +1412,59 @@ const Activities2 = () => {
               >
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.overnightBowelMovement.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("pmBowelMovement", {
+                      requiresNoAssistance: e.target.checked,
+                    })
+                  }
                   label="Requires No Assistance"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.overnightBowelMovement.someAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("pmBowelMovement", {
+                      someAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Some Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.overnightBowelMovement.completeAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("pmBowelMovement", {
+                      completeAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Complete Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.overnightBowelMovement.notApplicable}
+                  onChange={(e) =>
+                    handleCategoryInputChange("pmBowelMovement", {
+                      notApplicable: e.target.checked,
+                    })
+                  }
                   label="Not Applicable"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.overnightBowelMovement.refused}
+                  onChange={(e) =>
+                    handleCategoryInputChange("pmBowelMovement", {
+                      refused: e.target.checked,
+                    })
+                  }
                   label="Refused"
                 />
               </div>
               <Form.Label style={{ fontWeight: "bold" }}>
                 Staff Initials
               </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control onChange={(e) => handleCategoryInputChange("overnightBowelMovement", { staffInitials: e.target.value })} type="text" placeholder="Enter  text" />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label style={{ fontWeight: "bold" }}>
@@ -1166,38 +1481,63 @@ const Activities2 = () => {
               >
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.handAndFootNailCare.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("handAndFootNailCare", {
+                      requiresNoAssistance: e.target.checked,
+                    })
+                  }
                   label="Requires No Assistance"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.handAndFootNailCare.someAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("handAndFootNailCare", {
+                      someAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Some Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.handAndFootNailCare.completeAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("handAndFootNailCare", {
+                      completeAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Complete Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.handAndFootNailCare.notApplicable}
+                  onChange={(e) =>
+                    handleCategoryInputChange("handAndFootNailCare", {
+                      notApplicable: e.target.checked,
+                    })
+                  }
                   label="Not Applicable"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.handAndFootNailCare.refused}
+                  onChange={(e) =>
+                    handleCategoryInputChange("handAndFootNailCare", {
+                      refused: e.target.checked,
+                    })
+                  }
                   label="Refused"
                 />
               </div>
               <Form.Label style={{ fontWeight: "bold" }}>
                 Staff Initials
               </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control type="text" onChange={(e) => handleCategoryInputChange("handAndFootNailCare", { staffInitials: e.target.value })} placeholder="Enter  text" />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label style={{ fontWeight: "bold" }}>
-                Hand & Foot nail care
+               Bed Mobility
               </Form.Label>
               <div
                 style={{
@@ -1210,80 +1550,61 @@ const Activities2 = () => {
               >
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.bedMobility.requiresNoAssistance}
+                  onChange={(e) =>
+                    handleCategoryInputChange("bedMobility", {
+                      requiresNoAssistance: e.target.checked,
+                    })
+                  }
                   label="Requires No Assistance"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.bedMobility.someAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("bedMobility", {
+                      someAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Some Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.bedMobility.completeAssistanceNeeded}
+                  onChange={(e) =>
+                    handleCategoryInputChange("bedMobility", {
+                      completeAssistanceNeeded: e.target.checked,
+                    })
+                  }
                   label="Complete Assistance Needed"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.bedMobility.notApplicable}
+                  onChange={(e) =>
+                    handleCategoryInputChange("bedMobility", {
+                      notApplicable: e.target.checked,
+                    })
+                  }
                   label="Not Applicable"
                 />
                 <Form.Check
                   type="checkbox"
-                  id={`check-api-yes`}
+                  checked={formData.bedMobility.refused}
+                  onChange={(e) =>
+                    handleCategoryInputChange("bedMobility", {
+                      refused: e.target.checked,
+                    })
+                  }
                   label="Refused"
                 />
               </div>
               <Form.Label style={{ fontWeight: "bold" }}>
                 Staff Initials
               </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control type="text" onChange={(e) => handleCategoryInputChange("handAndFootNailCare", { staffInitials: e.target.value })} placeholder="Enter  text" />
             </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold" }}>
-                Selecting Clothes
-              </Form.Label>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "1rem",
-                  flexWrap: "wrap",
-                  opacity: "60%",
-                  marginBottom: "1.2rem",
-                }}
-              >
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Requires No Assistance"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Some Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Complete Assistance Needed"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Not Applicable"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id={`check-api-yes`}
-                  label="Refused"
-                />
-              </div>
-              <Form.Label style={{ fontWeight: "bold" }}>
-                Staff Initials
-              </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
-            </Form.Group>
-
+            
             <Form.Group className="mb-3 mt-5">
               <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
                 Staff members are to initial once ADLs is completed on each

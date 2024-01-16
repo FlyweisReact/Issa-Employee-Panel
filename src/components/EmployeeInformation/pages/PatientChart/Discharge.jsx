@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Table } from "react-bootstrap";
 import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
+import { Auth, Baseurl, deleteData } from "../../../api/api.js";
+
+import { getData } from "../../../api/api";
 const Discharge = () => {
   const navigate = useNavigate();
+  const [data, setData] = React.useState([]);
+
+const deleteHandler = (id) => {
+  deleteData("employee/deleteDischargeSummary", id,getData(setData,'employee/getAllDischargeSummary'));
+}
+
+  
+  useEffect(() => {
+    getData(setData,'employee/getAllDischargeSummary');
+    console.log('wor')
+  },[])
   return (
     <>
       <div className="nav-wrap-personal">
@@ -74,15 +88,16 @@ const Discharge = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
+            {data?.data?.length>0 && data?.data?.map((item) => {
+           return   <tr key={item?._id}>
                 <td>
                   <input type="checkbox" />
                 </td>
-                <td>Dr. Colter</td>
-                <td>10/10/2022</td>
-                <td>7am-3pm</td>
-                <td>Text</td>
-                <td>Text</td>
+                <td>{item?.clientName}</td>
+                <td>{item?.dateOfAdmission?.split("T")[0]}</td> <td>{item?.dateOfDischarge?.split("T")[0]}</td>
+                <td>{item?.reasonForDischarge}</td>
+                <td>{item?.treatmentProvided}</td>
+               
                 <td
                   style={{
                     display: "flex",
@@ -97,7 +112,8 @@ const Discharge = () => {
                     {" "}
                     <FaRegEdit />
                   </span>
-                  <span
+                  <span onClick={()=>{deleteHandler(item?._id);
+                  console.log('id')}}
                     style={{
                       cursor: "pointer",
                       display: "flex",
@@ -105,20 +121,21 @@ const Discharge = () => {
                     }}
                   >
                     {" "}
-                    <RiDeleteBin5Fill style={{ color: "red" }} />
+                    <RiDeleteBin5Fill  style={{ color: "red" }} />
                     <span style={{ color: "red", fontSize: "1.1.1rem" }}>
                       DELETE
                     </span>
                   </span>
                 </td>
-              </tr>
+              </tr>})}
             </tbody>
           </Table>
 
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
             {/* <span></span> */}
             <span>
-              <Button
+              <Button type="submit"
+
                 style={{
                   fontSize: ".9rem",
                   fontWeight: "bold",

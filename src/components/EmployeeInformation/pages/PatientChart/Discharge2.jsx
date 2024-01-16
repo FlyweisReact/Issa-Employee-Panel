@@ -1,8 +1,71 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form } from "react-bootstrap";
+import { getData, postData } from "../../../api/api";
+import { showMsg } from "../../../../Baseurl";
+
 const Discharge2 = () => {
   const navigate = useNavigate();
+  const initialFormData = {
+    patientId: "",
+    clientName: "",
+    dateOfBirth: "",
+    dateOfAdmission: "",
+    dateOfDischarge: "",
+    presentingIssue: "",
+    treatmentProvided: "",
+    progress: "",
+    medicationUponDischarge: "",
+    fundsPropertiesUponDischarge: "",
+    reasonForDischarge: "",
+    dischargePlanReferralAftercarePlan: "",
+    patientGuardianSignature: "",
+    patientGuardianSignatureDate: "",
+    staffNameAndTitle: "",
+    staffSignature: "",
+    staffSignatureDate: "",
+    bhpNameAndCredentials: "",
+    bhpSignature: "",
+    bhpSignatureDate: ""
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
+const [patients, setPatients] = useState([]);
+  
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+useEffect(() => {
+  getData(setPatients, "employee/getPatient");
+},[])
+
+const handleInputChange1 = (e) => {
+  const selectedPatientId = e.target.value;
+  const selectedPatientObject = patients?.data?.find(patient => patient._id === selectedPatientId);
+
+  setFormData({
+    ...formData, 
+    patientId: selectedPatientId,
+    clientName: selectedPatientObject?.fullName || '',  
+  });
+};
+
+
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const emptyFields = Object.keys(formData).filter(key => formData[key] === "");
+
+    if (emptyFields.length > 0) {
+      const errorMessage = `Please fill in the following fields: ${emptyFields.join(', ')}`;
+      return showMsg("Error", errorMessage, "danger");
+    }
+    postData("employee/createDischargeSummary", formData)
+  }
   return (
     <>
       <div className="nav-wrap-personal">
@@ -21,54 +84,74 @@ const Discharge2 = () => {
       </div>
       <div>
         <div className="top-div-personal">
-          <Form
+          <Form onScroll={submitHandler}
             style={{ width: "100%" }}
             id="form-appendix"
             className="form-personal offer-letter appendix1"
           >
             <Form.Group className="mb-3">
-              <Form.Label>Client Name::</Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Label>Client Name:</Form.Label>
+              <Form.Select 
+  aria-label="Default select example"
+  name="patientId"
+  onChange={handleInputChange1} 
+>
+  <option>Select Patient</option>
+  {patients?.data?.map((patient) => (
+    <option key={patient._id} value={patient._id}>{patient.fullName}</option>
+  ))}
+</Form.Select>
+
+           
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>DOB:</Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control name="dateOfBirth"  onChange={handleInputChange} required  type="date" placeholder="Enter  text" />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Date of Admission:</Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control name="dateOfAdmission" onChange={handleInputChange} required  type="date" placeholder="Enter  text" />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Date of Discharge:</Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control name="dateOfDischarge" onChange={handleInputChange} required   type="date" placeholder="Enter  text" />
             </Form.Group>
             <p>Presenting issue:</p>
             <Form.Group className="mb-3">
               <Form.Label>Treatment Provided:</Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control name="treatmentProvided" onChange={handleInputChange} required  type="text" placeholder="Enter  text" />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Progress:</Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control name="progress" onChange={handleInputChange} required  type="text" placeholder="Enter  text" />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Medication Upon Discharge:</Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control name="medicationUponDischarge" onChange={handleInputChange} required  type="text" placeholder="Enter  text" />
             </Form.Group>
             <Form.Group className="mb-3">
+              <Form.Label>Presenting Issue:</Form.Label>
+              <Form.Control name="presentingIssue" onChange={handleInputChange} required  type="text" placeholder="Enter  text" />
+            </Form.Group>
+            {/* <Form.Group className="mb-3">
+              <Form.Label>Discharge PlanReferral After care Plan:</Form.Label>
+              <Form.Control name="dischargePlanReferralAftercarePlan" onChange={handleInputChange} required  type="text" placeholder="Enter  text" />
+            </Form.Group> */}
+            <Form.Group className="mb-3">
               <Form.Label>Funds/Properties Upon Discharge:</Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control name="fundsPropertiesUponDischarge" onChange={handleInputChange} required  required type="text" placeholder="Enter  text" />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Reason for Discharge:</Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control name="reasonForDischarge" onChange={handleInputChange} required  required type="text" placeholder="Enter  text" />
             </Form.Group>
             <p>Discharge Plan, Referral, and Aftercare Plan:</p>
+            <Form.Control name="dischargePlanReferralAftercarePlan" onChange={handleInputChange} required  required type="text" placeholder="Enter  text" />
             <Form.Group className="mb-3">
               <Form.Label>Patient/Guardian Signature:</Form.Label>
-              {/* <Form.Control type="text" placeholder="Enter  text" /> */}
+              <Form.Control name="patientGuardianSignature" onChange={handleInputChange} required  required type="text" placeholder="Enter  text" />
             </Form.Group>
-            <div
+            {/* <div
               style={{ maxWidth: "370px", width: "auto" }}
               className="save-as-draft-btn-personal"
             >
@@ -86,17 +169,18 @@ const Discharge2 = () => {
                   Save as Draft
                 </button>
               </div>
-            </div>
+            </div> */}
             <Form.Group className="mb-3">
               <Form.Label>Date:</Form.Label>
-              <Form.Control type="date" placeholder="Enter  text" />
+              <Form.Control name="patientGuardianSignatureDate" onChange={handleInputChange} required  required type="date" placeholder="Enter  text" />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Staff’s Name and Title:</Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
+              <Form.Control name="staffNameAndTitle" onChange={handleInputChange} required  required type="text" placeholder="Enter  text" />
             </Form.Group>
             <p>Signature</p>
-            <div
+            <Form.Control name="staffSignature" onChange={handleInputChange} required  required type="text" placeholder="Enter  text" />
+            {/* <div
               style={{ maxWidth: "370px", width: "auto" }}
               className="save-as-draft-btn-personal"
             >
@@ -114,23 +198,28 @@ const Discharge2 = () => {
                   Save as Draft
                 </button>
               </div>
-            </div>
+            </div> */}
 
             <Form.Group className="mb-3">
               <Form.Label>Date:</Form.Label>
-              <Form.Control type="date" placeholder="Enter  text" />
+              <Form.Control required name="staffSignatureDate" type="date" onChange={handleInputChange} required 
+              placeholder="Enter  text" />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>BHT’s Name and Credentials:</Form.Label>
-              <Form.Control type="date" placeholder="Enter  text" />
+              <Form.Control name="bhpNameAndCredentials" type="text"  required
+              placeholder="Enter  text"
+              onChange={handleInputChange} required  />
             </Form.Group>
 
             <Form.Group className="mb-3 mt-5">
               <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
                 Signature:{" "}
               </Form.Label>
+              <Form.Control required name="bhpSignature" type="text" 
+              onChange={handleInputChange} required  placeholder="Enter  text" />
             </Form.Group>
-            <div
+            {/* <div
               style={{ maxWidth: "370px", width: "auto" }}
               className="save-as-draft-btn-personal"
             >
@@ -151,11 +240,12 @@ const Discharge2 = () => {
                   SAVED AND SAVED
                 </button>
               </div>
-            </div>
+            </div> */}
 
             <Form.Group className="mb-3">
               <Form.Label>Date:</Form.Label>
-              <Form.Control type="date" placeholder="Enter  text" />
+              <Form.Control name="bhpSignatureDate"
+              onChange={handleInputChange} required  type="date" placeholder="Enter  text" />
             </Form.Group>
             <div style={{ textAlign: "center", width: "100%", margin: "auto" }}>
               <button
@@ -166,13 +256,21 @@ const Discharge2 = () => {
                   marginTop: "1rem",
                   borderRadius: "10px",
                 }}
-                type="submit"
+             
               >
                 PRINT REPORT
               </button>
             </div>
             <div className="save-as-draft-btn123">
-              <button className="btn1233" type="submit">
+              <button  style={{
+                  padding: "10px 24px",
+                  backgroundColor: "#1A9FB2",
+                  color: "white",
+                  marginTop: "1rem",
+                  borderRadius: "10px",
+                  marginBottom: "1rem",
+                }} 
+                 onClick={submitHandler} type="submit">
                 SUBMIT
               </button>
             </div>
