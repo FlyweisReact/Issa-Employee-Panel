@@ -15,10 +15,22 @@ export const getData = (setData, url) => {
     .catch((err) => {
       if (err.response.status === 401) {
         showMsg("Error", err.response.data.message, "danger");
+        return setData([]);
       }
       console.log(err);
     });
 };
+
+ export const getDataById = (setData, url, id) => {
+  
+   axios.get(`${Baseurl}${url}/${id}`, Auth()).then((res) => {
+    return setData(res?.data);
+  }).catch((err) => {
+    console.log(err);
+    showMsg("Error", err.response.data.message, "danger");
+  });
+};
+
 
 export const postData = (url, data, getData) => {
   axios
@@ -58,6 +70,7 @@ export const deleteData=(url,id,getData)=>{
   .then((res) => {
     console.log(res, "api Data");
     if (res.status === 200 && getData === undefined) {
+      window.location.reload();
       return showMsg("Success", res.data.message, "success");
     }
     if (getData) {
@@ -71,12 +84,7 @@ export const deleteData=(url,id,getData)=>{
 
     if (err.response && err.response.data && err.response.data.message) {
       showMsg("Error", err.response.data.message, "danger");
-    } else {
-      showMsg(
-        "Error",
-        "An error occurred while processing your request.",
-        "danger"
-      );
+    
     }
   });
 }

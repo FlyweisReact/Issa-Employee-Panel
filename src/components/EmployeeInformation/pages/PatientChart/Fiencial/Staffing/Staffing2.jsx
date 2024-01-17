@@ -1,8 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Table } from "react-bootstrap";
+import { getData, postData } from "../../../../../api/api";
 const Staffing2 = () => {
   const navigate = useNavigate();
+  const [patients, setPatients] = useState([]);
+  const [appointmentData, setAppointmentData] = useState({
+    patientId: "",
+    residentName: "",
+    dateOfBirth: "",
+    todayDate: "",
+    beginTime: "",
+    endTime: "",
+    participantsPresent: "",
+    presentingIssues: "",
+    progress: "",
+    barriers: "",
+    recommendations: "",
+    staffSignature: ""
+  });
+
+ 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if(name==="patientId"){
+      setAppointmentData((prevData) => ({
+        ...prevData,
+        [name]: value,
+        residentName: patients?.data?.find((patient) => patient._id === value)?.fullName
+      }))
+    }
+    setAppointmentData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+
+  useEffect (() => {
+    getData(setPatients, `employee/getPatient`);
+  },[])
+  
+  const submitHandler = (e) => {
+    e.preventDefault();
+   postData("employee/createStaffingNote", appointmentData)
+  }
   return (
     <>
       <div className="nav-wrap-personal">
@@ -23,70 +64,78 @@ const Staffing2 = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Resident Name:
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter text" />
+            <Form.Select name="patientId" onChange={handleChange}>
+              <option>Select Patient</option>
+              {patients?.data?.map((patient) => (
+                <option value={patient._id}>{patient.fullName}</option>
+              ))}
+            </Form.Select>
+
+
           </Form.Group>
           <Form.Group className="mb-3 ">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               DOB:
             </Form.Label>
-            <Form.Control type="date" placeholder="Enter text" />
+            <Form.Control name="dateOfBirth"  onChange={handleChange} type="date" placeholder="Enter text" />
           </Form.Group>
           <Form.Group className="mb-3 ">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Today’s Date:
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter text" />
+            <Form.Control name="todayDate" onChange={handleChange} type="date" placeholder="Enter text" />
           </Form.Group>
           <Form.Group className="mb-3 ">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Begin Time:
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter text" />
+            <Form.Control name="beginTime" onChange={handleChange} type="text" placeholder="Enter text" />
           </Form.Group>
           <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
+            <Form.Label  style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               End Time:
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter text" />
+            <Form.Control  name='endTime' onChange={handleChange}
+             type="text" placeholder="Enter text" />
           </Form.Group>
           <Form.Group className="mb-3 ">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Participants Present/Role:
             </Form.Label>
-            <Form.Control as="textarea" rows={3} placeholder="Enter text" />
+            <Form.Control name='participantsPresent' onChange={handleChange} as="textarea" rows={3} placeholder="Enter text" />
           </Form.Group>
           <Form.Group className="mb-3 ">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               PRESENTING ISSUE(S):
             </Form.Label>
-            <Form.Control as="textarea" rows={3} placeholder="Enter text" />
+            <Form.Control name='presentingIssues' onChange={handleChange} as="textarea" rows={3} placeholder="Enter text" />
           </Form.Group>
           <Form.Group className="mb-3 ">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               PROGRESS:
             </Form.Label>
-            <Form.Control as="textarea" rows={3} placeholder="Enter text" />
+            <Form.Control name="progress" onChange={handleChange} as="textarea" rows={3} placeholder="Enter text" />
           </Form.Group>
           <Form.Group className="mb-3 ">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               BARRIER(S):
             </Form.Label>
-            <Form.Control as="textarea" rows={3} placeholder="Enter text" />
+            <Form.Control name="barriers" onChange={handleChange} as="textarea" rows={3} placeholder="Enter text" />
           </Form.Group>
           <Form.Group className="mb-3 ">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               RECOMMENDATIONS:
             </Form.Label>
-            <Form.Control as="textarea" rows={3} placeholder="Enter text" />
+            <Form.Control name="recommendations" onChange={handleChange} as="textarea" rows={3} placeholder="Enter text" />
           </Form.Group>
 
           <Form.Group className="mb-3 ">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Staff Signature:
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter text" />
+            <Form.Control name="staffSignature" onChange={handleChange} type="text" placeholder="Enter text" />
           </Form.Group>
-          <div
+          {/* <div
             style={{ maxWidth: "370px", width: "auto" }}
             className="save-as-draft-btn-personal"
           >
@@ -105,7 +154,7 @@ const Staffing2 = () => {
                 SAVED AND SAVED
               </button>
             </div>
-          </div>
+          </div> */}
 
           <div style={{ textAlign: "center", width: "100%", margin: "auto" }}>
             <button
@@ -121,7 +170,7 @@ const Staffing2 = () => {
             </button>
           </div>
           <div className="save-as-draft-btn123">
-            <button className="btn1233" type="submit">
+            <button className="btn1233" onClick={submitHandler} type="submit">
               SUBMIT
             </button>
           </div>

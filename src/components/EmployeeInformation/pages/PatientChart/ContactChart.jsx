@@ -1,15 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Table } from "react-bootstrap";
 import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
+import { deleteData, getData } from "../../../api/api";
 const ContactChart = () => {
   const navigate = useNavigate();
+  const [data, setData] = React.useState([]);
+
+  const getAllData = () => {
+    getData(setData, "employee/getAllContactNote");
+  }
+
+  useEffect(() => {
+    getAllData()
+  },[])
+  const handleDelete=(id)=>{
+    deleteData("employee/deleteContactNote",id)
+  }
   return (
     <>
       <div className="nav-wrap-personal">
         <div className="nav-div-personal1">
-          <img onClick={() => navigate(-1)} src="/back_button2.png" alt="da" />
+          <img onClick={() => navigate('/employee/patient-chart')} src="/back_button2.png" alt="da" />
         </div>
         <div
           className="nav-div-personal"
@@ -52,17 +65,16 @@ const ContactChart = () => {
                 >
                   <input type="checkbox" />
                 </th>
+                <th style={{ backgroundColor: "#D1ECF0" }}>
+                  Resident's Name
+                </th>
+                <th style={{ backgroundColor: "#D1ECF0" }}>
+                  Family Member
+                </th>
+                <th style={{ backgroundColor: "#D1ECF0" }}>Email</th>
                 <th style={{ backgroundColor: "#D1ECF0" }}>Date</th>
-                <th style={{ backgroundColor: "#D1ECF0" }}>
-                  Selecting Clothes
-                </th>
-                <th style={{ backgroundColor: "#D1ECF0" }}>
-                  Bathing or Showering
-                </th>
-                <th style={{ backgroundColor: "#D1ECF0" }}>Staff Initials</th>
-                <th style={{ backgroundColor: "#D1ECF0" }}>Resident’s Name</th>
 
-                <th style={{ backgroundColor: "#D1ECF0" }}></th>
+                <th style={{ backgroundColor: "#D1ECF0" }}>Cash Manager</th>
                 <th
                   style={{
                     backgroundColor: "#D1ECF0",
@@ -72,15 +84,17 @@ const ContactChart = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
+            {data?.data?.length>0 && data?.data?.map((item) => (
+             <tr key={item._id}>
                 <td>
                   <input type="checkbox" />
                 </td>
-                <td>Dr. Colter</td>
-                <td>10/10/2022</td>
-                <td>7am-3pm</td>
-                <td>Text</td>
-                <td>Text</td>
+               
+                <td>{item.residentName}</td>
+                <td>{item.familyMember}</td>
+                <td>{item.email}</td>
+                <td>{item.date}</td>
+                <td>{item.caseManager}</td>
                 <td
                   style={{
                     display: "flex",
@@ -101,15 +115,16 @@ const ContactChart = () => {
                       display: "flex",
                       alignItems: "center",
                     }}
+                    onClick={() => handleDelete(item._id)}
                   >
                     {" "}
                     <RiDeleteBin5Fill style={{ color: "red" }} />
-                    <span style={{ color: "red", fontSize: "1.1.1rem" }}>
+                    <span  style={{ color: "red", fontSize: "1.1.1rem" }}>
                       DELETE
                     </span>
                   </span>
                 </td>
-              </tr>
+              </tr>   ))}
             </tbody>
           </Table>
 

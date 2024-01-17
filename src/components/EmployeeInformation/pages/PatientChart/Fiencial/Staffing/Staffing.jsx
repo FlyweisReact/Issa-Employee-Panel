@@ -1,10 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Table } from "react-bootstrap";
 import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
+import { deleteData, getData } from "../../../../../api/api";
 const Staffing = () => {
   const navigate = useNavigate();
+  const [data, setData] = React.useState([]);
+
+
+  useEffect(() => {
+    getData(setData, `employee/getAllStaffingNote`);
+  },[])
+
+  const deleteDataHandler = (id) => {
+    const getData1 = () => {
+      getData(setData, `employee/getAllStaffingNote`);
+    }
+    if (!id) {
+      return null;
+    }
+    deleteData("employee/deleteStaffingNote", id,  getData1())
+  }
   return (
     <>
       <div className="nav-wrap-personal">
@@ -67,16 +84,19 @@ const Staffing = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
+            {data?.data?.length>0 && data?.data?.map((item) => (
+              
+            
+              <tr key={item._id}>
                 <td>
                   <input type="checkbox" />
                 </td>
-                <td>Dr. Colter</td>
-                <td>10/10/2022</td>
-                <td>7am-3pm</td>
-                <td>Text</td>
-                <td>Text</td>
-                <td>Text</td>
+                <td>{item.residentName}</td>
+                <td>{item.todayDate?.split("T")[0]?.split("-").reverse().join("-")}</td>
+                <td>{item.beginTime}  </td>
+                <td>{item.endTime}</td>
+                <td>{item.progress}</td>
+                <td>{item.barriers}</td>
                 <td
                   style={{
                     display: "flex",
@@ -92,6 +112,7 @@ const Staffing = () => {
                     <FaRegEdit />
                   </span>
                   <span
+                  onClick={() => deleteDataHandler(item._id)}
                     style={{
                       cursor: "pointer",
                       display: "flex",
@@ -105,7 +126,7 @@ const Staffing = () => {
                     </span>
                   </span>
                 </td>
-              </tr>
+              </tr>))}
             </tbody>
           </Table>
 

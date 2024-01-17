@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Table } from "react-bootstrap";
 import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
+import { deleteData, getData } from "../../../../api/api";
 const Authorization = () => {
   const navigate = useNavigate();
+  const [data, setData] = React.useState([]);
+
+
+  useEffect(() => {
+    getData(setData, `employee/getAllAuthorizationForReleaseOfInformation`);
+  },[])
+
+  const handleDelete=(id)=>{
+    deleteData("employee/deleteAuthorizationForReleaseOfInformation",id)
+  }
   return (
     <>
       <div className="nav-wrap-personal">
@@ -71,16 +82,18 @@ const Authorization = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
+            {data?.data?.length>0 && data?.data?.map((item) => (
+             
+              <tr key={item?.id}>
                 <td>
                   <input type="checkbox" />
                 </td>
-                <td>Dr. Colter</td>
-                <td>10/10/2022</td>
-                <td>7am-3pm</td>
-                <td>Text</td>
-                <td>Text</td>
-                <td>Text</td>
+                <td>{item?.residentName}</td>
+                <td>{item?.authorizedPersonPhone}</td>
+                <td>{item?.relationshipToPerson}</td>
+                <td>{item?.dateSigned.split("T")[0].split("-").reverse().join("-")}</td>
+                <td>{item?.witness}</td>
+               
                 <td
                   style={{
                     display: "flex",
@@ -101,6 +114,8 @@ const Authorization = () => {
                       display: "flex",
                       alignItems: "center",
                     }}
+                    onClick={()=>handleDelete(item?._id)}
+                    
                   >
                     {" "}
                     <RiDeleteBin5Fill style={{ color: "red" }} />
@@ -110,6 +125,9 @@ const Authorization = () => {
                   </span>
                 </td>
               </tr>
+            ))}
+            
+
             </tbody>
           </Table>
 

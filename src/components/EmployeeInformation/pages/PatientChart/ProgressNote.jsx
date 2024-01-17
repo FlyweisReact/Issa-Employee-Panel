@@ -4,14 +4,20 @@ import { Button, Form, Table } from "react-bootstrap";
 import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 
-import { getData } from "../../../api/api";
+import { deleteData, getData } from "../../../api/api";
 const ProgressNote = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   useEffect(() => {
     getData(setData, "employee/getAllProgressNote");
   }, []);
-
+const deleteProgressNoteHandler = (id) => {
+  if (!id) {
+    return null;
+  }
+  deleteData("employee/deleteProgressNote", id, getData(setData, "employee/getAllProgressNote"))
+  getData(setData, "employee/getAllProgressNote");
+}
   return (
     <>
       <div className="nav-wrap-personal">
@@ -80,12 +86,12 @@ const ProgressNote = () => {
                     <td>
                       <input type="checkbox" />
                     </td>
-                    <td>Dr. Colter</td>
-                    <td>10/10/2022</td>
-                    <td>7am-3pm</td>
-                    <td>Text</td>
-                    <td>Text</td>
-                    <td>Text</td>
+                    <td>{data?.residentName}</td>
+                    <td>{data?.admitDate?.split("T")[0]?.split("-").reverse().join("-")}</td>
+                    <td>{data?.shift}</td>
+                    <td>{data?.therapy}</td>
+                    <td>{data?.mood}</td>
+                    <td>{data?.transportation?"Yes":"No"}</td>
                     <td
                       style={{
                         display: "flex",
@@ -100,7 +106,7 @@ const ProgressNote = () => {
                         {" "}
                         <FaRegEdit />
                       </span>
-                      <span
+                      <span onClick={() => deleteProgressNoteHandler(data?._id)}
                         style={{
                           cursor: "pointer",
                           display: "flex",
