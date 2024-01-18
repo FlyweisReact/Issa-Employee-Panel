@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Table } from "react-bootstrap";
+import { getData, postData } from "../../../api/api";
+import { showMsg } from "../../../api/ShowMsg";
 const Upload = () => {
   const [file, setFile] = useState(null);
+  const [data,setData]=useState([])
+  const [patientId,setPatientId]=useState()
 
   const handleFileDrop = (e) => {
     e.preventDefault();
@@ -20,6 +24,26 @@ const Upload = () => {
   };
   const navigate = useNavigate();
 
+  const getAllPatents = () => {
+    
+    getData(setData,"employee/getPatient")
+  }
+  useEffect(()=>{
+    getAllPatents()
+  },[])
+
+  const submitHandler = (e) => {
+    e.preventDefault(); 
+
+    let formData=new FormData();
+    formData.append("file",file)
+    formData.append("patientId",patientId)
+if(!patientId || !file){
+  return showMsg("Error", "Please select patient and file","danger")
+}
+    postData("employee/uploadDocuments", formData)
+  }
+  
   return (
     <>
       <div className="nav-wrap-personal">
@@ -45,16 +69,29 @@ const Upload = () => {
             height: "60vh",
           }}
         >
+       <Form.Group className="mb-3 w-56">
+  <Form.Label>Select Patient</Form.Label>
+  <Form.Select onChange={(e) => setPatientId(e.target.value)}>
+    <option value="">Select</option>
+    {data?.data?.map((patient) => (
+      <option key={patient._id} value={patient._id}>
+        {patient.fullName}
+      </option>
+    ))}
+  </Form.Select>
+</Form.Group>
+
           <div
             style={{
-              maxWidth: "350px",
-              width: "270px",
+              maxWidth: "450px",
+              width: "290px",
               border: "1px dotted black",
               padding: "1rem",
               textAlign: "center",
               margin: "auto",
               borderRadius: "5px",
-              marginTop: "2rem",
+              marginTop: "2rem", cursor: "pointer"
+             
             }}
             onDrop={handleFileDrop}
             onDragOver={handleDragOver}
@@ -93,6 +130,7 @@ const Upload = () => {
                 marginTop: "1rem",
                 borderRadius: "2px",
               }}
+              onClick={submitHandler}
               type="submit"
             >
               SEND

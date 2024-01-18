@@ -1,22 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Form } from "react-bootstrap";
+import { Button, Form, Table } from "react-bootstrap";
+import { FaRegEdit } from "react-icons/fa";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+import { deleteData, getData } from "../../api/api.js";
+
 const OnSite = () => {
   const navigate = useNavigate();
+  const [data, setData] = React.useState([]);
+
+  useEffect(() => {
+    getData(setData, "employee/getAllOnSiteFacility");
+  },[])
+  const handleDelete=(id)=>{
+    deleteData("employee/deleteOnSiteFacility",id)
+  }
+
+  
   return (
     <>
       <div className="nav-wrap-personal">
         <div className="nav-div-personal1">
-          <img onClick={() => navigate(-1)} src="/back_button2.png" alt="da" />
+          <img onClick={() => navigate('/employee/training')} src="/back_button2.png" alt="da" />
         </div>
         <div
           className="nav-div-personal"
-          style={{ width: "80%", marginBottom: "1rem" }}
+          style={{ width: "80%", marginBottom: "1rem",display: "flex", paddingRight: "1rem" }}
         >
-          <p style={{ fontSize: ".9rem", fontWeight: "bold" }}>
+          <p style={{ fontSize: ".9rem", fontWeight: "bold",flex: "1" }}>
             ON SITE AND FACILITY ORIENTATION VERIFICATION
           </p>
-          <p></p>
+          <p><Button onClick={() => navigate("/employee/training/on-site2")}>+ NEW</Button></p>
         </div>
       </div>
       <div>
@@ -56,78 +70,87 @@ const OnSite = () => {
               training occurs more than in one time period.
             </p>
 
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-                Training Date: :
-              </Form.Label>
-              <Form.Control type="date" placeholder="Enter  Name" />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-                Duration :
-              </Form.Label>
-              <Form.Control type="date" placeholder="Enter  dATE" />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-                Training Date:
-              </Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter  Preferred Contact Information"
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-                Duration:
-              </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
-            </Form.Group>
-            <p>
-              I,
-              <input type="text" placeholder="________________" />
-              attest I have received facility orientation training evident by
-              the signatures below.
-            </p>
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-                Employee signature / Date:
-              </Form.Label>
-              <Form.Control type="date" placeholder="Enter  text" />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-                Trainer signature /Credential/Title/Date:
-              </Form.Label>
-              <Form.Control type="text" placeholder="Enter  text" />
-            </Form.Group>
-
-            <div
-              className="save-as-draft-btn-personal"
-              style={{ maxWidth: "350px", width: "auto" }}
-            >
-              <div>
-                <img
-                  style={{ height: "80%", width: "100%", border: "1px " }}
-                  src="/Dashboard/save.png"
-                  alt=""
-                />
-              </div>
-              <div
-                style={{ maxWidth: "370px", width: "auto" }}
-                className="save-as-draft-btn"
-              >
-                <button
-                  style={{ border: "1px solid #0C5C75", color: "#0C5C75" }}
+            <Table responsive>
+            <thead>
+          
+              <tr>
+                <th
+                  style={{
+                    backgroundColor: "#D1ECF0",
+                    borderRadius: "5px 0 0 0",
+                  }}
                 >
-                  SAVE AS DRAFT
-                </button>
-                <button style={{ backgroundColor: "#0C5C75", color: "white" }}>
-                  SAVED AND SAVED
-                </button>
-              </div>
-            </div>
+                  <input type="checkbox" />
+                </th>
+                <th style={{ backgroundColor: "#D1ECF0" }}>
+                Training Date
+                </th>
+                <th style={{ backgroundColor: "#D1ECF0" }}>
+                  Duration
+                </th>
+                <th style={{ backgroundColor: "#D1ECF0" }}>Trainer Date</th>
+                <th style={{ backgroundColor: "#D1ECF0" }}>Employee Date</th>
+
+                {/* <th style={{ backgroundColor: "#D1ECF0" }}>Cash Manager</th> */}
+                <th
+                  style={{
+                    backgroundColor: "#D1ECF0",
+                    borderRadius: "0 5px 0 0",
+                  }}
+                ></th>
+              </tr>
+            </thead>  
+            <tbody>
+          {data?.message==='OnSiteFacility found.' &&
+          
+            
+            <tr >
+                <td>
+                  <input type="checkbox" />
+                  
+                </td>
+               
+                
+                <td>{data?.data?.training?.map((item) => item?.date?.split("T")[0]?.split("-").reverse().join("-")).join(",")}</td>
+                <td>{data?.data?.training?.map((item) => item?.duration).join(",")}</td>
+                <td>{data?.data?.trainerDate}</td>
+                <td>{data?.data?.employeeDate}</td>
+                
+                <td
+                  style={{
+                    display: "flex",
+                    gap: "1rem",
+                    fontWeight: "bold",
+                    color: "#1A9FB2",
+                    alignItems: "center",
+                    fontSize: "1.4rem",
+                  }}
+                >
+                  <span>
+                    {" "}
+                    <FaRegEdit />
+                  </span>
+                  <span
+                    style={{
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                    onClick={()=>handleDelete(data?.data?._id)}
+                  
+                  >
+                    {" "}
+                    <RiDeleteBin5Fill style={{ color: "red" }} />
+                    <span  style={{ color: "red", fontSize: "1.1.1rem" }}>
+                      DELETE
+                    </span>
+                  </span>
+                </td>
+              </tr>   }  
+        
+            
+            </tbody>
+          </Table>
 
             <div style={{ textAlign: "center", width: "100%", margin: "auto" }}>
               <button
@@ -143,11 +166,11 @@ const OnSite = () => {
                 PRINT REPORT
               </button>
             </div>
-            <div className="save-as-draft-btn123">
+            {/* <div className="save-as-draft-btn123">
               <button className="btn1233" type="submit">
                 SUBMIT
               </button>
-            </div>
+            </div> */}
           </Form>
         </div>
       </div>
