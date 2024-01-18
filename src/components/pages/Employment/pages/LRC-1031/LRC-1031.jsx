@@ -4606,6 +4606,9 @@ export const LRC1031 = () => {
                   type={"radio"}
                   isValid
                 />
+              
+                
+
                 <Form.Check.Label style={{ marginRight: "15px" }}>
                   Yes
                 </Form.Check.Label>
@@ -4615,6 +4618,7 @@ export const LRC1031 = () => {
                 <Form.Check.Label>No</Form.Check.Label>
               </Form.Check>
             </div>
+            
           </Form.Group>
           <Form.Group
             className="mb-3"

@@ -1,21 +1,47 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Table } from "react-bootstrap";
 import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
-import { deleteData, getData } from "../../api/api.js";
+import { deleteData, getData, postData } from "../../api/api.js";
+import { showMsg } from "../../api/ShowMsg.jsx";
+
 
 const OnSite2 = () => {
   const navigate = useNavigate();
-  const [data, setData] = React.useState([]);
 
-  useEffect(() => {
-    getData(setData, "employee/getAllOnSiteFacility");
-  },[])
-  const handleDelete=(id)=>{
-    deleteData("employee/deleteOnSiteFacility",id)
+  const initialTrainingState = {
+    training: [
+      {
+        date: '',
+        duration: ''
+      }
+    ],
+    description: '',
+    employeeSignature: '',
+    employeeDate: '',
+    trainerSignature: '',
+    trainerDate: ''
+  };
+
+  
+  const [formData, setFormData] = useState(initialTrainingState);
+
+ 
+  const handleInputChange = (field, value) => {
+    setFormData({
+      ...formData,
+      [field]: value
+    });
+  };
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const emptyValues=Object.keys(formData).filter(key=>formData[key]==="");
+    if(emptyValues.length>0){
+      return showMsg("Error", `${emptyValues.join(",")}  cannot be empty`, "danger")
+    }
+    postData("employee/createOnSiteFacility", formData);navigate("/employee/training/on-site")
   }
-
   
   return (
     <>
@@ -35,11 +61,36 @@ const OnSite2 = () => {
       </div>
       <div>
         <div className="top-div-personal">
-         <Form >
+         <Form  style={{textAlign:"left",width:"100%"}}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Training Date </Form.Label>
-            <Form.Control type="date" />
+            <Form.Control name="date" onChange={(e)=>setFormData({...formData,training:[...formData.training,{date:e.target.value}]})} type="date" />
           </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Duration </Form.Label>
+            <Form.Control name="duration" onChange={(e)=>setFormData({...formData,training:[...formData.training,{duration:e.target.value}]})} type="text" />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Tranner Date </Form.Label>
+            <Form.Control name="trainerDate" onChange={(e)=>handleInputChange("trainerDate",e.target.value)} type="date" />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Description</Form.Label>
+            <Form.Control name="description" onChange={(e)=>handleInputChange("description",e.target.value)} type="text" />
+          </Form.Group>
+
+          <p>I <input style={{border:"none",width:"150px"}} type="text" placeholder="___________________" onChange={(e)=>handleInputChange("employeeDate",e.target.value)} name="employeeSignature" /> attest I have recieved facility  orrientation traning evident by the Signatures below,</p>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Employeer Signature </Form.Label>
+            <Form.Control name="employeeSignature" onChange={(e)=>handleInputChange("employeeSignature",e.target.value)} type="text" />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Trainer Signature / Creadational / Title / Date </Form.Label>
+            <Form.Control name="trainerSignature" onChange={(e)=>handleInputChange("trainerSignature",e.target.value)} type="text" />
+          </Form.Group>
+          <div style={{display:'flex',justifyContent:"center",marginTop:"2rem",marginBottom:'3rem'}}>
+          <Button style={{padding:"0.5rem 1rem"}} onClick={submitHandler} type="submit" >Submit</Button>
+          </div>
          </Form>
         </div>
       </div>

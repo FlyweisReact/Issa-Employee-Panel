@@ -81,6 +81,8 @@ import VisitorLog2 from "./components/EmployeeInformation/pages/TherapyNotes/Vis
 import MilageLog2 from "./components/EmployeeInformation/pages/TherapyNotes/MilageLog/MilageLog2";
 import Vitals2 from "./components/EmployeeInformation/pages/Vitals/Vitals2";
 import OnSite2 from "./components/EmployeeInformation/Traning/OnSite2";
+import Skills2 from "./components/EmployeeInformation/Traning/skills2";
+import EmployeeIn2 from "./components/EmployeeInformation/Traning/EmployeeIn2";
 function App() {
   return (
     <>
@@ -158,7 +160,9 @@ function App() {
         <Route path="/employee/training/on-site" element={<OnSite />} />
         <Route path="/employee/training/on-site2" element={<OnSite2 />} />
         <Route path="/employee/training/employee-in" element={<EmployeeIn />} />
+        <Route path="/employee/training/employee-in2" element={<EmployeeIn2 />} />
         <Route path="/employee/training/skills" element={<Skills />} />
+        <Route path="/employee/training/skills2" element={<Skills2 />} />
         <Route path="/employee/time-of-request" element={<TimeOfRequest />} />
         <Route path="/employee/vitals" element={<Vitals />} />
         <Route path="/employee/vitals/add" element={<Vitals2 />} />

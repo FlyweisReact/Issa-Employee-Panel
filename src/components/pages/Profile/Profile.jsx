@@ -4,6 +4,8 @@ import "./profile.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { getSingleUserData } from "../../../Baseurl";
+import { postData, updateAdminData } from "../../api/api";
+import { showMsg } from "../../api/ShowMsg";
 const Profile = () => {
   const [profileData, setProfileData] = useState({});
 
@@ -17,12 +19,74 @@ useEffect(() => {
   getProfile()
 },[])
 
+const updateHandler=()=>{
+  getProfile()
+}
+
+
+const [fullName, setFullName] = useState("");
+const [gender, setGender] = useState("");
+const [contactNumber, setContactNumber] = useState("");
+const [email, setEmail] = useState("");
+const [address, setAddress] = useState("");
+const [status, setStatus] = useState("");
+
+
+const [imageFile, setImageFile] = useState(null);
+
+
+const handleImageChange = (e) => {
+  const file = e.target.files[0];
+  setImageFile(file);
+};
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  const formData=new FormData();
+  if(imageFile){
+    formData.append('image',imageFile)
+  }
+  if(fullName){
+    formData.append('fullName',fullName)
+  }
+  if(gender){
+    formData.append('gender',gender)
+  }
+  if(contactNumber){
+    formData.append('contactNumber',contactNumber)
+  }
+  if(email){
+    formData.append('email',email)
+  }
+  if(address){
+    formData.append('address',address)
+  }
+  if(status){
+    formData.append('userType',status)
+  }
+  
+  console.log(fullName,gender,contactNumber,email,address,status,imageFile)
+updateAdminData("employee/updateProfile",formData).then((res)=>{
+  showMsg("Success", res.data.message, "success");
+  setAddress("");
+  setContactNumber("");
+  setEmail("");
+  setFullName("");
+  setGender("");
+  setStatus("");
+  setImageFile(null)
+  getProfile()
+})
+
+
+};
+
   return (
     <div className="main-div-profile important">
       <div className="profile">
         <h3>Profile</h3>
         <div className="profile-img">
-          <img src="/Profile/Profile.png" alt="Profile_Image" />'
+          <img style={{ width: "100px", height: "100px", borderRadius: "50%" }} src={profileData?.profilePic  || '/profile.png'} alt="Profile_Image" />'
         </div>
         <h4>{profileData?.fullName}</h4>
         <p style={{ color: "#787878" }}>
@@ -103,33 +167,42 @@ useEffect(() => {
       <div className="profile">
         <h3>Edit Profile</h3>
         <div className="profile-img">
-          <img src="/Profile/Profile.png" alt="Profile_Image" />'
-        </div>
+        <label htmlFor="imageInput">
+          <img src={profileData?.profilePic  } style={{width:"100px",height:"100px",borderRadius:"50%"}} alt="Profile_Image" />
+        </label>
+        <input
+          id="imageInput"
+          type="file"
+          accept="image/*"
+          style={{ display: 'none' }}
+          onChange={(e)=>setImageFile(e.target.files[0])}
+        />
+      </div>
 
         <div>
           <Form>
             <Form.Group className="mb-3">
-              <Form.Control type="text" placeholder="Full Name" />
+              <Form.Control name="fullName" onChange={(e)=>setFullName(e.target.value)} type="text" placeholder="Full Name" />
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Control type="text" placeholder="Gender" />
+              <Form.Control name="gender"  onChange={(e)=>setGender(e.target.value)} type="text" placeholder="Gender" />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Control type="number" placeholder="Contact Number" />
+              <Form.Control name="contactNumber" onChange={(e)=>setContactNumber(e.target.value)} type="number" placeholder="Contact Number" />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Control type="text" placeholder="Email" />
+              <Form.Control name="email" onChange={(e)=>setEmail(e.target.value)} type="text" placeholder="Email" />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Control type="text" placeholder="Address" />
+              <Form.Control name="address"  onChange={(e)=>setAddress(e.target.value)} type="text" placeholder="Address" />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Control type="text" placeholder="Status" />
+              <Form.Control name="status" onChange={(e)=>setStatus(e.target.value)} type="text" placeholder="Status" />
             </Form.Group>
 
             <Button
-             
+             onClick={handleSubmit}
               className="btn-profile"
              type="submit"
             >

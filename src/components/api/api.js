@@ -88,3 +88,7 @@ export const deleteData=(url,id,getData)=>{
     }
   });
 }
+
+export const updateAdminData=(url,data)=>{
+ return axios.put(`${Baseurl}${url}`,data,Auth())
+}

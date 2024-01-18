@@ -11,26 +11,38 @@ const OnSite = () => {
 
   useEffect(() => {
     getData(setData, "employee/getAllOnSiteFacility");
-  },[])
-  const handleDelete=(id)=>{
-    deleteData("employee/deleteOnSiteFacility",id)
-  }
+  }, []);
+  const handleDelete = (id) => {
+    deleteData("employee/deleteOnSiteFacility", id);
+  };
 
-  
   return (
     <>
       <div className="nav-wrap-personal">
         <div className="nav-div-personal1">
-          <img onClick={() => navigate('/employee/training')} src="/back_button2.png" alt="da" />
+          <img
+            onClick={() => navigate("/employee/training")}
+            src="/back_button2.png"
+            alt="da"
+          />
         </div>
         <div
           className="nav-div-personal"
-          style={{ width: "80%", marginBottom: "1rem",display: "flex", paddingRight: "1rem" }}
+          style={{
+            width: "80%",
+            marginBottom: "1rem",
+            display: "flex",
+            paddingRight: "1rem",
+          }}
         >
-          <p style={{ fontSize: ".9rem", fontWeight: "bold",flex: "1" }}>
+          <p style={{ fontSize: ".9rem", fontWeight: "bold", flex: "1" }}>
             ON SITE AND FACILITY ORIENTATION VERIFICATION
           </p>
-          <p><Button onClick={() => navigate("/employee/training/on-site2")}>+ NEW</Button></p>
+          <p>
+            <Button onClick={() => navigate("/employee/training/on-site2")}>
+              + NEW
+            </Button>
+          </p>
         </div>
       </div>
       <div>
@@ -71,86 +83,89 @@ const OnSite = () => {
             </p>
 
             <Table responsive>
-            <thead>
-          
-              <tr>
-                <th
-                  style={{
-                    backgroundColor: "#D1ECF0",
-                    borderRadius: "5px 0 0 0",
-                  }}
-                >
-                  <input type="checkbox" />
-                </th>
-                <th style={{ backgroundColor: "#D1ECF0" }}>
-                Training Date
-                </th>
-                <th style={{ backgroundColor: "#D1ECF0" }}>
-                  Duration
-                </th>
-                <th style={{ backgroundColor: "#D1ECF0" }}>Trainer Date</th>
-                <th style={{ backgroundColor: "#D1ECF0" }}>Employee Date</th>
-
-                {/* <th style={{ backgroundColor: "#D1ECF0" }}>Cash Manager</th> */}
-                <th
-                  style={{
-                    backgroundColor: "#D1ECF0",
-                    borderRadius: "0 5px 0 0",
-                  }}
-                ></th>
-              </tr>
-            </thead>  
-            <tbody>
-          {data?.message==='OnSiteFacility found.' &&
-          
-            
-            <tr >
-                <td>
-                  <input type="checkbox" />
-                  
-                </td>
-               
-                
-                <td>{data?.data?.training?.map((item) => item?.date?.split("T")[0]?.split("-").reverse().join("-")).join(",")}</td>
-                <td>{data?.data?.training?.map((item) => item?.duration).join(",")}</td>
-                <td>{data?.data?.trainerDate}</td>
-                <td>{data?.data?.employeeDate}</td>
-                
-                <td
-                  style={{
-                    display: "flex",
-                    gap: "1rem",
-                    fontWeight: "bold",
-                    color: "#1A9FB2",
-                    alignItems: "center",
-                    fontSize: "1.4rem",
-                  }}
-                >
-                  <span>
-                    {" "}
-                    <FaRegEdit />
-                  </span>
-                  <span
+              <thead>
+                <tr>
+                  <th
                     style={{
-                      cursor: "pointer",
-                      display: "flex",
-                      alignItems: "center",
+                      backgroundColor: "#D1ECF0",
+                      borderRadius: "5px 0 0 0",
                     }}
-                    onClick={()=>handleDelete(data?.data?._id)}
-                  
                   >
-                    {" "}
-                    <RiDeleteBin5Fill style={{ color: "red" }} />
-                    <span  style={{ color: "red", fontSize: "1.1.1rem" }}>
-                      DELETE
-                    </span>
-                  </span>
-                </td>
-              </tr>   }  
-        
-            
-            </tbody>
-          </Table>
+                    <input type="checkbox" />
+                  </th>
+                  <th style={{ backgroundColor: "#D1ECF0" }}>Training Date</th>
+                  <th style={{ backgroundColor: "#D1ECF0" }}>Duration</th>
+                  <th style={{ backgroundColor: "#D1ECF0" }}>Trainer Date</th>
+                  <th style={{ backgroundColor: "#D1ECF0" }}>Employee Date</th>
+
+                  {/* <th style={{ backgroundColor: "#D1ECF0" }}>Cash Manager</th> */}
+                  <th
+                    style={{
+                      backgroundColor: "#D1ECF0",
+                      borderRadius: "0 5px 0 0",
+                    }}
+                  ></th>
+                </tr>
+              </thead>
+              <tbody>
+                {data?.message === "OnSiteFacility found." && (
+                  <tr>
+                    <td>
+                      <input type="checkbox" />
+                    </td>
+
+                    <td>
+                      {data?.data?.training
+                        ?.map((item) =>
+                          item?.date
+                            ?.split("T")[0]
+                            ?.split("-")
+                            .reverse()
+                            .join("-")
+                        )
+                        .join(",")}
+                    </td>
+                    <td>
+                      {data?.data?.training
+                        ?.map((item) => item?.duration)
+                        .join(",")}
+                    </td>
+                    <td>{data?.data?.trainerDate}</td>
+                    <td>{data?.data?.employeeDate}</td>
+
+                    <td
+                      style={{
+                        display: "flex",
+                        gap: "1rem",
+                        fontWeight: "bold",
+                        color: "#1A9FB2",
+                        alignItems: "center",
+                        fontSize: "1.4rem",
+                      }}
+                    >
+                      <span>
+                        {" "}
+                        <FaRegEdit />
+                      </span>
+                      <span
+                        style={{
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                        onClick={() => handleDelete(data?.data?._id)}
+                      >
+                        {" "}
+                        <RiDeleteBin5Fill style={{ color: "red" }} />
+                        <span style={{ color: "red", fontSize: "1.1.1rem" }}>
+                          DELETE
+                        </span>
+                      </span>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </Table>
 
             <div style={{ textAlign: "center", width: "100%", margin: "auto" }}>
               <button

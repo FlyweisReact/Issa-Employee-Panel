@@ -1,12 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import HOC from "../layout/HOC";
 import { MdDashboardCustomize, MdOutlineLibraryBooks } from "react-icons/md";
 import { FaUserFriends } from "react-icons/fa";
 
 import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
+import { getData } from "../api/api";
+import axios from "axios";
+// import { baseUrl } from "../BaseUrl";
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [data, setData] = React.useState([]);
+  const getAllPatients = () => {
+  //  axios.get(`${baseUrl}/employee/getAllPatients`).then((res)=>{
+    // console.log(res)
+  //  })
+  }
+  useEffect(() => {
+    getAllPatients()
+  },[])
   return (
     <>
       <div className="main-div-dashboard important">

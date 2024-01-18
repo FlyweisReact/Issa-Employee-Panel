@@ -138,12 +138,13 @@ const Sidebar2 = ({ hamb, setHamb }) => {
             <img
               style={{
                 maxWidth: "80px",
+                maxHeight: "80px",
                 width: "auto",
                 margin: "auto",
                 marginBottom: ".5rem",
                 borderRadius: "50%",
               }}
-              src="/Profile/Profile.png"
+              src={employeeData?.profilePic}
               alt="logo"
             />
             <div class="text-sm" style={{ lineHeight: ".6rem" }}>
