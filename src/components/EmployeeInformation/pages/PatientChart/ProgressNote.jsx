@@ -89,8 +89,15 @@ const deleteProgressNoteHandler = (id) => {
                     <td>{data?.residentName}</td>
                     <td>{data?.admitDate?.split("T")[0]?.split("-").reverse().join("-")}</td>
                     <td>{data?.shift}</td>
-                    <td>{data?.therapy}</td>
-                    <td>{data?.mood}</td>
+                    <td>{Object.keys(data)
+  .filter((key) => key.includes("Therapy") && data[key] === true)
+  .join(", ")}</td>
+
+
+
+                    <td>{Object.keys(data)
+  .filter((key) => key.includes("isolation" || "anxious" || "depressed" || "existed" || "respondingToInternalStimuli" || "inappropriateSexualComment" || "verballyAggressive" || "physicallyAggressive" || "agitated" || "suicidalIdeation" ) && data[key] === true)
+  .join(", ")}</td>
                     <td>{data?.transportation?"Yes":"No"}</td>
                     <td
                       style={{
