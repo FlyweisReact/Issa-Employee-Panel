@@ -83,6 +83,9 @@ import Vitals2 from "./components/EmployeeInformation/pages/Vitals/Vitals2";
 import OnSite2 from "./components/EmployeeInformation/Traning/OnSite2";
 import Skills2 from "./components/EmployeeInformation/Traning/skills2";
 import EmployeeIn2 from "./components/EmployeeInformation/Traning/EmployeeIn2";
+import Reconciliations2 from "./components/EmployeeInformation/pages/Medications/Reconsilations2";
+import MedicautionCount2 from "./components/EmployeeInformation/pages/Medications/MedicautionCount2";
+import InformedConsent2 from "./components/EmployeeInformation/pages/Medications/InformedConsent2";
 function App() {
   return (
     <>
@@ -172,13 +175,25 @@ function App() {
           element={<Reconciliations />}
         />
         <Route
+          path="/employee/medications/reconciliations2"
+          element={<Reconciliations2 />}
+        />
+        <Route
           path="/employee/medications/medication-count"
           element={<MedicationCount />}
+        />
+        <Route
+          path="/employee/medications/medication-count2"
+          element={<MedicautionCount2 />}
         />
         <Route path="/employee/medications/mars" element={<MARS />} />
         <Route
           path="/employee/medications/informed-consent"
           element={<InformedConsent />}
+        />
+        <Route
+          path="/employee/medications/informed-consent2"
+          element={<InformedConsent2 />}
         />
         <Route path="/employee/medications/prn-form" element={<PRNform />} />
         <Route

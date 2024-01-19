@@ -108,62 +108,65 @@ const OnSite = () => {
                 </tr>
               </thead>
               <tbody>
-                {data?.message === "OnSiteFacility found." && (
+              {data?.data?.length > 0 && (
+                data?.data?.map((item) => (
                   <tr>
-                    <td>
-                      <input type="checkbox" />
-                    </td>
+                  <td>
+                    <input type="checkbox" />
+                  </td>
 
-                    <td>
-                      {data?.data?.training
-                        ?.map((item) =>
-                          item?.date
-                            ?.split("T")[0]
-                            ?.split("-")
-                            .reverse()
-                            .join("-")
-                        )
-                        .join(",")}
-                    </td>
-                    <td>
-                      {data?.data?.training
-                        ?.map((item) => item?.duration)
-                        .join(",")}
-                    </td>
-                    <td>{data?.data?.trainerDate}</td>
-                    <td>{data?.data?.employeeDate}</td>
+                  <td>
+                    {data?.data?.training
+                      ?.map((item) =>
+                        item?.date
+                          ?.split("T")[0]
+                          ?.split("-")
+                          .reverse()
+                          .join("-")
+                      )
+                      .join(",")}
+                  </td>
+                  <td>
+                    {data?.data?.training
+                      ?.map((item) => item?.duration)
+                      .join(",")}
+                  </td>
+                  <td>{data?.data?.trainerDate}</td>
+                  <td>{data?.data?.employeeDate}</td>
 
-                    <td
+                  <td
+                    style={{
+                      display: "flex",
+                      gap: "1rem",
+                      fontWeight: "bold",
+                      color: "#1A9FB2",
+                      alignItems: "center",
+                      fontSize: "1.4rem",
+                    }}
+                  >
+                    <span>
+                      {" "}
+                      <FaRegEdit />
+                    </span>
+                    <span
                       style={{
+                        cursor: "pointer",
                         display: "flex",
-                        gap: "1rem",
-                        fontWeight: "bold",
-                        color: "#1A9FB2",
                         alignItems: "center",
-                        fontSize: "1.4rem",
                       }}
+                      onClick={() => handleDelete(data?.data?._id)}
                     >
-                      <span>
-                        {" "}
-                        <FaRegEdit />
+                      {" "}
+                      <RiDeleteBin5Fill style={{ color: "red" }} />
+                      <span style={{ color: "red", fontSize: "1.1.1rem" }}>
+                        DELETE
                       </span>
-                      <span
-                        style={{
-                          cursor: "pointer",
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                        onClick={() => handleDelete(data?.data?._id)}
-                      >
-                        {" "}
-                        <RiDeleteBin5Fill style={{ color: "red" }} />
-                        <span style={{ color: "red", fontSize: "1.1.1rem" }}>
-                          DELETE
-                        </span>
-                      </span>
-                    </td>
-                  </tr>
-                )}
+                    </span>
+                  </td>
+                </tr>
+                ))
+              )}
+                
               </tbody>
             </Table>
 

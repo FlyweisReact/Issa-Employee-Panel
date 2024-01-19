@@ -63,22 +63,7 @@ const Login = () => {
             Login
           </button>
 
-          <h2
-            style={{
-              fontWeight: "bold",
-              fontSize: "1.0rem",
-              color: "black",
-              marginTop: "2rem",
-            }}
-          >
-            Don't have an Account yet ? Sign Up Now
-          </h2>
-          <button
-            onClick={() => navigate("/register")}
-            className="register-btn"
-          >
-            REGISTER NOW
-          </button>
+         
         </Form>
       </div>
     </div>

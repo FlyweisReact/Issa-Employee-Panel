@@ -64,8 +64,8 @@ export const OfferLetter = () => {
       <div className="top-div-personal">
         <Form className="form-personal offer-letter">
           <p style={{ display: "flex" }}>
-            Today’s Date:{" "}
-            <span style={{ textDecoration: " dotted underline" }}>
+            Today’s Date: {" "} {" "}
+            <span style={{ textDecoration: " dotted underline",paddingLeft:"1rem" }}>
               {" "}
               {letter?.offerDate
                 ?.split("T")[0]
@@ -76,24 +76,24 @@ export const OfferLetter = () => {
           </p>
           <p style={{ display: "flex" }}>
             Dear{" "}
-            <span style={{ textDecoration: " dotted underline" }}>
+            <span style={{ textDecoration: " dotted underline",paddingLeft:"1rem" }}>
               {letter?.employeeName}
             </span>
             ,
           </p>
           <p>
             Congratulations!{" "}
-            <span style={{ textDecoration: " dotted underline" }}>
+            <span style={{ textDecoration: " dotted underline",paddingLeft:".5rem",paddingRight:".5rem" }}>
               {letter?.companyName}
             </span>{" "}
             is pleased to offer you the position of Behavior Health Technician.
             We trust that this offer will be met with your approval. As per our
             discussion, this position is full time, and your starting pay{" "}
-            <span style={{ textDecoration: " dotted underline" }}>
+            <span style={{ textDecoration: " dotted underline" ,paddingLeft:".5rem"}}>
               {letter?.startingPay}
             </span>
             . Your first day of work will be on{" "}
-            <span style={{ textDecoration: " dotted underline" }}>
+            <span style={{ textDecoration: " dotted underline",paddingLeft:".5rem" }}>
               {letter?.startDate?.split("T")[0].split("-").reverse().join("/")}
             </span>
             . This offer is conditional upon satisfactory completion of your

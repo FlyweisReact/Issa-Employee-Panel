@@ -9,6 +9,13 @@ body {
   /* font-size: 62.5%; */
   margin: 0;
   font-family: Quicksand !important;
+
+
+}
+
+input[type="checkbox"] {
+ width: 10px !important;
+  height: 10px !important;
 }
 
 code {

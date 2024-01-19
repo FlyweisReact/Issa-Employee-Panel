@@ -1,8 +1,77 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Form, Table } from "react-bootstrap";
+import { Button, Form, Table } from "react-bootstrap";
+import { FaRegEdit } from "react-icons/fa";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+import { deleteData, getData } from "../../../api/api.js";
+import axios from "axios";
+import { Auth, Baseurl } from "../../../../Baseurl";
+
+
 const Reconciliations = () => {
   const navigate = useNavigate();
+const [patients,setPatients]=useState([])
+const [data,setData]=useState([])
+const [allergiesAndReactions,setAllergiesAndReactions]=useState('')
+const [patientId,setPatientId]=useState('')
+
+const initialPatientState = {
+  patientId: '',
+  residentName: '',
+  allergiesAndReactions: '',
+  medications: [
+    {
+      name: '',
+      dose: '',
+      route: '',
+      frequency: '',
+      startDate: '',
+      stopChangeDate: '',
+      reasonForStopChange: '',
+    },
+  ],
+  providerName: '',
+  providerSignature: '',
+  date: '',
+};
+
+const handleDelete = (id) => {
+  deleteData("employee/deleteMedicationReconciliation", id);
+}
+
+const getAllData = () => {
+  console.log(patientId, allergiesAndReactions);
+  axios.get(`${Baseurl}employee/getAllMedicationReconciliation`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    },
+    params: {
+      patientId: patientId ? patientId : null,
+      allergiesAndReactions: allergiesAndReactions ? allergiesAndReactions : null
+    }
+  })
+  .then((res) => {
+    
+    console.log(res.data);
+    if(res.data?.data?.length === 0){
+      setData([]);
+      return
+    }
+    setData(res.data?.data);
+  })
+  .catch((error) => {
+   
+    console.error(error);
+  });
+};
+useEffect(() => {
+  
+  getData(setPatients, 'employee/getPatient');
+  
+
+ getAllData();
+}, [patientId, allergiesAndReactions]);
+  
   return (
     <>
       <div className="nav-wrap-personal">
@@ -11,140 +80,112 @@ const Reconciliations = () => {
         </div>
         <div
           className="nav-div-personal"
-          style={{ width: "80%", marginBottom: "1rem" }}
+          style={{ width: "80%", marginBottom: "1rem",display:"flex", }}
         >
-          <p style={{ fontSize: ".9rem", fontWeight: "bold" }}>
+          <p style={{ fontSize: ".9rem", fontWeight: "bold",flex:"1" }}>
             MEDICATION RECONCILIATION
           </p>
-          <p></p>
+          <p><Button onClick={() => navigate("/employee/medications/reconciliations2")} style={{paddingRight:"1rem"}} variant="primary">+ Add</Button></p>
         </div>
       </div>
       <div>
         <div className="top-div-personal">
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Resident’s Name</Form.Label>
-            <Form.Control type="text" placeholder="Enter text" />
+            <Form.Select onChange={(e) => setPatientId(e.target.value)} aria-label="Default select example">
+              <option>Select Resident Name</option>
+              {patients?.data?.map((patient)=>(
+                <option value={  patient._id}>{patient.fullName}</option>
+              ))}
+            </Form.Select>
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Allergies and reaction</Form.Label>
-            <Form.Control type="text" placeholder="Enter text" />
+            <Form.Control  onChange={(e) => setAllergiesAndReactions(e.target.value)} type="text" placeholder="Enter text" />
           </Form.Group>
-          <Table
-            style={{ borderColor: "black", textAlign: "center" }}
-            responsive
-            bordered
-          >
-            <thead>
+          <Table responsive>
+          <thead>
+            <tr>
+              <th
+                style={{
+                  backgroundColor: "#D1ECF0",
+                  borderRadius: "5px 0 0 0",
+                }}
+              >
+                <input type="checkbox" />
+              </th>
+              <th style={{ backgroundColor: "#D1ECF0" }}>Name of Medication</th>
+              <th style={{ backgroundColor: "#D1ECF0" }}>Dose</th>
+              <th style={{ backgroundColor: "#D1ECF0" }}>Frequency</th>
+              <th style={{ backgroundColor: "#D1ECF0" }}>Start Date</th>
+              <th style={{ backgroundColor: "#D1ECF0" }}>Stop /Change Date</th>
+              <th style={{ backgroundColor: "#D1ECF0" }}>Reason for Stop/Change</th>
+              <th style={{ backgroundColor: "#D1ECF0" }}></th>
+
+             
+              <th
+                style={{
+                  backgroundColor: "#D1ECF0",
+                  borderRadius: "0 5px 0 0",
+                }}
+              ></th>
+            </tr>
+          </thead>
+          <tbody>
+          {data?.length > 0 && (
+            data?.map((item) => (
               <tr>
-                <th>Name of Medication</th>
-                <th> Dose</th>
-                <th>Route</th>
-                <th>Frequency</th>
-                <th>Start Date</th>
-                <th>Stop/Change Date</th>
-                <th>Reason for Stop/Change</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr style={{ border: "1px solid black" }}>
-                <td> </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td> </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td> </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td> </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td> </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td> </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td> </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </Table>
+              <td>
+                <input type="checkbox" />
+              </td>
 
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Provider Name:
-            </Form.Label>
-            <Form.Control type="text" placeholder="Enter text" />
-          </Form.Group>
-          <div
-            style={{ maxWidth: "370px", width: "auto" }}
-            className="save-as-draft-btn-personal"
-          >
-            <div>
-              <img
-                style={{ height: "80%", width: "100%", border: "1px " }}
-                src="/Dashboard/save.png"
-                alt=""
-              />
-            </div>
-            <div className="save-as-draft-btn">
-              <button style={{ border: "1px solid #0C5C75", color: "#0C5C75" }}>
-                SAVE AS DRAFT
-              </button>
-              <button style={{ backgroundColor: "#0C5C75", color: "white" }}>
-                SAVED AND SAVED
-              </button>
-            </div>
-          </div>
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Date:
-            </Form.Label>
-            <Form.Control type="date" placeholder="Enter text" />
-          </Form.Group>
+              <td>
+               {item?.medications?.[0]?.name}
+              </td>
+              <td>
+                {item?.medications?.[0]?.dose}
+              </td>
+              <td>{item?.medications?.[0]?.frequency}</td>
+              <td>{item?.medications?.[0]?.startDate?.split("T")?.[0]?.split("-")?.reverse().join("-")}</td>
+              <td>{item?.medications?.[0]?.stopChangeDate?.split("T")?.[0]?.split("-")?.reverse().join("-")}</td>
+              <td>{item?.medications?.[0]?.reasonForStopChange}</td>
 
+              <td
+                style={{
+                  display: "flex",
+                  gap: "1rem",
+                  fontWeight: "bold",
+                  color: "#1A9FB2",
+                  alignItems: "center",
+                  fontSize: "1.4rem",
+                }}
+              >
+                <span>
+                  {" "}
+                  <FaRegEdit />
+                </span>
+                <span
+                  style={{
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                  onClick={() => handleDelete(item?._id)}
+                >
+                  {" "}
+                  <RiDeleteBin5Fill style={{ color: "red" }} />
+                  <span style={{ color: "red", fontSize: "1.1.1rem" }}>
+                    DELETE
+                  </span>
+                </span>
+              </td>
+            </tr>
+            ))
+          )}
+            
+          </tbody>
+        </Table>
+          
           <div style={{ textAlign: "center", width: "100%", margin: "auto" }}>
             <button
               style={{
@@ -159,11 +200,7 @@ const Reconciliations = () => {
               PRINT REPORT
             </button>
           </div>
-          <div className="save-as-draft-btn123">
-            <button className="btn1233" type="submit">
-              SUBMIT
-            </button>
-          </div>
+          
         </div>
       </div>
     </>
