@@ -27,12 +27,12 @@ const [formData, setFormData] = useState({
   };
   const submitHandler = (e) => {
     return console.log(formData);
-    const emptyValues=Object.keys(patientData).filter(key=>patientData[key]==="");
+    const emptyValues=Object.keys(formData).filter(key=>formData[key]==="");
     if(emptyValues.length>0){
       return showMsg("Error", `${emptyValues.join(",")}  cannot be empty`, "danger")
     }
-    postData("employee/createMedicationReconciliation", patientData)
-    setPatientData(initialPatientState);
+    postData("employee/createMedicationReconciliation", formData)
+    setformData(initialPatientState);
   }
   return (
     <>
