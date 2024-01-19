@@ -86,6 +86,7 @@ import EmployeeIn2 from "./components/EmployeeInformation/Traning/EmployeeIn2";
 import Reconciliations2 from "./components/EmployeeInformation/pages/Medications/Reconsilations2";
 import MedicautionCount2 from "./components/EmployeeInformation/pages/Medications/MedicautionCount2";
 import InformedConsent2 from "./components/EmployeeInformation/pages/Medications/InformedConsent2";
+import MARS2 from "./components/EmployeeInformation/pages/Medications/MARS2";
 function App() {
   return (
     <>
@@ -187,6 +188,7 @@ function App() {
           element={<MedicautionCount2 />}
         />
         <Route path="/employee/medications/mars" element={<MARS />} />
+        <Route path="/employee/medications/mars2" element={<MARS2 />} />
         <Route
           path="/employee/medications/informed-consent"
           element={<InformedConsent />}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Form, Table } from "react-bootstrap";
+import { Form, Table, Button } from "react-bootstrap";
 import "./mars.css";
 const MARS = () => {
   const suggestions = [
@@ -44,12 +44,13 @@ const MARS = () => {
         </div>
         <div
           className="nav-div-personal"
-          style={{ width: "80%", marginBottom: "1rem" }}
+          style={{ width: "80%", marginBottom: "1rem",display:"flex", }}
         >
-          <p style={{ fontSize: ".9rem", fontWeight: "bold" }}>
+          <p style={{ fontSize: ".9rem", fontWeight: "bold",flex:"1" }}>
             MEDICATION ADMINISTRATION RECORD
           </p>
-          <p></p>
+          <p>
+          <Button style={{marginRight:"1rem"}} variant="primary" onClick={() => navigate("/employee/medications/mars2")}>+ Add</Button></p>
         </div>
       </div>
       <div>
