@@ -37,7 +37,13 @@ export const Personal = () => {
 
   const submitHandler=(e)=>{
     e.preventDefault()
-    console.log(formData);
+    const emptyValues = Object.values(formData).filter(x => x === "");
+
+    if (emptyValues.length > 0) {
+      showMsg("Error", `${Object.keys(formData).filter(x => formData[x] === "")} cannot be empty`, "danger");
+      return;
+    }
+    
     try {
       
    
@@ -235,7 +241,7 @@ export const Personal = () => {
 Signature :
             </Form.Label>
             <Form.Control
-              type="number" 
+              type="text" 
               onChange={(e) => updateField("savedSigned", e.target.value)}
               placeholder="Enter Emergency Contact Number"
             />

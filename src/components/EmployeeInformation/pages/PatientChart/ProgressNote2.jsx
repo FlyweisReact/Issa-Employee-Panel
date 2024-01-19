@@ -67,12 +67,20 @@ const ProgressNote2 = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(patientData);
+    const emptyValues = Object.values(patientData).filter(
+      (x) => x === "" 
+    )
+    if (emptyValues.length > 0) {
+      showMsg("Error", `${Object.keys(patientData).filter((x) => patientData[x] === "")} cannot be empty`, "danger");
+    return
+    } 
     postData(
       "employee/createProgressNote",
       patientData,
       getData(setPatients, "employee/getPatient")
     )
       .then((res) => {
+        console.log()
         showMsg("Success", res.data?.message, "success");
       })
       .catch((err) => {

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import HOC from "../layout/HOC";
 import { MdDashboardCustomize, MdOutlineLibraryBooks } from "react-icons/md";
 import { FaUserFriends } from "react-icons/fa";
@@ -11,10 +11,11 @@ import axios from "axios";
 const Dashboard = () => {
   const navigate = useNavigate();
   const [data, setData] = React.useState([]);
+  const [upcommingPatinets, setUpcommingPatinets] = useState([]);
   const getAllPatients = () => {
-  //  axios.get(`${baseUrl}/employee/getAllPatients`).then((res)=>{
-    // console.log(res)
-  //  })
+  getData(setData, "employee/getAllPatient");
+
+  getData(setUpcommingPatinets, "employee/getAllUpcomingAppointments");
   }
   useEffect(() => {
     getAllPatients()
@@ -199,7 +200,7 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="right-div-dashboard">
-          <div className="right-div-dashboard1">
+          <div style={{visibility:"hidden"}} className="right-div-dashboard1">
             <h6 style={{ fontWeight: "bold" }}> Appointment Requests</h6>{" "}
             <div
               style={{
@@ -295,7 +296,10 @@ const Dashboard = () => {
               {" "}
               Next Patient Details
             </h6>{" "}
-            <div
+            {upcommingPatinets?.data?.length>0 && upcommingPatinets?.data?.splice(0,1).map((item, index) => (
+              
+          
+            <div key={index}
               style={{
                 boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
                 borderRadius: "8px",
@@ -306,7 +310,7 @@ const Dashboard = () => {
                 <img src="/Assigned_Patient/patient.png" alt="51" />
               </div>
               <div>
-                <p style={{ color: "#0C5C75", lineHeight: 1 }}>Patient 1</p>
+                <p style={{ color: "#0C5C75", lineHeight: 1 }}>{item.name}</p>
                 <p className="para-assigned">
                   <img src="/Assigned_Patient/calender.png" alt="clock" />
 
@@ -332,7 +336,7 @@ const Dashboard = () => {
                   <span>6 June-21 June</span>
                 </p>
               </div>
-            </div>
+            </div>  ))}
           </div>
           <div className="right-div-dashboard123">
             <div>

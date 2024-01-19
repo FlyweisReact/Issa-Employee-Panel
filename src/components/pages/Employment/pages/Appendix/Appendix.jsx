@@ -53,6 +53,10 @@ export const Appendix = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const emptyValues = Object.values(employeeData).filter((x) => x === "");
+    // if(emptyValues.length > 0){
+    //   showMsg("Error", `${Object.keys(employeeData).filter((x) => employeeData[x] === "")} cannot be empty`, "danger");
+    // }
     if (closeContact) {
       employeeData.closeContactWithActiveTB = closeContact;
     }

@@ -4,6 +4,7 @@ import "./Assigned.css";
 import axios from "axios";
 import { Baseurl, Auth } from "../../../Baseurl";
 import { useNavigate } from "react-router-dom";
+import { getData } from "../../api/api";
 
 
 const Assigned_Patient = () => {
@@ -13,25 +14,9 @@ const Assigned_Patient = () => {
   const navigate = useNavigate();
   const getAllUpcomingPatients = () => {
 
-    axios.get(`${Baseurl}employee/getAllPastAppointments`, Auth()).then((res) => {
-      console.log(res.data);
-      setUpcommingPatients(res.data?.data);
-    }).catch((err) => {
-      if(err.response.status === 404){
-      setUpcommingPatients([]);
-      }
-      console.error(err);
-    });
-
-    axios.get(`${Baseurl}employee/getAllUpcomingAppointments`, Auth()).then((res) => {
-      console.log(res.data?.data);
-      setPastPatients(res.data?.data);
-    }).catch((err) => {
-      if(err.response.status === 404){
-      setPastPatients([]);
-      }
-      console.error(err);
-    })
+   getData(setUpcommingPatients, "employee/getAllUpcomingAppointments");
+   
+   getData(setPastPatients, "employee/getAllPastAppointments");
 
 
   };
@@ -44,7 +29,7 @@ const Assigned_Patient = () => {
       <div className="upcoming-assigned">
         <h3>Upcoming Patient</h3>
         <div className="upcoming-div-assigned">
-        {upcommmingPatients?.map((i, index) => (
+        {upcommmingPatients?.data?.length>0 && upcommmingPatients?.data?.map((i, index) => (
        
           <div className="img-div-assigned" key={index}>
             <div>
@@ -84,7 +69,7 @@ const Assigned_Patient = () => {
       <div className="upcoming-assigned">
         <h3>Past Patient</h3>
         <div className="upcoming-div-assigned">
-        {upcommmingPatients && upcommmingPatients.map((item, index) => (
+        {pastPatients?.data?.length>0 && pastPatients?.data?.map((item, index) => (
           <div className="img-div-assigned" key={index}>
             <div>
               <img src="/Assigned_Patient/patient.png" alt="51" />
