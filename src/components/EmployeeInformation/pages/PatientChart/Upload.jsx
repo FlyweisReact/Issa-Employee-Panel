@@ -41,7 +41,9 @@ const Upload = () => {
 if(!patientId || !file){
   return showMsg("Error", "Please select patient and file","danger")
 }
-    postData("employee/uploadDocuments", formData)
+    postData("employee/createUploadDocument", formData)
+    setFile(null)
+    
   }
   
   return (
