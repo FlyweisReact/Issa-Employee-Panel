@@ -94,33 +94,7 @@ useEffect(() => {
             </tbody>
           </Table>
 
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Drivers Signature:
-            </Form.Label>
-            <Form.Control type="text" placeholder="Enter text" />
-          </Form.Group>
-          <div
-            style={{ maxWidth: "370px", width: "auto" }}
-            className="save-as-draft-btn-personal"
-          >
-            <div>
-              <img
-                style={{ height: "80%", width: "100%", border: "1px " }}
-                src="/Dashboard/save.png"
-                alt=""
-              />
-            </div>
-            <div className="save-as-draft-btn">
-              <button style={{ border: "1px solid #0C5C75", color: "#0C5C75" }}>
-                SAVE AS DRAFT
-              </button>
-              <button style={{ backgroundColor: "#0C5C75", color: "white" }}>
-                SAVED AND SAVED
-              </button>
-            </div>
-          </div>
-
+          
           <div style={{ textAlign: "center", width: "100%", margin: "auto" }}>
             <button
               style={{
@@ -135,11 +109,7 @@ useEffect(() => {
               PRINT REPORT
             </button>
           </div>
-          <div className="save-as-draft-btn123">
-            <button className="btn1233" type="submit">
-              SUBMIT
-            </button>
-          </div>
+         
         </div>
       </div>
     </>

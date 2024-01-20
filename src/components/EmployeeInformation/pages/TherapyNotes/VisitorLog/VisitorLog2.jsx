@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { Button, Form, Table } from "react-bootstrap";
 import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin5Fill } from "react-icons/ri";
-import { Auth, showMsg , Baseurl} from "../../../../../Baseurl";
+import { Auth,  Baseurl} from "../../../../../Baseurl";
 import axios from "axios";
+import { showMsg } from "../../../../api/ShowMsg";
 const VisitorLog2 = () => {
   const navigate = useNavigate();
 
@@ -27,6 +28,11 @@ const VisitorLog2 = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     // return console.log(formData);
+    const emptyValues = Object.values(formData).some((value) => value === "");
+    if (emptyValues) {
+      showMsg("Error", `${Object.keys(formData).filter((key) => formData[key] === "")} is required`, "danger"); 
+      return;
+    }
     try {
       axios
         .post(`${Baseurl}employee/createVisitLog`, formData, Auth())

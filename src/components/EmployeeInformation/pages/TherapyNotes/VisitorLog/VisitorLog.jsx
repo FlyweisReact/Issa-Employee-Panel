@@ -74,7 +74,7 @@ const VisitorLog = () => {
             {visitorLog && visitorLog.map((item, index) => (
           
               <tr style={{ border: "1px solid black" }}>
-                <td>{item.date}</td>
+                <td>{item.date?.split("T")[0].split("-").reverse().join("-")}</td>
                 <td>{item.visitorName}</td>
                 <td>{item.timeIn}</td>
                 <td>{item.timeOut}</td>

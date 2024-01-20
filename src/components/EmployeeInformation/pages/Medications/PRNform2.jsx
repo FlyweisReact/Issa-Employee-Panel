@@ -8,13 +8,12 @@ import axios from "axios";
 import { Auth, Baseurl } from "../../../../Baseurl";
 
 
-const MedicationCount = () => {
+const InformedConsent = () => {
   const navigate = useNavigate();
 const [patients,setPatients]=useState([])
 const [data,setData]=useState([])
 const [allergiesAndReactions,setAllergiesAndReactions]=useState('')
 const [patientId,setPatientId]=useState('')
-const [countType,setCountType]=useState('')
 
 const initialPatientState = {
   patientId: '',
@@ -37,19 +36,18 @@ const initialPatientState = {
 };
 
 const handleDelete = (id) => {
-  deleteData("employee/deleteMedicationOpioidCount", id);
+  deleteData("employee/deleteInformedConsentForMedication", id);
 }
 
 const getAllData = () => {
   console.log(patientId, allergiesAndReactions);
-  axios.get(`${Baseurl}employee/getAllMedicationOpioidCount`, {
+  axios.get(`${Baseurl}employee/getAllInformedConsentForMedication`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`
     },
     params: {
       patientId: patientId ? patientId : null,
-      allergiesAndReactions: allergiesAndReactions ? allergiesAndReactions : null,
-      countType: countType ? countType : null
+      allergiesAndReactions: allergiesAndReactions ? allergiesAndReactions : null
     }
   })
   .then((res) => {
@@ -72,7 +70,7 @@ useEffect(() => {
   
 
  getAllData();
-}, [patientId, allergiesAndReactions,countType]);
+}, [patientId, allergiesAndReactions]);
   
   return (
     <>
@@ -82,20 +80,12 @@ useEffect(() => {
         </div>
         <div
           className="nav-div-personal"
-          style={{ width: "80%", marginBottom: "1rem",display:"flex",justifyContent:"space-between" }}
+          style={{ width: "80%", marginBottom: "1rem",display:"flex", }}
         >
-        <p></p>
-          <p style={{ fontSize: ".9rem", fontWeight: "bold", }}>
-            <Form.Group  style={{width:"200px",border:"none"}} className="mb-3" controlId="formBasicEmail">
-            
-              <Form.Select style={{border:"none"}}  onChange={(e) => setPatientId(e.target.value)} aria-label="Default select example">
-               
-                <option value="medication">MEDICATION COUNT</option>
-                <option value="Opioid">OPIOID COUNT CONTROL </option>
-               </Form.Select>
-            </Form.Group>
+          <p style={{ fontSize: ".9rem", fontWeight: "bold",flex:"1" }}>
+          INFORMEDCONSENT FOR MEDIACTIONS
           </p>
-          <p><Button onClick={() => navigate("/employee/medications/medication-count2")} style={{paddingRight:"1rem",marginRight:"1rem"  }} variant="primary">+ Add</Button></p>
+          <p><Button onClick={() => navigate("/employee/medications/informed-consent2")} style={{paddingRight:"1rem"}} variant="primary">+ Add</Button></p>
         </div>
       </div>
       <div>
@@ -110,8 +100,8 @@ useEffect(() => {
             </Form.Select>
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Date Of Birth</Form.Label>
-            <Form.Control  onChange={(e) => setAllergiesAndReactions(e.target.value)} type="date" placeholder="Enter text" />
+            <Form.Label>Allergies and reaction</Form.Label>
+            <Form.Control  onChange={(e) => setAllergiesAndReactions(e.target.value)} type="text" placeholder="Enter text" />
           </Form.Group>
           <Table responsive>
           <thead>
@@ -124,12 +114,12 @@ useEffect(() => {
               >
                 <input type="checkbox" />
               </th>
-              <th style={{ backgroundColor: "#D1ECF0" }}>Name of Medication </th>
-              <th style={{ backgroundColor: "#D1ECF0" }}>Dose</th>
-              <th style={{ backgroundColor: "#D1ECF0" }}>Prescription Instructor</th>
-              <th style={{ backgroundColor: "#D1ECF0" }}>Prescribing Provider</th>
-              <th style={{ backgroundColor: "#D1ECF0" }}>Beginning Count</th>
-              <th style={{ backgroundColor: "#D1ECF0" }}>Ending Count</th>
+              <th style={{ backgroundColor: "#D1ECF0" }}>Admit Date</th>
+              <th style={{ backgroundColor: "#D1ECF0" }}>Medication / Instructions</th>
+              <th style={{ backgroundColor: "#D1ECF0" }}>Medication Start Date</th>
+              <th style={{ backgroundColor: "#D1ECF0" }}>D/C Date</th>
+              <th style={{ backgroundColor: "#D1ECF0" }}>Resident / Guardian Initial</th>
+              <th style={{ backgroundColor: "#D1ECF0" }}>Staff Initial</th>
               <th style={{ backgroundColor: "#D1ECF0" }}></th>
 
              
@@ -144,21 +134,21 @@ useEffect(() => {
           <tbody>
           {data?.length > 0 && (
             data?.map((item) => (
-              <tr>
+              <tr key={item?._id}>
               <td>
                 <input type="checkbox" />
               </td>
 
               <td>
-               {item?.medicationName}
+               {item?.admitDate?.split("T")?.[0]?.split("-")?.reverse().join("-")}
               </td>
               <td>
-                {item?.dose}
+                {item?.tableDate?.[0]?.medicationInstructions}
               </td>
-              <td>{item?.prescriptionInstruction}</td>
-              <td>{item?.prescribingProvider}</td>
-              <td>{item?.beginningMedCount}</td>
-              <td>{item?.medications?.[0]?.reasonForStopChange}</td>
+              <td>{item?.tableDate?.[0]?.medicationStartDate?.split("T")?.[0]?.split("-")?.reverse().join("-").split("T")?.[0]?.split("-")?.reverse().join("-")}</td>
+              <td>{item?.tableDate?.[0]?.dischargeDate?.split("T")?.[0]?.split("-")?.reverse().join("-")?.split("T")?.[0]?.split("-")?.reverse().join("-")}</td>
+              <td>{item?.tableDate?.[0]?.residentGuardianInitial  }</td>
+              <td>{item?.tableDate?.[0]?.staffInitial}</td>
 
               <td
                 style={{
@@ -217,4 +207,4 @@ useEffect(() => {
   );
 };
 
-export default MedicationCount;
+export default InformedConsent;
