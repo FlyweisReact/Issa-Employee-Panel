@@ -172,12 +172,7 @@ useEffect(()=>{
               <th>Allergies: {patientData?.data?.allergies}</th>
             </tr>
             <tr style={{ border: "1px solid black" }}>
-              <th style={{ border: "1px solid black" }}>Medication name: {patientData?.data?.medications?.length>0 && 
-              patientData?.data?.medications.map((medications)=><li></li>)}</th>
-              <th style={{ border: "1px solid black" }}>
-                Medication Instructions: {patientData?.data?.instruction?.length>0 && patientData?.data?.instruction?.map((instruction)=>(
-                  <li>{instruction}</li>
-                ))}
+              <th style={{ border: "1px solid black" }}>Medication name: 
               </th>
               <th style={{ border: "1px solid black" }}>
               Time: 
@@ -196,15 +191,22 @@ useEffect(()=>{
             </tr>
 
             <tr>
-              <td style={{ border: "1px solid black" }}>
-              {patientData?.data?.medications?.length>0 && 
-              patientData?.data?.medications.map((medications)=><li>{medications}</li>)}
-              </td>
-              <td style={{ border: "1px solid black" }}>
-             
-             
-              
-              </td>
+            <td style={{ border: "1px solid black" }}>
+  {patientData?.data?.medications?.length > 0 && 
+    patientData?.data?.medications.map((medication, index) => (
+      <li key={index}>{medication?.name} {console.log(medication?.name)}</li>
+    ))}
+</td>
+<td style={{ border: "1px solid black" }}>
+{patientData?.data?.medications?.length}
+</td>
+
+
+
+<td style={{ border: "1px solid black" }}>
+
+ 
+</td>
               <td style={{ border: "1px solid black" }}>
                 Take 1 tab by mouth daily
               </td>
