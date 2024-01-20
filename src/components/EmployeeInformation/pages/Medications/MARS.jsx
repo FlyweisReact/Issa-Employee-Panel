@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Table, Button } from "react-bootstrap";
 import "./mars.css";
+import { getData, getDataById } from "../../../api/api";
 const MARS = () => {
   const suggestions = [
     "Apple",
@@ -10,12 +11,16 @@ const MARS = () => {
     "Grapes",
     "Pineapple",
     "Strawberry",
-    // Add more suggestions as needed
   ];
 
   const [inputText, setInputText] = useState("");
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
-
+const [patients,setPatients]=useState([])
+const [patientId,setPatientId]=useState('')
+const [patientData,setPatinentData]=useState({})
+useEffect(()=>{
+  getData(setPatients,'employee/getPatient')
+},[])
   const onInputChange = (e) => {
     const inputValue = e.target.value;
     setInputText(inputValue);
@@ -36,6 +41,18 @@ const MARS = () => {
     setFilteredSuggestions([]);
   };
   const navigate = useNavigate();
+
+  const getAllDataPatient = (id) => {
+    if(!patientId){
+      return null
+    }
+    getDataById(setPatinentData,'employee/Mars',patientId);
+  }
+
+  useEffect(() => {
+    getAllDataPatient()
+  },[patientId])
+  
   return (
     <>
       <div className="nav-wrap-personal">
@@ -61,8 +78,7 @@ const MARS = () => {
                 required
                 placeholder="Search"
                 type="text"
-                // value={inputText}
-                // onChange={onInputChange}
+              
               />
               {filteredSuggestions.map((suggestion, index) => (
                 <div key={index} onClick={() => onSuggestionClick(suggestion)}>
@@ -113,6 +129,7 @@ const MARS = () => {
                 </svg>
               </button>
             </label>
+           
           </form>
           <Table
             bordered
@@ -123,41 +140,71 @@ const MARS = () => {
             }}
           >
             <tr style={{ border: "1px solid black" }}>
-              <th style={{ border: "1px solid black" }}>Resident's Name:</th>
-              <th style={{ border: "1px solid black" }}>D.O.B.:</th>
-              <th style={{ border: "1px solid black" }}>Admit Date:</th>
+              <th style={{ border: "1px solid black" }}>
+              <Form.Select style={{ border: "none" }} onChange={(e) => setPatientId(e.target.value)}  aria-label="Default select example">
+              <option>Resident Name</option>
+              {patients?.data?.map((patient)=>(
+                <option value={patient._id}>{patient.fullName}</option>
+              ))}
+            </Form.Select></th>
+              <th style={{ border: "1px solid black" }}>D.O.B.: {patientData?.data?.dob}</th>
+              <th style={{ border: "1px solid black" }}>Admit Date: {patientData?.data?.admitDate?.split("T")?.[0]?.split("-")?.reverse()?.join("/")}</th>
               <th
                 style={{ border: "1px solid black", backgroundColor: "#FF0" }}
               >
                 Month / Year
               </th>
+              <th> <span>
+              {patientData?.data?.month}{patientData?.data?.year && "/"}{patientData?.data?.year}</span></th>
             </tr>
             <tr style={{ border: "1px solid black" }}>
-              <th>Location :</th>
+              <th>Location : {patientData?.data?.location}</th>
             </tr>
             <tr style={{ border: "1px solid black" }}>
               <th style={{ border: "1px solid black" }}>
-                Psychiatric Provider:
+                Psychiatric Provider: {patientData?.data?.psychiatricProvider}
               </th>
-              <th style={{ border: "1px solid black" }}>PCP Provider:</th>
-              <th style={{ border: "1px solid black" }}>Diet:</th>
-              <th>Fluid restrictions :</th>
+              <th style={{ border: "1px solid black" }}>PCP Provider: {patientData?.data?.pcpProvider}</th>
+              <th style={{ border: "1px solid black" }}>Diet: {patientData?.data?.diet}</th>
+              <th>Fluid restrictions : {patientData?.data?.fluidRestriction}</th>
             </tr>
             <tr style={{ border: "1px solid black" }}>
-              <th>Allergies:</th>
+              <th>Allergies: {patientData?.data?.allergies}</th>
             </tr>
             <tr style={{ border: "1px solid black" }}>
-              <th style={{ border: "1px solid black" }}>Medication name:</th>
+              <th style={{ border: "1px solid black" }}>Medication name: {patientData?.data?.medications?.length>0 && 
+              patientData?.data?.medications.map((medications)=><li></li>)}</th>
               <th style={{ border: "1px solid black" }}>
-                Medication Instructions:
+                Medication Instructions: {patientData?.data?.instruction?.length>0 && patientData?.data?.instruction?.map((instruction)=>(
+                  <li>{instruction}</li>
+                ))}
               </th>
-              <th style={{ border: "1px solid black" }}>Time:</th>
-              <th style={{ border: "1px solid black" }}>Date:</th>
+              <th style={{ border: "1px solid black" }}>
+              Time: 
+              {patientData?.data?.medicationStatus?.length > 0 &&
+                patientData?.data?.medicationStatus.map((status, index) => (
+                  <ul key={index}>
+                    {status?.timeStatus?.map((time, timeIndex) => (
+                      <li key={timeIndex}>{time}</li>
+                    ))}
+                  </ul>
+                ))}
+            </th>
+            
+              <th style={{ border: "1px solid black" }}>Date: {patientData?.data?.date}</th>
               <th style={{ border: "1px solid black" }}>isTaken</th>
             </tr>
 
             <tr>
-              <td style={{ border: "1px solid black" }}>Amoxicillin</td>
+              <td style={{ border: "1px solid black" }}>
+              {patientData?.data?.medications?.length>0 && 
+              patientData?.data?.medications.map((medications)=><li>{medications}</li>)}
+              </td>
+              <td style={{ border: "1px solid black" }}>
+             
+             
+              
+              </td>
               <td style={{ border: "1px solid black" }}>
                 Take 1 tab by mouth daily
               </td>
