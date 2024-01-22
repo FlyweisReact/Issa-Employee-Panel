@@ -6,6 +6,7 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 import { deleteData, getData } from "../../../api/api.js";
 import axios from "axios";
 import { Auth, Baseurl } from "../../../../Baseurl";
+import { showMsg } from "../../../api/ShowMsg.jsx";
 
 
 const PRNform = () => {
@@ -36,7 +37,7 @@ const initialPatientState = {
 };
 
 const handleDelete = (id) => {
-  deleteData("employee/deleteInformedConsentForMedication", id);
+  deleteData("employee/deletePrnMedicationLog", id);
 }
 
 const getAllData = () => {
@@ -58,12 +59,17 @@ const getAllData = () => {
     console.log(res.data);
     if(res.data?.data?.length === 0){
       setData([]);
+      showMsg(Error,"No Data Found","error");
       return
     }
     setData(res.data);
   })
   .catch((error) => {
-   
+   if(error.response.status === 404){
+    setData([]);
+    showMsg(Error,"No Data Found","danger");
+    return
+   }
     console.error(error);
   });
 }else{
@@ -91,7 +97,7 @@ useEffect(() => {
           <p style={{ fontSize: ".9rem", fontWeight: "bold",flex:"1" }}>
           PRN MEDICATION LOG
           </p>
-          <p><Button onClick={() => navigate("/employee/medications/informed-consent2")} style={{paddingRight:"1rem"}} variant="primary">+ Add</Button></p>
+          <p><Button onClick={() => navigate("/employee/medications/prn-form2")} style={{paddingRight:"1rem"}} variant="primary">+ Add</Button></p>
         </div>
       </div>
       <div>
@@ -120,11 +126,11 @@ useEffect(() => {
               >
                 <input type="checkbox" />
               </th>
-              <th style={{ backgroundColor: "#D1ECF0" }}> Date</th>
-              <th style={{ backgroundColor: "#D1ECF0" }}>Time</th>
-              <th style={{ backgroundColor: "#D1ECF0" }}>Tabs Given</th>
-              <th style={{ backgroundColor: "#D1ECF0" }}>Reason</th>
-              <th style={{ backgroundColor: "#D1ECF0" }}>Time re-evaluated</th>
+              <th style={{ backgroundColor: "#D1ECF0" }}> Resident Name</th>
+              <th style={{ backgroundColor: "#D1ECF0" }}>Medication and Strength</th>
+              <th style={{ backgroundColor: "#D1ECF0" }}>Instructions</th>
+              <th style={{ backgroundColor: "#D1ECF0" }}>Prescriber Name</th>
+              <th style={{ backgroundColor: "#D1ECF0" }}>Site Name</th>
               <th style={{ backgroundColor: "#D1ECF0" }}>Response Code</th>
               <th style={{ backgroundColor: "#D1ECF0" }}></th>
 
@@ -140,24 +146,30 @@ useEffect(() => {
           <tbody>
           {console.log(data?.data)}
          
-          {data?.data?.tableData?.length > 0 && (
-            data?.data?.tableData?.map((item) => (
+          {data?.data?.length > 0 && (
+            data?.data?.map((item) => (
+            
               <tr key={item?._id}>
               <td>
                 <input type="checkbox" />
               </td>
 
               <td>
-               {item?.date?.split("T")?.[0]?.split("-")?.reverse().join("-")}
+               {item?.residentName}
               </td>
               <td>
-                {item?.tableDate?.[0]?.medicationInstructions}
+               {item?.medicationAndStrength}
               </td>
-              <td>{item?.tableDate?.[0]?.medicationStartDate?.split("T")?.[0]?.split("-")?.reverse().join("-").split("T")?.[0]?.split("-")?.reverse().join("-")}</td>
-              <td>{item?.tableDate?.[0]?.dischargeDate?.split("T")?.[0]?.split("-")?.reverse().join("-")?.split("T")?.[0]?.split("-")?.reverse().join("-")}</td>
-              <td>{item?.tableDate?.[0]?.residentGuardianInitial  }</td>
-              <td>{item?.tableDate?.[0]?.staffInitial}</td>
-
+              <td>
+                {item?.instructions}
+              </td>
+              <td>
+                {item?.prescriberName}
+              </td>
+              <td>
+                {item?.site}
+              </td>
+             
               <td
                 style={{
                   display: "flex",

@@ -15,7 +15,9 @@ const MilageLog2 = () => {
     endingMileage: 0,
     totalMileage: 0,
     driverSignature: '',
-    anyIssues: ''
+    anyIssues: '',
+    destination: '',
+
   });
 
  
@@ -28,6 +30,15 @@ const MilageLog2 = () => {
   };
   const submitHandler = (e) => {
     e.preventDefault();
+    const emptyValues = Object.keys(formData).filter(key => formData[key] === "");
+  
+    if (emptyValues.length > 0) {
+      showMsg("Error", `${emptyValues.join(", ")} cannot be empty`, "danger");
+      return;
+    }
+  
+  
+  
     try {
       axios
         .post(`${Baseurl}employee/createMileageLog`, formData, Auth())
@@ -110,7 +121,13 @@ const MilageLog2 = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
              Total Mileage :
             </Form.Label>
-            <Form.Control onChange={(e) => handleInputChange("totalMileage", e.target.value)} type="number" placeholder="Enter  Reason" />
+            <Form.Control onChange={(e) => handleInputChange("totalMileage", e.target.value)} type="number" placeholder="Enter Text..." />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
+             Destination :
+            </Form.Label>
+            <Form.Control onChange={(e) => handleInputChange("destination", e.target.value)} type="text" placeholder="Enter Text..." />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>

@@ -87,6 +87,7 @@ import Reconciliations2 from "./components/EmployeeInformation/pages/Medications
 import MedicautionCount2 from "./components/EmployeeInformation/pages/Medications/MedicautionCount2";
 import InformedConsent2 from "./components/EmployeeInformation/pages/Medications/InformedConsent2";
 import MARS2 from "./components/EmployeeInformation/pages/Medications/MARS2";
+import PRNform2 from "./components/EmployeeInformation/pages/Medications/PRNform2";
 function App() {
   return (
     <>
@@ -198,6 +199,7 @@ function App() {
           element={<InformedConsent2 />}
         />
         <Route path="/employee/medications/prn-form" element={<PRNform />} />
+        <Route path="/employee/medications/prn-form2" element={<PRNform2 />} />
         <Route
           path="/employee/patient-tracking"
           element={<PatientTracking />}

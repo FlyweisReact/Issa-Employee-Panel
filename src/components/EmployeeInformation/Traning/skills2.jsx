@@ -12,8 +12,8 @@ const Skills2 = () => {
     dateOfTraining: '',
     trainingSubject: [''],
     hoursOrUnits: 2,
-    administratorSignature: 'Admin Signature',
-    employeeSignature: 'Employee Signature',
+    administratorSignature: '',
+    employeeSignature: '',
   };
 
   
@@ -82,7 +82,7 @@ const Skills2 = () => {
                 SAVE AS DRAFT
               </button>
               <button style={{ backgroundColor: "#0C5C75", color: "white" }}>
-                SAVED AND SAVED
+                SAVED AND SIGNED
               </button>
             </div>
           </div>
@@ -127,7 +127,7 @@ const Skills2 = () => {
                 SAVE AS DRAFT
               </button>
               <button style={{ backgroundColor: "#0C5C75", color: "white" }}>
-                SAVED AND SAVED
+                SAVED AND SIGNED
               </button>
             </div>
           </div>

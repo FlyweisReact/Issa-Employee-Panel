@@ -12,38 +12,40 @@ const StaffSchedule = () => {
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
   const [employeeId, setEmployeeId] = useState("");
-  function renderEventContent(eventInfo) {
-    console.log('Event Info:', eventInfo);
-    const { amToAm, amToPm, pmToAm, day, date } = eventInfo.event.extendedProps.schedule;
+  // function renderEventContent(eventInfo) {
+  //   console.log('Event Info:', eventInfo);
+  //   const { amToAm, amToPm, pmToAm, day, date } = eventInfo.event.extendedProps.schedule;
   
-    return (
-      <>
-        <b>{`Date: ${date}, Day: ${day}`}</b>
-        <br />
-        <span>{`AM to AM: ${amToAm}, AM to PM: ${amToPm}, PM to AM: ${pmToAm}`}</span>
-        <br />
-        <i>{eventInfo.event.title}</i>
-      </>
-    );
-  }
+  //   return (
+  //     <>
+    
+  //     <i>{`${amToAm}`}</i>
+  //     <br />
+  //     <i>{`${amToPm}`}</i>
+  //     <br />
+  //     <i>{`${pmToAm}`}</i>
+  //     <br />
+  //   </>
+  //   );
+  // }
   
   const getEmployeeSchedule = () => {
     axios.get(`${Baseurl}employee/getProfile`, Auth())
       .then((res) => {
         console.log(res.data?.data);
-        setEmployeeId(res.data?.data?._id);
+        const employeeId = res.data?.data?._id;
   
-        if (res.data?.data?._id) {
+        if (employeeId) {
           axios.get(`${Baseurl}StaffSchedule/getStaffSchedule`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
             params: {
-              employeeId: res.data?.data?._id,
+              employeeId: employeeId,
             },
           })
             .then((res) => {
-              console.log(res.data?.data);
+            
   
               const monthsDatas = [
                 { name: "January", value: 1 },
@@ -61,21 +63,27 @@ const StaffSchedule = () => {
               ];
   
               const monthData = res.data?.data?.month;
-              const monthName = monthsDatas.find((month) => month.value === monthData)?.name;
               const yearData = res.data?.data?.year;
+              console.log(res?.data?.data?.schedule, 'SCHEDULE DATA');
+              console.log(res.data?.data);
               console.log(monthData, yearData);
   
-              const formattedEvents = res.data?.data?.schedule.map((schedule) => ({
-                title: 'Event Title',
-                start: new Date(),
-                end: `${yearData}-${padNumber(monthData)}-${padNumber(schedule.date)}T${schedule.amToPm.split(' ')[0]}`,
-                extendedProps: {
-                  schedule: schedule,
-                },
-              }));
+              const formattedEvents = res.data?.data?.schedule.flatMap((schedule) => {
+                const eventFormats = [
+                  { title: 'amToAm', time: schedule.amToAm },
+                  { title: 'amToPm', time: schedule.amToPm },
+                  { title: 'pmToAm', time: schedule.pmToAm },
+                ];
+  
+                return eventFormats.map((eventFormat) => ({
+                  title: `${eventFormat.time}`,
+                  start: new Date(`${yearData}-${padNumber(monthData)}-${padNumber(schedule.date)}T${eventFormat.time.split(' ')[0]}`),
+                }));
+              });
+              console.log(formattedEvents, 'Event Formats');
   
               setEvents(formattedEvents);
-           
+  
               console.log(formattedEvents, 'Formatted Events');
             })
             .catch((error) => {
@@ -87,6 +95,8 @@ const StaffSchedule = () => {
         console.error("Error fetching employee profile:", error);
       });
   };
+  
+  
   
   const padNumber = (num) => (num < 10 ? `0${num}` : num);
   
@@ -112,82 +122,16 @@ const StaffSchedule = () => {
       </div>
       <div>
         <div className="top-div-personal">
-          {/* <Table
-            style={{ borderColor: "black", textAlign: "center" }}
-            responsive
-            bordered
-          >
-            <thead>
-              <tr>
-                <th>Shift</th>
-                <th> Monday</th>
-                <th>
-                  Tuesday <br />1
-                </th>
-                <th>
-                  Wednesday <br />2{" "}
-                </th>
-                <th>
-                  Thursday <br />3
-                </th>
-                <th>
-                  Friday <br />4
-                </th>
-                <th>
-                  Saturday <br />5
-                </th>
-                <th>
-                  Sunday <br />6
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr style={{ border: "1px solid black" }}>
-                <td>am to am</td>
-                <td>1</td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td>am to pm </td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td>pm to am</td>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-            </tbody>
-          </Table> */}
+          
 
    
-          <div style={{ width: "90%" }}>
+          <div style={{ width: "100%" }}>
             {" "}
             <FullCalendar
   plugins={[dayGridPlugin]}
   initialView="dayGridMonth"
   events={events}
-  eventContent={renderEventContent}
+  
 />
 
           </div>

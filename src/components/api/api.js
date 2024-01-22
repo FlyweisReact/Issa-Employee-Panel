@@ -93,3 +93,12 @@ export const updateAdminData=(url,data)=>{
  return axios.put(`${Baseurl}${url}`,data,Auth())
 }
 
+
+export const updateDataById=(url,id,data)=>{
+  return axios.put(`${Baseurl}${url}/${id}`,data,Auth()).then((res)=>{
+     console.log(res.data)
+     return showMsg("Success",res.data.message,"success")
+   }).catch((err)=>{
+     console.log(err)
+   })
+}

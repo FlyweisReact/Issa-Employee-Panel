@@ -219,7 +219,7 @@ style={{ width: "80%", marginBottom: "1rem", display: "flex", justifyContent: "c
                 SAVE AS DRAFT
               </button>
               <button style={{ backgroundColor: "#0C5C75", color: "white" }}>
-                SAVED AND SAVED
+                SAVED AND SIGNED
               </button>
             </div>
           </div>
@@ -245,7 +245,7 @@ style={{ width: "80%", marginBottom: "1rem", display: "flex", justifyContent: "c
                 SAVE AS DRAFT
               </button>
               <button style={{ backgroundColor: "#0C5C75", color: "white" }}>
-                SAVED AND SAVED
+                SAVED AND SIGNED
               </button>
             </div>
           </div>

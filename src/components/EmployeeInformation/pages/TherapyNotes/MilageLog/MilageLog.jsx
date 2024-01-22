@@ -29,7 +29,7 @@ useEffect(() => {
     <>
        <div className="nav-wrap-personal">
         <div className="nav-div-personal1">
-          <img onClick={() => navigate(-1)} src="/back_button2.png" alt="da" />
+          <img onClick={() => navigate('/employee/therapy-notes')} src="/back_button2.png" alt="da" />
         </div>
         <div
           className="nav-div-personal"
@@ -81,13 +81,19 @@ useEffect(() => {
             
               {console.log(logs)}
            
-           
-              <tr style={{ border: "1px solid black" }}>
-                <td></td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
+           {logs?.map((log) => (
+             
+         
+              <tr key={log._id} style={{ border: "1px solid black" }}>
+                <td>{log.date?.toString().slice(0,10).split("-").reverse().join("-")}</td>
+                <td>{log.residentInitials}</td>
+                <td>{log.destination}</td>
+                <td>{log.beginningMileage}</td>
+                <td>{log.endingMileage}</td>
+                <td>{log.totalMileage}</td>
+                <td>{log.driversSignature}</td>
+                <td>{log.issues}</td>
+              </tr>  ))}
             
              
              

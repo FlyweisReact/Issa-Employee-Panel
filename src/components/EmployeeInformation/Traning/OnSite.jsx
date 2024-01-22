@@ -93,9 +93,9 @@ const OnSite = () => {
                   >
                     <input type="checkbox" />
                   </th>
-                  <th style={{ backgroundColor: "#D1ECF0" }}>Training Date</th>
-                  <th style={{ backgroundColor: "#D1ECF0" }}>Duration</th>
+                  {/* <th style={{ backgroundColor: "#D1ECF0" }}>Training Date</th> */}
                   <th style={{ backgroundColor: "#D1ECF0" }}>Trainer Date</th>
+                  <th style={{ backgroundColor: "#D1ECF0" }}>Description</th>
                   <th style={{ backgroundColor: "#D1ECF0" }}>Employee Date</th>
 
                   {/* <th style={{ backgroundColor: "#D1ECF0" }}>Cash Manager</th> */}
@@ -108,6 +108,7 @@ const OnSite = () => {
                 </tr>
               </thead>
               <tbody>
+                {console.log(data)}
               {data?.data?.length > 0 && (
                 data?.data?.map((item) => (
                   <tr>
@@ -115,24 +116,12 @@ const OnSite = () => {
                     <input type="checkbox" />
                   </td>
 
+                 
+                  <td>     {item.trainerDate?.split("").reverse( )}</td>
                   <td>
-                    {data?.data?.training
-                      ?.map((item) =>
-                        item?.date
-                          ?.split("T")[0]
-                          ?.split("-")
-                          .reverse()
-                          .join("-")
-                      )
-                      .join(",")}
+                    {item.description}
                   </td>
-                  <td>
-                    {data?.data?.training
-                      ?.map((item) => item?.duration)
-                      .join(",")}
-                  </td>
-                  <td>{data?.data?.trainerDate}</td>
-                  <td>{data?.data?.employeeDate}</td>
+                  <td>     {item.employeeDate?.split("").reverse( )}</td>
 
                   <td
                     style={{
@@ -154,7 +143,7 @@ const OnSite = () => {
                         display: "flex",
                         alignItems: "center",
                       }}
-                      onClick={() => handleDelete(data?.data?._id)}
+                      onClick={() => handleDelete(item  ?._id)}
                     >
                       {" "}
                       <RiDeleteBin5Fill style={{ color: "red" }} />

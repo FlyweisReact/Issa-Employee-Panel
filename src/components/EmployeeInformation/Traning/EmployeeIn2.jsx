@@ -1,100 +1,112 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Table } from "react-bootstrap";
+import { FaRegEdit } from "react-icons/fa";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+import { deleteData, getData, postData } from "../../api/api.js";
+import { showMsg } from "../../api/ShowMsg.jsx";
+import { MultiSelect } from "react-multi-select-component";
+
+
 const EmployeeIn2 = () => {
   const navigate = useNavigate();
+
+  
+  const options=[{
+    label:"Infectious Control",value:"Infectious Control",
+  },{
+    label:"Fall prevention and fall recovery",value:"Fall prevention and fall recovery",
+  }]
+  const [selectedOptions, setSelectedOptions] = useState(options);
+const [value, setValue] = useState([]);
+  const initialTrainingState = {
+    "employeeName": "",
+    "dateOfTraining": "",
+    "trainingSubject":value ,
+    "administratorSignature": "","hoursOrUnits": 2,
+    "employeeSignature": ""
+  }
+  const [formData, setFormData] = useState(initialTrainingState);
+
+ 
+  const handleInputChange = (field, value) => {
+    setFormData({
+      ...formData,
+      [field]: value
+    });
+  };
+  const submitHandler = (e) => {
+    e.preventDefault();
+     console.log(formData)
+    const emptyValues=Object.keys(formData).filter(key=>formData[key]==="");
+    if(emptyValues.length>0){
+      return showMsg("Error", `${emptyValues.join(",")}  cannot be empty`, "danger")
+    }
+    postData("employee/createEmployeeInServiceLog", formData);
+    return    navigate("/employee/training/employee-in")
+  }
+  
   return (
     <>
       <div className="nav-wrap-personal">
         <div className="nav-div-personal1">
-          <img onClick={() => navigate(-1)} src="/back_button2.png" alt="da" />
+          <img onClick={() => navigate('/employee/training/on-site')} src="/back_button2.png" alt="da" />
         </div>
         <div
           className="nav-div-personal"
           style={{ width: "80%", marginBottom: "1rem",display: "flex", paddingRight: "1rem" }}
         >
-          <p style={{ fontSize: ".9rem", fontWeight: "bold" ,flex: "1"}}>
-            EMPLOYEE IN-SERVICE LOG
+          <p style={{ fontSize: ".9rem", fontWeight: "bold",flex: "1" }}>
+        EMPLOYEE IN-SERVICE LOG
           </p>
-          <p><Button style={{ fontSize: ".9rem", fontWeight: "bold" }} onClick={() => navigate("/employee/training/employee-in")}> Data</Button></p>
+          <p><Button onClick={() => navigate("/employee/training/on-site")}>Data</Button></p>
         </div>
       </div>
       <div>
         <div className="top-div-personal">
-       
-          <Table
-            style={{ borderColor: "black", textAlign: "center" }}
-            responsive
-            bordered
-          >
-            <thead>
-              <tr>
-                <th>Date of In-Service Training</th>
-                <th> Subject</th>
-                <th>Number of Hours or Units</th>
-                <th>Administrator/ BHP/Registered Nures Signature</th>
-                <th></th>
-                <th>Employee’s Signature</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr style={{ border: "1px solid black" }}>
-                <td> </td>
-                <td>
-                  (All this will be drop down each) Infectious Control, Fall
-                  prevention and fall recovery, Annual TB education, Assistance
-                  in the self administration of medication, Medication
-                  administration.
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td> </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td> </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr style={{ border: "1px solid black" }}>
-                <td> </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </Table>
+         <Form  style={{textAlign:"left",width:"100%"}}>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Employee Name</Form.Label>
+            <Form.Control name="text" onChange={(e)=>handleInputChange("employeeName",e.target.value)} type="text" />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Date of Training </Form.Label>
+            <Form.Control name="date" onChange={(e)=>handleInputChange("dateOfTraining",e.target.value)} type="date" />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Training Subject </Form.Label>
+            <MultiSelect
+  options={options}
+  value={formData.trainingSubject}
+  onChange={(selectedOptions) => {
+    setFormData({
+      ...formData,
+      trainingSubject: selectedOptions.map((item) => (item && item.value) || null),
+    });
+  }}
+  isMulti
+/>
 
-           
 
-          <div style={{ textAlign: "center", width: "100%", margin: "auto" }}>
-            <button
-              style={{
-                padding: "10px 24px",
-                backgroundColor: "#1A9FB2",
-                color: "white",
-                marginTop: "1rem",
-                borderRadius: "10px",
-              }}
-              type="submit"
-            >
-              PRINT REPORT
-            </button>
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Hours of Unit</Form.Label>
+            <Form.Control type="number" name="description" onChange={(e)=>handleInputChange("hoursOrUnits",e.target.value)}  />
+          </Form.Group>
+
+         
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Administrator Signature </Form.Label>
+            <Form.Control name="employeeSignature" onChange={(e)=>handleInputChange("administratorSignature",e.target.value)} type="text" />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Employee Signature</Form.Label>
+            <Form.Control name="trainerSignature" onChange={(e)=>handleInputChange("employeeSignature",e.target.value)} type="text" />
+          </Form.Group>
+          <div style={{display:'flex',justifyContent:"center",marginTop:"2rem",marginBottom:'3rem'}}>
+          <Button style={{padding:"0.5rem 1rem"}} onClick={submitHandler} type="submit" >Submit</Button>
           </div>
-          <div className="save-as-draft-btn123">
-            <button className="btn1233" type="submit">
-              SUBMIT
-            </button>
-          </div>
+         </Form>
         </div>
       </div>
     </>

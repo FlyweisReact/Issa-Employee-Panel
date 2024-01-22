@@ -114,7 +114,7 @@ label {
 
 input[type="checkbox"] {
     margin-right: 5px;
-    width: auto;
+    /* width: auto; */
 }
 
 .checkboxitem span {
@@ -153,11 +153,11 @@ input[type="checkbox"] {
     font-weight: 400;
 }
 
-input[type="checkbox"] {
+/* input[type="checkbox"] {
     margin-right: 5px;
     width: auto;
     transform: scale(1.5);
-}
+} */
 
 
 

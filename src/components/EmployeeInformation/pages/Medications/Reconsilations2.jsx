@@ -170,7 +170,7 @@ const initialPatientState = {
                 SAVE AS DRAFT
               </button>
               <button style={{ backgroundColor: "#0C5C75", color: "white" }}>
-                SAVED AND SAVED
+                SAVED AND SIGNED
               </button>
             </div>
           </div>

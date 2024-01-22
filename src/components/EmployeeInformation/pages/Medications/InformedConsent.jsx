@@ -95,7 +95,7 @@ useEffect(() => {
             <Form.Select onChange={(e) => setPatientId(e.target.value)} aria-label="Default select example">
               <option>Select Resident Name</option>
               {patients?.data?.map((patient)=>(
-                <option value={  patient._id}>{patient.fullName}</option>
+                <option value={patient._id}>{patient.fullName}</option>
               ))}
             </Form.Select>
           </Form.Group>

@@ -12,33 +12,28 @@ useEffect(()=>{
 },[])
 const initialMedicationState = {
     patientId: "",
-    location: "",
-    medicationName: "",
-    dose: "",
-    prescriptionInstruction: "",
-    prescribingProvider: "",
-    beginningMedCount: "",
-    monthYear: "",
-    data: [
+    dob: "",
+
+    admitDate: "",
+   
+    tableDate: [
       {
-        date: "",
-        shift: "",
-        painLevel: "",
-        numberOfTabsGiven: "",
-        beginningCount: "",
-        endingCount: "",
-        currentStaffOnShiftSignature: "",
-        relievingStaffSignature: ""
+        "medicationInstructions": "",
+            "medicationStartDate": "",
+            "fewDaysOnly": 0,
+            "dischargeDate": "",
+            "residentGuardianInitial": "",
+            "staffInitial": ""
       }
     ],
     staff: [
       {
-        name: "",
-        signature: "",
-        initials: ""
+        "initial": "",
+            "title": "",
+            "signature": ""
       }
     ],
-    countType: "" 
+    residentGuardianSignature : "" 
   };
 
   const [medicationData, setMedicationData] = useState(initialMedicationState);
@@ -61,12 +56,12 @@ const initialMedicationState = {
     });
   };
   const initialFormData = [
-    { label: 'Date', type: 'date', placeholder: 'Enter text' },
-    { label: 'Shift', type: 'text', placeholder: 'Enter text' },
-    { label: 'Pain Level', type: 'text', placeholder: 'Enter text' },
-    { label: 'Number of Tab given', type: 'text', placeholder: 'Enter text' },
-    { label: 'Beginning Count', type: 'text', placeholder: 'Enter text' },
-    { label: 'Ending Count', type: 'text', placeholder: 'Enter text' },
+    { label: 'Medication/Instructions',name:"medicationInstructions" ,type: 'text', placeholder: 'Enter text' },
+    { label: 'Medication Start Date',name:"medicationStartDate" ,type: 'date', placeholder: 'Enter text' },
+    { label: 'Few Days Only',name:"fewDaysOnly", type: 'number', placeholder: 'Enter text' },
+    { label: 'D/C Date', type: 'date',name:"dischargeDate", placeholder: 'Enter text' },
+    { label: 'Resident / Guardian Initial',name:"residentGuardianInitial", type: 'text', placeholder: 'Enter text' },
+    { label: 'Staff Initial',name:"staffInitial", type: 'text', placeholder: 'Enter text' },
   ];
 
   const [formData, setFormData] = useState(initialFormData);
@@ -74,12 +69,12 @@ const initialMedicationState = {
 
   const addField = () => {
     setNumberOfFields(initialFormData.length);
-    setFormData([...formData, { label: 'Date', type: 'date', placeholder: 'Enter text' },
-    { label: 'Shift', type: 'text', placeholder: 'Enter text' },
-    { label: 'Pain Level', type: 'text', placeholder: 'Enter text' },
-    { label: 'Number of Tab given', type: 'text', placeholder: 'Enter text' },
-    { label: 'Beginning Count', type: 'text', placeholder: 'Enter text' },
-    { label: 'Ending Count', type: 'text', placeholder: 'Enter text' },]);
+    setFormData([...formData, { label: 'Medication/Instructions',name:"medicationInstructions" ,type: 'date', placeholder: 'Enter text' },
+    { label: 'Medication Start Date',name:"medicationStartDate" ,type: 'text', placeholder: 'Enter text' },
+    { label: 'Few Days Only',name:"fewDaysOnly", type: 'number', placeholder: 'Enter text' },
+    { label: 'D/C Date', type: 'date',name:"dischargeDate", placeholder: 'Enter text' },
+    { label: 'Resident / Guardian Initial',name:"residentGuardianInitial", type: 'text', placeholder: 'Enter text' },
+    { label: 'Staff Initial',name:"staffInitial", type: 'text', placeholder: 'Enter text' },]);
   };
 
   const handleStaffChange = (index, field, value) => {
@@ -92,7 +87,7 @@ const initialMedicationState = {
     });
   };
   const submitHandler = (e) => {
-    console.log(medicationData);
+   return console.log(medicationData);
     const emptyValues=Object.keys(medicationData).filter(key=>medicationData[key]==="");
     if(emptyValues.length>0){
       return showMsg("Error", `${emptyValues.join(",")}  cannot be empty`, "danger")
@@ -103,25 +98,19 @@ const initialMedicationState = {
   return (
     <>
     <div className="nav-wrap-personal">
-    <div className="nav-div-personal1">
-      <img onClick={() => navigate(-1)} src="/back_button2.png" alt="da" />
-    </div>
-    <div
-className="nav-div-personal"
-style={{ width: "80%", marginBottom: "1rem", display: "flex", justifyContent: "center" }}
->
-<p style={{ fontSize: ".9rem", fontWeight: "bold" }}>
-<Form.Group style={{ width: "200px", border: "none", textAlign: "center" }} className="mb-3" controlId="formBasicEmail">
-  <Form.Select style={{ border: "none" }} onChange={(e) => setMedicationData({ ...medicationData, countType: e.target.value })} aria-label="Default select example">
-    <option>MEDICATION Count</option>
-    <option value="Opioid">OPIOID COUNT CONTROL </option>
-    <option value="medication">MEDICATION COUNT</option>
-  </Form.Select>
-</Form.Group>
-</p>
-</div>
-
-  </div>
+        <div className="nav-div-personal1">
+          <img onClick={() => navigate(-1)} src="/back_button2.png" alt="da" />
+        </div>
+        <div
+          className="nav-div-personal"
+          style={{ width: "80%", marginBottom: "1rem",display:"flex", }}
+        >
+          <p style={{ fontSize: ".9rem", fontWeight: "bold",flex:"1" }}>
+          INFORMEDCONSENT FOR MEDIACTIONS
+          </p>
+          {/* <p><Button onClick={() => navigate("/employee/medications/informed-consent2")} style={{paddingRight:"1rem"}} variant="primary">+ Add</Button></p> */}
+        </div>
+      </div>
       <div>
         <div className="top-div-personal">
         <Form.Group style={{ fontWeight: "bold", fontSize: ".9rem" }} className="mb-3" controlId="formBasicPatientName">
@@ -140,46 +129,17 @@ style={{ width: "80%", marginBottom: "1rem", display: "flex", justifyContent: "c
       </Form.Group>
 
       <Form.Group style={{ fontWeight: "bold", fontSize: ".9rem" }} className="mb-3" controlId="formBasicLocation">
-        <Form.Label  style={{ fontWeight: "bold", fontSize: ".9rem" }}>Location</Form.Label>
-        <Form.Control type="text" placeholder="Enter text" onChange={(e) => handleInputChange('location', e.target.value)} />
+        <Form.Label  style={{ fontWeight: "bold", fontSize: ".9rem" }}>Admit Date</Form.Label>  
+        <Form.Control type="date" placeholder="Enter text" onChange={(e) => handleInputChange('admitDate', e.target.value)} />
       </Form.Group>
-          <Form.Group style={{ fontWeight: "bold", fontSize: ".9rem" }} className="mb-3" controlId="formBasicEmail">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>Medication Name</Form.Label>
-            <Form.Control onChange={(e) => handleInputChange('medicationName', e.target.value)}  type="text" placeholder="Enter text" />
+          <Form.Group style={{ fontWeight: "bold", fontSize: ".9rem",display:"flex",justifyContent:"space-between" }} className="mb-3" controlId="formBasicEmail">
+            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>Informed consent for medications</Form.Label>
+           
+            <div> <Button onClick={addField} style={{paddingRight:"1rem"}} variant="primary">+ Add</Button></div>
           </Form.Group>
        
 
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-            Dose:
-            </Form.Label>
-            <Form.Control onChange={(e) => handleInputChange('dose', e.target.value)} type="text" placeholder="Enter text" />
-          </Form.Group>
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-            Prescription Instruction:
-            </Form.Label>
-            <Form.Control onChange={(e) => handleInputChange('prescriptionInstruction', e.target.value)} type="text" placeholder="Enter text" />
-          </Form.Group>
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-            Prescribing Provider:
-            </Form.Label>
-            <Form.Control onChange={(e) => handleInputChange('prescribingProvider', e.target.value)} type="text" placeholder="Enter text" />
-          </Form.Group>
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-            Month / Year:
-            </Form.Label>
-            <Form.Control onChange={(e) => handleInputChange('monthYear', e.target.value)} type="date" placeholder="Enter text" />
-          </Form.Group>
-          <Form.Group className="mb-3 ">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-            Beginning med count:
-            </Form.Label>
-            <Form.Control onChange={(e) => handleInputChange('beginningMedCount', e.target.value)} type="number" placeholder="Enter text" />
-          </Form.Group>
-          <Form.Label className="mb-3" style={{ fontWeight: "bold", fontSize: "1rem" }}>Beginning med count</Form.Label>
+          
           <div>
           {formData.map((field, index) => (
             <Form.Group key={index} className="mb-3">
@@ -187,19 +147,20 @@ style={{ width: "80%", marginBottom: "1rem", display: "flex", justifyContent: "c
                 {field.label}
               </Form.Label>
               <Form.Control onChange={(e)=>setMedicationData({...medicationData, 
-                data:{ ...medicationData.data, [field.label]: e.target.value}})} type={field.type} placeholder={field.placeholder} />
+                tableDate:{ ...medicationData.data, [field.name]: e.target.value}})} type={field.type} placeholder={field.placeholder} />
             </Form.Group>
           ))}
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button variant="primary" style={{ backgroundColor: '#0C5C75' }} onClick={addField}>
-              + Add
-            </Button>
-          
-          </div>
+         <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}> I,the resident/Gurdian have recieved instruction in the use of above listed medications(s) inclding the med</Form.Label>
     </div>
           <Form.Group className="mb-3 ">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-            Current Staff on shift  Signature
+            Staff Name  , Title
+            </Form.Label>
+            <Form.Control  type="text" placeholder="Enter text" />
+          </Form.Group>
+          <Form.Group className="mb-3 ">
+            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
+            Signature Of Staff
             </Form.Label>
             <Form.Control  type="text" placeholder="Enter text" />
           </Form.Group>
@@ -219,13 +180,13 @@ style={{ width: "80%", marginBottom: "1rem", display: "flex", justifyContent: "c
                 SAVE AS DRAFT
               </button>
               <button style={{ backgroundColor: "#0C5C75", color: "white" }}>
-                SAVED AND SAVED
+                SAVED AND SIGNED
               </button>
             </div>
           </div>
           <Form.Group className="mb-3 ">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-            Releveling staff name and Signature
+            Initials
             </Form.Label>
             <Form.Control  type="text" placeholder="Enter text" />
           </Form.Group>
@@ -245,7 +206,7 @@ style={{ width: "80%", marginBottom: "1rem", display: "flex", justifyContent: "c
                 SAVE AS DRAFT
               </button>
               <button style={{ backgroundColor: "#0C5C75", color: "white" }}>
-                SAVED AND SAVED
+                SAVED AND SIGNED
               </button>
             </div>
           </div>
