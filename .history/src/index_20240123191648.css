@@ -1,0 +1,175 @@
+/** @format */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  /* font-size: 62.5%; */
+  margin: 0;
+  font-family: Quicksand !important;
+}
+
+input[type="checkbox"] {
+  width: 10px !important;
+  height: 10px !important;
+}
+
+code {
+  font-family: Quicksand !important;
+}
+
+/* Wcomponents */
+.wcomp::-webkit-scrollbar {
+  width: 0px;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+::-webkit-scrollbar-track {
+  background: #696f78;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #b4b8bf;
+}
+
+.main-card--container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-gap: 50px;
+  justify-content: space-evenly;
+}
+
+.card-container {
+  margin: 25px 0 auto;
+
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.img-thumbnail {
+  width: 80px;
+}
+
+.img-large {
+  max-width: 80%;
+}
+
+.formInput {
+  padding: 5px;
+}
+
+.Table_Component {
+  width: 100%;
+  max-width: 100%;
+  overflow-y: scroll;
+}
+
+.flexCont {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.fa-trash {
+  background-color: #ffe1e8;
+  border-radius: 100%;
+  color: #df939f;
+  cursor: pointer;
+  display: flex;
+  height: 35px;
+  justify-content: center;
+  padding-top: 10px;
+  text-align: center;
+  transition: 0.5s;
+  width: 35px;
+}
+
+.fa-pen-to-square {
+  background-color: #ffebdb;
+  color: #f4c39c;
+  cursor: pointer;
+  border-radius: 100%;
+  height: 35px;
+  padding-top: 10px;
+  text-align: center;
+  transition: 0.5s;
+  width: 35px;
+}
+
+.fa-trash:hover {
+  transform: scale(1.2);
+}
+
+.fa-pen-to-square:hover {
+  transform: scale(1.2);
+}
+
+.spinner {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.Mobile_bar .close_btn {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+}
+.Mobile_bar .close_btn svg {
+  font-size: 30px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.employee_create_btn {
+  padding: 10px 114px;
+  background-color: #1A9FB2;
+  color: white;
+  margin-top: 1rem;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.employee_btn_div{
+  text-align: center;
+  width: 100%;
+  margin:auto;
+  margin-top: 3rem;
+}
+
+.Radio_btns{
+  display: flex;
+  align-items: center;
+  font: .9rem;
+  font-weight: bold;
+}
+
+.Radio_btns .btns label{
+  color : #198754  !important; 
+  margin: 0;
+}
+.Radio_btns .btns input {
+   border-color: #198754;
+}
+
+.Radio_btns .btns .form-check-input:checked{
+  background-color: #198754;
+}
+.Radio_btns .btns {
+  display: flex;
+  gap: 10px;
+}
+.Radio_btns .btns .form-check {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
