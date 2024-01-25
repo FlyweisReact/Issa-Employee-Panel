@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import HOC from "../layout/HOC";
-import { MdDashboardCustomize, MdOutlineLibraryBooks } from "react-icons/md";
-import { FaUserFriends } from "react-icons/fa";
-
 import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
 import { getData } from "../api/api";
-import axios from "axios";
-// import { baseUrl } from "../BaseUrl";
+
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const [data, setData] = React.useState([]);

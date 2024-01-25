@@ -36,3 +36,22 @@ export const RadioMaker = ({ name, setValue, value, id, label, checked }) => {
     </Form.Check>
   );
 };
+
+
+export const CheckBoxMaker = ({ name, setValue, value, id, label, checked }) => {
+  return (
+    <Form.Check type={"radio"}>
+      <Form.Check.Input
+        type={"radio"}
+        name={name}
+        value={value}
+        onChange={() => setValue(value)}
+        isValid
+        id={id}
+        required
+        checked={value === checked}
+      />
+      <Form.Check.Label htmlFor={id}> {label} </Form.Check.Label>
+    </Form.Check>
+  );
+};

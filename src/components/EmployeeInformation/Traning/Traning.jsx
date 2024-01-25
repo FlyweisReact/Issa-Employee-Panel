@@ -146,7 +146,6 @@ const Training = () => {
                   padding: ".5rem",
                 }}
               >
-                {/* <span style={{ marginRight: "10px" }}>{item.newIcon}</span> */}
                 <span>{item.name}</span>
               </Link>
             ))}

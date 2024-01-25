@@ -1,9 +1,11 @@
+/** @format */
+
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./TherapyNotes.css";
 const TherapyNotes = () => {
   const navigate = useNavigate();
-  
+
   return (
     <>
       <div className="nav-wrap-personal">
@@ -18,35 +20,29 @@ const TherapyNotes = () => {
           <p></p>
         </div>
       </div>
-      <div className="main-div-employment1">
-        <div>
-          <img
-            onClick={() => navigate("/employee/therapy-notes/1")}
-            src="/Dashboard2/GroupNotes/Group 17546.png"
-            alt="Employment1"
-          />
-        </div>
-        <div>
+
+      <div className="dashboard_notes">
+        <Link to="/employee/therapy-notes/1">
+          <img src="/Dashboard2/GroupNotes/Group 17546.png" alt="" />
+        </Link>
+        <Link to="/employee/therapy-notes/visitor-log">
           <img
             src="/Dashboard2/GroupNotes/Tharapy Notes/Group 385.png"
-            onClick={() => navigate("/employee/therapy-notes/visitor-log")}
-            alt="Employment31"
+            alt=""
           />
-        </div>
-        <div>
+        </Link>
+        <Link to="/employee/therapy-notes/staff-schedule">
           <img
             src="/Dashboard2/GroupNotes/Tharapy Notes/Group 386.png"
-            onClick={() => navigate("/employee/therapy-notes/staff-schedule")}
-            alt="Employmen2t"
+            alt=""
           />
-        </div>
-        <div>
+        </Link>
+        <Link to="/employee/therapy-notes/milage-log">
           <img
             src="/Dashboard2/GroupNotes/Tharapy Notes/Group 387.png"
-            onClick={() => navigate("/employee/therapy-notes/milage-log")}
-            alt="Employment3"
+            alt=""
           />
-        </div>
+        </Link>
       </div>
     </>
   );
