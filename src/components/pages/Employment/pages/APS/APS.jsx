@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Sign from "../../../../../Loader/Sign";
-import { postData, showMsg } from "../../../../../Baseurl";
+import { Auth, Baseurl, postData, showMsg } from "../../../../../Baseurl";
+import axios from "axios";
 export const APS = () => {
   const navigate = useNavigate();
+  const [data, setData] = useState({});
   const [formData, setFormData] = useState({
     employeeName: "",
     employeeSignature: "",
@@ -23,6 +25,41 @@ export const APS = () => {
     }));
   };
 
+
+      const getProfile=async()=>{
+        try {
+          const res=await axios.get(`${Baseurl}employee/getProfile`, Auth())
+          console.log(res?.data?.data?._id);
+          if(res?.data?.data?._id){
+            const res2=await axios.get(`${Baseurl}employee/getApsConsentById/${res?.data?.data?._id}`, Auth())
+            setData(res2?.data?.data);
+            console.log(res)
+            
+          }
+        } catch (error) {
+          console.log(error)
+          
+        }
+      }
+    
+ 
+  
+  useEffect(() => {
+    getProfile();
+  }, []);
+
+
+  useEffect(() => {
+    setFormData({
+      ...formData,
+      employeeName: data?.employeeName,
+      employeeSignature: data?.employeeSignature,
+      administratorName: data?.administratorName,
+      administratorSignature: data?.administratorSignature,
+      date: data?.date,
+    });
+  }, [data]);
+
   const submitHandler = (e) => {
     e.preventDefault();
     // return console.log(formData);
@@ -36,7 +73,7 @@ export const APS = () => {
       });
   };
   return (
-    <div className="main-div-personal important">
+    <Form onSubmit={submitHandler} className="main-div-personal important">
       <div className="nav-wrap-personal">
         <div className="nav-div-personal1">
           <img onClick={() => navigate(-1)} src="/back_button2.png" alt="da" />
@@ -86,7 +123,7 @@ export const APS = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Employee Name:
             </Form.Label>
-            <Form.Control
+            <Form.Control required
               onChange={(e) => handleChange("employeeName", e.target.value)}
               type="text"
               placeholder="Enter  text"
@@ -96,7 +133,7 @@ export const APS = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Employer Signature:
             </Form.Label>
-            <Form.Control
+            <Form.Control required
               onChange={(e) =>
                 handleChange("employeeSignature", e.target.value)
               }
@@ -138,7 +175,7 @@ export const APS = () => {
             >
               Company Administrator Name:
             </Form.Label>
-            <Form.Control
+            <Form.Control required
               onChange={(e) =>
                 handleChange("administratorName", e.target.value)
               }
@@ -150,7 +187,7 @@ export const APS = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Company Administrator Signature:
             </Form.Label>
-            <Form.Control
+            <Form.Control required
               onChange={(e) =>
                 handleChange("administratorSignature", e.target.value)
               }
@@ -180,7 +217,7 @@ export const APS = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Date:
             </Form.Label>
-            <Form.Control
+            <Form.Control required
               onChange={(e) => handleChange("date", e.target.value)}
               type="Date"
               placeholder="Enter  text"
@@ -202,12 +239,12 @@ export const APS = () => {
             </button>
           </div>
           <div className="save-as-draft-btn123">
-            <button onClick={submitHandler} className="btn1233" type="submit">
+            <button  className="btn1233" type="submit">
               SUBMIT
             </button>
           </div>
         </Form>
       </div>
-    </div>
+    </Form>
   );
 };

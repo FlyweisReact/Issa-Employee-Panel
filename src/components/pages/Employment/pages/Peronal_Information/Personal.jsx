@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Personal.css";
 import { Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -6,31 +6,54 @@ import axios from "axios";
 import { Baseurl, Auth, showMsg } from "../../../../../Baseurl";
 export const Personal = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    date: "",
-    lastName: "",
-    firstName: "",
-    middleInitial: "",
-    addressStreet: "",
-    addressCity: "",
-    addressState: "",
-    addressZip: "",
-    socSecNo: "",
-    birthDate: "",
-    telephoneHome: "",
-    telephonePersonalCell: "",
-    telephoneWork: "",
-    telephoneBusinessCell: "",
-    dLStateOfIssue: "",
-    dLNumber: "",
-    dLExpirationDate: "",
-    businessEmail: "",
-    personalEmail: "",
-    emergencyContactName: "",
-    emergencyContactRelationship: "",
-    emergencyContactNumber: "",
-    savedSigned: ""
-  });
+  const [data, setData] = useState({});
+
+  const getPersonal=async()=>{
+    try {
+      const res=await axios.get(`${Baseurl}employee/getPersonalInformation`,Auth())
+      console.log(res?.data);
+      setData(res?.data?.data);
+    } catch (error) {
+      console.log(error)
+      
+    }
+
+  }
+
+
+  useEffect(() => {
+    getPersonal();
+  }, []);
+
+  const initialData={
+    date:data?.date?.split("T")[0] || "",
+    lastName: data?.lastName ||  "",
+    firstName: data?.firstName || "",
+    middleInitial: data?.middleInitial || "",
+    addressStreet: data?.addressStreet || "",
+    addressCity: data?.addressCity || "",
+    addressState: data?.addressState || "",
+    addressZip: data?.addressZip || "",
+    socSecNo: data?.socSecNo || "",
+    birthDate: data?.birthDate?.split("T")[0] || "",
+    telephoneHome: data?.telephoneHome || "",
+    telephonePersonalCell: data?.telephonePersonalCell || "",
+    telephoneWork: data?.telephoneWork || "",
+    telephoneBusinessCell: data?.telephoneBusinessCell || "",
+    dLStateOfIssue: data?.dLStateOfIssue || "",
+    dLNumber: data?.dLNumber || "",
+    dLExpirationDate: data?.dLExpirationDate?.split("T")[0] || "",
+    businessEmail: data?.businessEmail || "",
+    personalEmail: data?.personalEmail || "",
+    emergencyContactName: data?.emergencyContactName || "",
+    emergencyContactRelationship: data?.emergencyContactRelationship || "",
+    emergencyContactNumber: data?.emergencyContactNumber || "",
+    savedSigned: data?.savedSigned || "",
+  }
+  const [formData, setFormData] = useState(initialData);
+
+
+  
   const updateField = (fieldName, value) => {
     setFormData({ ...formData, [fieldName]: value });
   };
@@ -56,6 +79,13 @@ export const Personal = () => {
   }
   }
 
+  useEffect(() => {
+  
+    setFormData({ ...formData, ...initialData });
+  }, [data]);
+
+
+
   return (
     <div className="main-div-personal important">
       <div className="nav-wrap-personal">
@@ -74,28 +104,28 @@ export const Personal = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Date :
             </Form.Label>
-            <Form.Control onChange={(e) => updateField("date", e.target.value)} type="date" placeholder="Enter Date" />
+            <Form.Control value={formData?.date}  onChange={(e) => updateField("date", e.target.value)} type="date" placeholder="Enter Date" />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Last Name :
+              Last Name : {console.log(data,formData)}
             </Form.Label>
-            <Form.Control onChange={(e) => updateField("lastName", e.target.value)} type="text" placeholder="Enter Last Name" />
+            <Form.Control value={formData?.lastName} placeholder={formData?.lastName} onChange={(e) => updateField("lastName", e.target.value)} type="text" placeholder="Enter Last Name" />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label  style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               First Name :
             </Form.Label>
-            <Form.Control onChange={(e) => updateField("firstName", e.target.value)} type="text" placeholder="Enter First Name" />
+            <Form.Control value={formData?.firstName} onChange={(e) => updateField("firstName", e.target.value)} type="text" placeholder="Enter First Name" />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Middle Name :
             </Form.Label>
-            <Form.Control onChange={(e) => updateField("middleInitial", e.target.value)} type="text" placeholder="Enter Middle Name" />
+            <Form.Control value={formData.middleInitial} onChange={(e) => updateField("middleInitial", e.target.value)} type="text" placeholder="Enter Middle Name" />
           </Form.Group>
 
           <h5 style={{ fontWeight: "bold", fontSize: "1.1rem" }}>Address :</h5>
@@ -103,42 +133,42 @@ export const Personal = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Street :
             </Form.Label>
-            <Form.Control onChange={(e) => updateField("addressStreet", e.target.value)} type="text" placeholder="Enter Street Name" />
+            <Form.Control value={formData.addressStreet} onChange={(e) => updateField("addressStreet", e.target.value)} type="text" placeholder="Enter Street Name" />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               City :
             </Form.Label>
-            <Form.Control onChange={(e) => updateField("addressCity", e.target.value)} type="text" placeholder="Enter City Name" />
+            <Form.Control value={formData.addressCity} onChange={(e) => updateField("addressCity", e.target.value)} type="text" placeholder="Enter City Name" />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               State :
             </Form.Label>
-            <Form.Control onChange={(e) => updateField("addressState", e.target.value)} type="text" placeholder="Enter State Name" />
+            <Form.Control value={formData.addressState} onChange={(e) => updateField("addressState", e.target.value)} type="text" placeholder="Enter State Name" />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Zip Code :
             </Form.Label>
-            <Form.Control onChange={(e) => updateField("addressZip", e.target.value)} type="text" placeholder="Enter Zip Code" />
+            <Form.Control value={formData.addressZip} onChange={(e) => updateField("addressZip", e.target.value)} type="text" placeholder="Enter Zip Code" />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Soc Sec No:
             </Form.Label>
-            <Form.Control onChange={(e) => updateField("socSecNo", e.target.value)} type="text" placeholder="Enter Soc Sec Name" />
+            <Form.Control value={formData.socSecNo} onChange={(e) => updateField("socSecNo", e.target.value)} type="text" placeholder="Enter Soc Sec Name" />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Birth Date :
             </Form.Label>
-            <Form.Control onChange={(e) => updateField("birthDate", e.target.value)} type="Date" placeholder="Enter Date of Birth" />
+            <Form.Control  onChange={(e) => updateField("birthDate", e.target.value)} type="Date" placeholder="Enter Date of Birth" />
           </Form.Group>
 
           <h5 style={{ fontWeight: "bold", fontSize: "1.1rem" }}>
@@ -149,28 +179,28 @@ export const Personal = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Home :
             </Form.Label>
-            <Form.Control onChange={(e) => updateField("telephoneHome", e.target.value)} type="number" placeholder="Enter Home Number" />
+            <Form.Control value={formData.telephoneHome} onChange={(e) => updateField("telephoneHome", e.target.value)} type="number" placeholder="Enter Home Number" />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Personal Call :
             </Form.Label>
-            <Form.Control onChange={(e) => updateField("telephonePersonalCell", e.target.value)} type="number" placeholder="Enter Personal Number" />
+            <Form.Control value={formData.telephonePersonalCell} onChange={(e) => updateField("telephonePersonalCell", e.target.value)} type="number" placeholder="Enter Personal Number" />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Work :
             </Form.Label>
-            <Form.Control onChange={(e) => updateField("telephoneWork", e.target.value)} type="number" placeholder="Enter Work Number" />
+            <Form.Control value={formData.telephoneWork} onChange={(e) => updateField("telephoneWork", e.target.value)} type="number" placeholder="Enter Work Number" />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Business Call :
             </Form.Label>
-            <Form.Control onChange={(e) => updateField("telephoneBusinessCell", e.target.value)} type="number" placeholder="Enter Business Number" />
+            <Form.Control value={formData.telephoneBusinessCell} onChange={(e) => updateField("telephoneBusinessCell", e.target.value)} type="number" placeholder="Enter Business Number" />
           </Form.Group>
 
           <h5 style={{ fontWeight: "bold", fontSize: "1.1rem" }}>
@@ -181,14 +211,14 @@ export const Personal = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               State Of Issue :
             </Form.Label>
-            <Form.Control onChange={(e) => updateField("dLStateOfIssue", e.target.value)} type="text" placeholder="Enter State of Issue" />
+            <Form.Control value={formData.dLStateOfIssue} onChange={(e) => updateField("dLStateOfIssue", e.target.value)} type="text" placeholder="Enter State of Issue" />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               License Number :
             </Form.Label>
-            <Form.Control onChange={(e) => updateField("dLNumber", e.target.value)} type="number" placeholder="Enter License Number" />
+            <Form.Control value={formData.dLNumber} onChange={(e) => updateField("dLNumber", e.target.value)} type="text" placeholder="Enter License Number" />
           </Form.Group>
 
           <Form.Group className="mb-3">
@@ -202,28 +232,28 @@ export const Personal = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Business Email :
             </Form.Label>
-            <Form.Control onChange={(e) => updateField("businessEmail", e.target.value)} type="text" placeholder="Enter Business Email" />
+            <Form.Control value={formData.businessEmail} onChange={(e) => updateField("businessEmail", e.target.value)} type="text" placeholder="Enter Business Email" />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Personal Email :
             </Form.Label>
-            <Form.Control onChange={(e) => updateField("personalEmail", e.target.value)} type="text" placeholder="Enter Personal Email" />
+            <Form.Control value={formData.personalEmail} onChange={(e) => updateField("personalEmail", e.target.value)} type="text" placeholder="Enter Personal Email" />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Emergency Contact :
             </Form.Label>
-            <Form.Control onChange={(e) => updateField("emergencyContactName", e.target.value)} type="text" placeholder="Enter Emergency Contact" />
+            <Form.Control value={formData.emergencyContactName} onChange={(e) => updateField("emergencyContactName", e.target.value)} type="text" placeholder="Enter Emergency Contact" />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Relationship :
             </Form.Label>
-            <Form.Control onChange={(e) => updateField("emergencyContactRelationship", e.target.value)} type="text" placeholder="Enter Relationship" />
+            <Form.Control value={formData.emergencyContactRelationship} onChange={(e) => updateField("emergencyContactRelationship", e.target.value)} type="text" placeholder="Enter Relationship" />
           </Form.Group>
 
           <Form.Group className="mb-3">
@@ -231,7 +261,8 @@ export const Personal = () => {
               Emergency Contact Phone :
             </Form.Label>
             <Form.Control
-              type="number" 
+              type="number"  
+              value={formData.emergencyContactNumber}
               onChange={(e) => updateField("emergencyContactNumber", e.target.value)}
               placeholder="Enter Emergency Contact Number"
             />
@@ -241,7 +272,7 @@ export const Personal = () => {
 Signature :
             </Form.Label>
             <Form.Control
-              type="text" 
+              type="text"  value={formData.savedSigned}
               onChange={(e) => updateField("savedSigned", e.target.value)}
               placeholder="Enter Emergency Contact Number"
             />

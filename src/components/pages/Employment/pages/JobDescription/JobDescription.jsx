@@ -1,15 +1,70 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { Auth, Baseurl, showMsg } from "../../../../../Baseurl";
+import axios from "axios";
 export const JobDescription = () => {
   const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState("______________");
   const [recipientName, setRecipientName] = useState("______________");
   const [startingPay, setStartingPay] = useState("______________");
   const [startDate, setStartDate] = useState("______________");
+  const [JobDescription, setJobDescription] = useState({
+    
+  })
+  const [employeeSignature, setEmployeeSignature] = useState("");
+  const [employeeDate, setEmployeeDate] = useState("");
+  const getEmployeeId = async () => {
+    try {
+      const res = await axios.get(`${Baseurl}employee/getProfile`, Auth());
+      console.log(res?.data?.data?._id);
+
+   if (res?.data?.data?._id) {
+        try {
+          const jobDescriptionResponse = await axios.get(`${Baseurl}admin/getJobDescriptionById/${res?.data?.data?._id}`, Auth());
+          console.log(jobDescriptionResponse);
+          setJobDescription(jobDescriptionResponse?.data?.data);
+        } catch (error) {
+          console.log(error);
+          if (error.response && error.response.status === 404) {
+            setJobDescription({});
+           showMsg("Error", error?.response?.data?.message , "danger");
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  useEffect(() => {
+    getEmployeeId();
+  }, []);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    console.log(employeeSignature, employeeDate);
+if(!JobDescription) {
+  return
+}
+    try {
+      const res=axios.post(`${Baseurl}employee/updateJobDescription`,{
+        employeeInfoSignature:employeeSignature,
+        employeeInfoDate:employeeDate
+      })
+showMsg("Success", res?.data?.message, "success");
+    } catch (error) {
+      if(error.res.status===403){
+        return
+      }
+      showMsg("Error", error?.response?.data?.message , "danger");
+      console.log(error)
+    }
+  }
+  
   return (
-    <div className="main-div-personal important">
+    <Form onSubmit={submitHandler} className="main-div-personal important">
       <div className="nav-wrap-personal">
         <div className="nav-div-personal1">
           <img onClick={() => navigate(-1)} src="/back_button2.png" alt="da" />
@@ -44,7 +99,7 @@ export const JobDescription = () => {
         </div>
       </div>
       <div className="top-div-personal">
-        <Form className="form-personal offer-letter">
+        <div className="form-personal offer-letter">
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label
               style={{
@@ -53,7 +108,7 @@ export const JobDescription = () => {
                 lineHeight: "1rem",
               }}
             >
-              <p>JOB DISCRIPTION - BEHAVIORAL HEALTH TECHNICIAN</p>
+              <p>JOB DISCRIPTION - {JobDescription?.jobDescription}</p>
             </Form.Label>
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -64,7 +119,7 @@ export const JobDescription = () => {
                 lineHeight: ".5rem",
               }}
             >
-              <p>POSITIONS SUPERVISED: Yes</p>
+              <p>POSITIONS SUPERVISED: {JobDescription?.positionSupervised}</p>
             </Form.Label>
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -78,14 +133,10 @@ export const JobDescription = () => {
               <p>PRIMARY FUNCTION OR RESPONSIBILITIES:.</p>
             </Form.Label>
             <div>
-              <li style={{ fontSize: ".8rem" }}>
-                Responsible for providing behavioral health services to
-                residents, according to COMPANY NAME..
-              </li>
-              <li style={{ fontSize: ".8rem" }}>
-                Responsible for providing behavioral health services to
-                residents, according to COMPANY NAME..
-              </li>
+              {JobDescription?.responsibilities?.map((res, index) => (
+                <li style={{ fontSize: ".8rem" }}>{res}</li>
+              ))}
+              
             </div>
           </Form.Group>
 
@@ -100,15 +151,10 @@ export const JobDescription = () => {
               <p>CORE COMPETENCIES:</p>
             </Form.Label>
             <div>
-              <li style={{ fontSize: ".8rem" }}>
-                Demonstrates knowledge of addictions and behavioral health
-                disorders.
-              </li>
-              <li style={{ fontSize: ".8rem" }}>
-                Capable of multi-tasking, and assist counselors or therapeutic
-                team by giving clinical support services to Residents who are
-                suffering from substance abuse or mental irregularities.
-              </li>
+              {JobDescription?.coreCompetencies?.map((res, index) => (
+                <li style={{ fontSize: ".8rem" }}>{res}</li>
+              ))}
+              
             </div>
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -121,16 +167,12 @@ export const JobDescription = () => {
             >
               <p>MINIMUM QUALIFICATIONS:</p>
             </Form.Label>
+
             <div>
-              <li style={{ fontSize: ".8rem" }}>
-                Demonstrates knowledge of addictions and behavioral health
-                disorders.
-              </li>
-              <li style={{ fontSize: ".8rem" }}>
-                Capable of multi-tasking, and assist counselors or therapeutic
-                team by giving clinical support services to Residents who are
-                suffering from substance abuse or mental irregularities.
-              </li>
+              {JobDescription?.minimumQualifications?.map((res, index) => (
+                <li style={{ fontSize: ".8rem" }}>{res}</li>
+              ))}
+              
             </div>
           </Form.Group>
 
@@ -144,14 +186,21 @@ export const JobDescription = () => {
 
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Employee Name :
+              Employee Name : {JobDescription?.employeeInfoName}
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter First Name" />
+            <Form.Control disabled type="text" placeholder="Enter First Name" />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Employer Signature :
             </Form.Label>
+            <Form.Control required type="text" onChange={(e) => setEmployeeSignature(e.target.value)} placeholder="Employee Signature" />
+          </Form.Group>
+          <Form.Group className="mb-3 mt-2">
+            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
+              Date :
+            </Form.Label>
+            <Form.Control required type="date" onChange={(e) => setEmployeeDate(e.target.value)} placeholder="Enter Date" />
           </Form.Group>
           <div className="save-as-draft-btn-personal">
             <div style={{ maxWidth: "100px" }}>
@@ -181,24 +230,20 @@ export const JobDescription = () => {
             </div>
           </div>
 
-          <Form.Group className="mb-3 mt-2">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Date :
-            </Form.Label>
-            <Form.Control type="date" placeholder="Enter Last Name" />
-          </Form.Group>
+         
 
           <p style={{ fontWeight: "bold", fontSize: ".8rem" }}>Please note:</p>
-          <p style={{ fontSize: ".8rem", fontWeight: "500" }}>
+          {JobDescription?.pleaseNote}
+          {/* <p style={{ fontSize: ".8rem", fontWeight: "500" }}>
             Upon a successfully hiring process, my signature below indicates
             that I understand and agree to the duties of BEHAVIORAL HEALTH
             TECHNICIAN(BHT), and I have meet the stated qualifications,
             experience requirements, and can adequately perform duties
             prescribed or as stated in this job descriptions.
           </p>
-          <p>You want Change Description upload new description</p>
+          <p>You want Change Description upload new description</p> */}
           <div style={{ textAlign: "center", width: "100%", margin: "auto" }}>
-            <button
+            {/* <button
               style={{
                 padding: "10px 24px",
                 backgroundColor: "#1A9FB2",
@@ -210,7 +255,7 @@ export const JobDescription = () => {
               type="submit"
             >
               UPLOAD
-            </button>
+            </button> */}
             <button
               style={{
                 padding: "10px 24px",
@@ -229,8 +274,8 @@ export const JobDescription = () => {
               SUBMIT
             </button>
           </div>
-        </Form>
+        </div>
       </div>
-    </div>
+    </Form>
   );
 };

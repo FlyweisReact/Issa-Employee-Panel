@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Form, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,49 @@ export const FW9 = () => {
   const [recipientName, setRecipientName] = useState("______________");
   const [startingPay, setStartingPay] = useState("______________");
   const [startDate, setStartDate] = useState("______________");
+
+  const [formData, setFormData] = useState({
+    name: "",
+    businessName: "",
+    taxClassification: "",
+    llcTaxClassification: "",
+    other: "",
+    exemptionsPayeeCode: "",
+    exemptionsFatCaExemptionCode: "",
+    street: "",
+    city: "",
+    state: "",
+    zipCode: "",
+    requesterName: "",
+    requesterAddress: "",
+    accountNumbers: ["", ""],
+    tinSsn: "",
+    tinEin: "",
+    certificationIsCorrectTIN: true,
+    certificationIsExemptFromBackupWithholding: false,
+    certificationIsUSPerson: true,
+    certificationFatCaCodes: "",
+    signature: "",
+    date: "",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+
+   const inputValue = type === "checkbox" ? checked : value;
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: inputValue,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+  };
+
+
   return (
     <div className="main-div-personal important">
       <div className="nav-wrap-personal">
@@ -22,7 +65,7 @@ export const FW9 = () => {
         </div>
       </div>
       <div className="top-div-personal">
-        <Form
+        <Form onSubmit={handleSubmit}
           id="form-appendix"
           className="form-personal offer-letter appendix1"
         >
@@ -36,13 +79,13 @@ export const FW9 = () => {
               1. Name (as shown on your income tax return). Name is required on
               this line; do not leave this line blank.
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  Name" />
+            <Form.Control value={formData?.name} required name="name" onChange={handleInputChange} type="text" placeholder="Enter  Name" />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               2. Business name/disregarded entity name, if different from above
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control value={formData?.businessName} onChange={handleInputChange} name="businessName" type="text" placeholder="Enter  text" />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
@@ -50,19 +93,20 @@ export const FW9 = () => {
               person whose name is entered on line 1. Check only one of the
               following seven boxes.
             </Form.Label>
-            <Form.Check
+            <Form.Check onChange={handleInputChange} type="checkbox" label="C Corporation" />
+            <Form.Check  onChange={handleInputChange} type="checkbox" label="S Corporation" />
+            <Form.Check  onChange={handleInputChange} type="checkbox" label="Partnership" />
+            <Form.Check  onChange={handleInputChange} type="checkbox" label="Trust/estate" />
+            <Form.Check onChange={handleInputChange}
               type="checkbox"
               label="Individual/sole proprietor or single-member LLC"
             />
-            <Form.Check type="checkbox" label="C Corporation" />
-            <Form.Check type="checkbox" label="S Corporation" />
-            <Form.Check type="checkbox" label="Partnership" />
-            <Form.Check type="checkbox" label="Trust/estate" />
-            <Form.Check
+           
+            <Form.Check checked={formData?.taxClassification === "L"} onChange={handleInputChange}
               type="checkbox"
               label="Limited liability company. Enter the tax classification (C=C corporation, S=S corporation, P=Partnership) ▶"
             />
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control value={formData?.llcTaxClassification} onChange={handleInputChange} type="text" placeholder="Enter  text" />
           </Form.Group>
           <p>
             Note:{" "}
@@ -79,22 +123,22 @@ export const FW9 = () => {
             </span>{" "}
           </p>
           <Form.Group className="mb-3">
-            <Form.Check type="checkbox" label="Other (see instructions) ▶" />
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Check type="checkbox" onChange={handleInputChange} checked={formData?.other} label="Other (see instructions) ▶" />
+            <Form.Control type="text" onChange={handleInputChange} value={formData?.otherText} placeholder="Enter  text" />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               4 Exemptions (codes apply only to certain entities, not
               individuals; see instructions on page 3):
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control value={formData?.exemptions} onChange={handleInputChange} type="text" placeholder="Enter  text" />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Exempt payee code (if any)
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control value={formData?.exemptPayeeCode} onChange={handleInputChange} type="text" placeholder="Enter  text" />
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               (Applies to accounts maintained outside the U.S.)
             </Form.Label>
@@ -104,25 +148,25 @@ export const FW9 = () => {
               5 Address (number, street, and apt. or suite no.) See
               instructions.
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control value={formData?.address} onChange={handleInputChange} type="text" placeholder="Enter  text" />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Requester’s name and address (optional)
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control value={formData?.requesterName} onChange={handleInputChange} type="text" placeholder="Enter  text" />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               6 City, state, and ZIP code
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control value={formData?.city} onChange={handleInputChange} type="text" placeholder="Enter  text" />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               7 List account number(s) here (optional)
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control value={formData?.accountNumber} onChange={handleInputChange} type="text" placeholder="Enter  text" />
           </Form.Group>
 
           <p style={{ fontWeight: "bold", fontSize: "1rem" }}>
@@ -141,14 +185,14 @@ export const FW9 = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Social security number
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control value={formData?.socialSecurityNumber} onChange={handleInputChange} type="text" placeholder="Enter  text" />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               or <br />
               Employer identification number
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control value={formData?.employerIdentificationNumber} onChange={handleInputChange} type="text" placeholder="Enter  text" />
           </Form.Group>
           <p>
             Note:{" "}
@@ -197,6 +241,7 @@ export const FW9 = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Signature of U.S. person:
             </Form.Label>
+            <Form.Control type="text" value={formData?.signature} onChange={handleInputChange} placeholder="Enter  text" />
           </Form.Group>
           <div className="save-as-draft-btn-personal">
             <div>

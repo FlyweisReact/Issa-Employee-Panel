@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./OfferLetter.css";
-import { getSingleUserData } from "../../../../../Baseurl";
+import { getSingleUserData, showMsg } from "../../../../../Baseurl";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 export const OfferLetter = () => {
@@ -20,6 +20,11 @@ export const OfferLetter = () => {
     getSingleUserData("employee/getMyOfferLetter").then((res) => {
       setLetter(res.data?.data);
       console.log(res.data);
+    }).catch((err) => {
+      if(err.response.status===404){
+        setLetter({});
+        showMsg("Error", err.response.data.message, "danger");
+      }
     });
   };
   useEffect(() => {

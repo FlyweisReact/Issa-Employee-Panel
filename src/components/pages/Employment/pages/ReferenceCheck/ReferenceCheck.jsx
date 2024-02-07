@@ -2,6 +2,8 @@ import React from "react";
 import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { Auth, Baseurl, showMsg } from "../../../../../Baseurl";
+import axios from "axios";
 export const ReferenceCheck = () => {
   const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState("______________");
@@ -10,12 +12,42 @@ export const ReferenceCheck = () => {
   const [startDate, setStartDate] = useState("______________");
 
   const [isChecked, setIsChecked] = useState("");
+  const [date, setDate] = useState("");
+  const [referenceName, setReferenceName] = useState("");
+  const [referenceRecommendation, setReferenceRecommendation] = useState("");
+  const [savedSigned, setSavedSigned] = useState("");
+const [data, setData] = useState({});
 
-  const handleCheckboxChange = (value) => {
-    setIsChecked(value);
-  };
+
+  const handleSubmit=async(e)=>{
+    e.preventDefault();
+    try {
+      const res=await axios.post(`${Baseurl}employee/createReferenceCheck`,{
+        recipientName,
+        referenceRecommendation,
+        savedSigned,
+        date
+      },Auth())
+
+      showMsg("Success", res?.data?.message, "success");
+      navigate(-1)
+      
+    } catch (error) {
+      
+    }
+  }
+
+  const getAllData=async()=>{
+    try {
+      const res=await axios.get(`${Baseurl}employee/getReferenceCheck`,Auth())
+
+    } catch (error) {
+      console.log(error)
+      
+    }
+  }
   return (
-    <div className="main-div-personal important">
+    <Form onSubmit={handleSubmit} className="main-div-personal important">
       <div className="nav-wrap-personal">
         <div className="nav-div-personal1">
           <img onClick={() => navigate(-1)} src="/back_button2.png" alt="da" />
@@ -27,72 +59,39 @@ export const ReferenceCheck = () => {
         </div>
       </div>
       <div className="top-div-personal">
-        <Form
+        <div
           id="form-appendix"
           className="form-personal offer-letter appendix1"
         >
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Reference 1:
+              Reference :
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control required onChange={(e)=>setReferenceName(e.target.value)} type="text" placeholder="Enter  text" />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Date of Contact:
             </Form.Label>
-            <Form.Control type="Date" placeholder="Enter  text" />
+            <Form.Control required onChange={(e)=>setDate(e.target.value)} type="Date" placeholder="Enter  text" />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Reference 1 Recommendation:
+              Recommendation:
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control required onChange={(e)=>setReferenceRecommendation(e.target.value)} type="text" placeholder="Enter  text" />
           </Form.Group>
-
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Reference 2:
+              Signature:
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control required onChange={(e)=>setReferenceRecommendation(e.target.value)} type="text" placeholder="Enter  text" />
           </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Date of Contact:
-            </Form.Label>
-            <Form.Control type="Date" placeholder="Enter  text" />
-          </Form.Group>
 
-          <Form.Group className="mb-3">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Reference 2 Recommendation:
-            </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Reference 3:
-            </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Date of Contact:
-            </Form.Label>
-            <Form.Control type="Date" placeholder="Enter  text" />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Reference 3 Recommendation:
-            </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
-          </Form.Group>
+         
           <div className="save-as-draft-btn-personal">
             <div>
               <img
@@ -130,8 +129,8 @@ export const ReferenceCheck = () => {
               SUBMIT
             </button>
           </div>
-        </Form>
+        </div>
       </div>
-    </div>
+    </Form>
   );
 };

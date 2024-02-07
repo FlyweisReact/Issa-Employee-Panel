@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./FW-4.css";
+import axios from "axios";
+import { Auth, Baseurl, showMsg } from "../../../../../Baseurl";
 export const FW4Form = () => {
   const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState("______________");
@@ -11,12 +13,62 @@ export const FW4Form = () => {
   const [startDate, setStartDate] = useState("______________");
 
   const [isChecked, setIsChecked] = useState("");
+  const [formData, setFormData] = useState({
+    step1FirstName: '',
+    step1LastName: '',
+    step1Address: '',
+    step1City: '',
+    step1State: '',
+    step1ZipCode: '',
+    step1SocialSecurityNumber: '',
+    step1IsNameMatched: '',
+    step1FilingStatus: '',
+    step2Choose: '',
+    step2Ca: '',
+    step2Cb: '',
+    step3QualifyingChildrenCredit: '',
+    step3OtherDependentsCredit: '',
+    step3TotalCredits: '',
+    step4OtherIncome: '',
+    step4Deductions: '',
+    step4ExtraWithholding: '',
+    step5EmployeeSignature: '',
+    step5Date: '',
+    employerName: '',
+    employerAddress: '',
+    firstDateOfEmployment: '',
+    employerEIN: '',
+    step2bLine1: '',
+    step2bLine2a: '',
+    step2bLine2b: '',
+    step2bLine2c: '',
+    step2bLine3: '',
+    step2bLine4: '',
+    step4bLine1: '',
+    step4bLine2: '',
+    step4bLine3: '',
+    step4bLine4: '',
+    step4bLine5: '',
+  });
 
   const handleCheckboxChange = (value) => {
     setIsChecked(value);
   };
+  const handleSubmit=async(e)=>{
+    e.preventDefault();
+
+    try {
+      const res=await axios.post(`${Baseurl}employee/createFW4`,formData,Auth());
+      showMsg("Success", res?.data?.message, "success");
+      navigate(-1)
+    } catch (error) {
+      console.log(error)
+      
+    }
+   console.log(formData)
+  }
   return (
-    <div className="main-div-personal important">
+    <Form onSubmit={handleSubmit} className="main-div-personal important">
       <div className="nav-wrap-personal">
         <div className="nav-div-personal1">
           <img onClick={() => navigate(-1)} src="/back_button2.png" alt="da" />
@@ -28,7 +80,7 @@ export const FW4Form = () => {
         </div>
       </div>
       <div className="top-div-personal">
-        <Form
+        <div
           id="form-appendix"
           className="form-personal offer-letter appendix1"
         >
@@ -42,25 +94,37 @@ export const FW4Form = () => {
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               a) First name and middle initial:
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  name" />
+            <Form.Control   required  onChange={(e)=>setFormData({ ...formData, step1FirstName: e.target.value })} type="text" placeholder="Enter  Text.." />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Last name :
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  name" />
+            <Form.Control  required  onChange={(e)=>setFormData({ ...formData, step1LastName: e.target.value })} type="text" placeholder="Enter  Text.." />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               (b) Social security number :
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  name" />
+            <Form.Control  required  onChange={(e)=>setFormData({ ...formData, step1SocialSecurityNumber: e.target.value })} type="text" placeholder="Enter  Text.." />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
+              City :
+            </Form.Label>
+            <Form.Control  required  onChange={(e)=>setFormData({ ...formData, step1City: e.target.value })} type="text" placeholder="Enter  Text.." />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
+              Zip Code :
+            </Form.Label>
+            <Form.Control  required  onChange={(e)=>setFormData({ ...formData, step1ZipCode: e.target.value })} type="text" placeholder="Enter  Text.." />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Address :
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  name" />
+            <Form.Control  required  onChange={(e)=>setFormData({ ...formData, step1Address: e.target.value })} type="text" placeholder="Enter  Text.." />
           </Form.Group>
           <p style={{ fontWeight: "500" }}>
             Does your name match the name on your social security card? If not,
@@ -73,8 +137,7 @@ export const FW4Form = () => {
             style={{ marginLeft: "10px" }}
             type={"checkbox"}
             id="checkbox-10"
-            checked={isChecked === "10"}
-            onChange={() => handleCheckboxChange("10")}
+               onChange={(e)=> setFormData({ ...formData, step1IsNameMatched: e.target.value })}
           >
             <Form.Check.Input name="checkbox" type={"checkbox"} isValid />
             <Form.Check.Label style={{ marginBottom: "0", marginLeft: "5px" }}>
@@ -84,11 +147,10 @@ export const FW4Form = () => {
           <Form.Check
             style={{ marginLeft: "10px" }}
             type={"checkbox"}
-            id="checkbox-10"
-            checked={isChecked === "10"}
-            onChange={() => handleCheckboxChange("10")}
+            id="checkbox-10"  
           >
-            <Form.Check.Input name="checkbox" type={"checkbox"} isValid />
+            <Form.Check.Input name="checkbox"  type={"checkbox"} 
+               onChange={(e)=> setFormData({ ...formData, step1FilingStatus: "Single or Married filing separately" })} isValid />
             <Form.Check.Label style={{ marginBottom: "0", marginLeft: "5px" }}>
               Married filing jointly or Qualifying surviving spouse
             </Form.Check.Label>
@@ -96,17 +158,17 @@ export const FW4Form = () => {
           <Form.Check
             style={{ marginLeft: "10px" }}
             type={"checkbox"}
-            id="checkbox-10"
-            checked={isChecked === "10"}
-            onChange={() => handleCheckboxChange("10")}
+            id="checkbox-10"  
           >
-            <Form.Check.Input name="checkbox" type={"checkbox"} isValid />
+            <Form.Check.Input name="checkbox"  type={"checkbox"} 
+               onChange={(e)=> setFormData({ ...formData, step1FilingStatus: "Head of household" })} isValid />
             <Form.Check.Label style={{ marginBottom: "0", marginLeft: "5px" }}>
-              Head of household (Check only if you’re unmarried and pay more
+            Head of household (Check only if you’re unmarried and pay more
               than half the costs of keeping up a home for yourself and a
               qualifying individual.)
             </Form.Check.Label>
           </Form.Check>
+          
           <p>
             Complete Steps 2–4 ONLY if they apply to you; otherwise, skip to
             Step 5. See page 2 for more information on each step, who can claim
@@ -122,15 +184,16 @@ export const FW4Form = () => {
           <p style={{ fontWeight: "500" }}>
             Do only one of the following.
             <br />
-            (a) Reserved for future use.
+            (a) Reserved for future use. <Form.Check type={"checkbox"}    onChange={(e)=> setFormData({ ...formData, step2Choose: "Reserved for future use" })} id="checkbox-10" />
             <br />
             (b) Use the Multiple Jobs Worksheet on page 3 and enter the result
-            in Step 4 <br />
+            in Step 4  <Form.Check type={"checkbox"}    onChange={(e)=> setFormData({ ...formData, step2Choose: "Use the Multiple Jobs Worksheet on page 3 and enter the result in Step 4" })} id="checkbox-10" /> <br />
             (c) below; or (c) If there are only two jobs total, you may check
             this box. Do the same on Form W-4 for the other job. This option is
             generally more accurate than (b) if pay at the lower paying job is
             more than half of the pay at the higher paying job. Otherwise, (b)
-            is more accurate . . . . . . . . . . . . . . . . . .
+            is more accurate . . . . . . . . . . . . . . . . . . 
+            <Form.Check type={"checkbox"}    onChange={(e)=> setFormData({ ...formData, step2Choose: "Use the Multiple Jobs Worksheet on page 3 and enter the result in Step 4" })} id="checkbox-10" />
           </p>
           <p>
             TIP:{" "}
@@ -162,7 +225,7 @@ export const FW4Form = () => {
             >
               Company Administrator Name:
             </Form.Label> */}
-            <Form.Control type="text" placeholder="$" />
+            <Form.Control type="text"    onChange={(e)=> setFormData({ ...formData, step3QualifyingChildrenCredit: e.target.value })} placeholder="$" />
           </Form.Group>
           <p style={{ fontWeight: "500" }}>
             Multiply the number of other dependents by $500
@@ -177,7 +240,7 @@ export const FW4Form = () => {
             >
               Company Administrator Name:
             </Form.Label> */}
-            <Form.Control type="text" placeholder="$" />
+            <Form.Control type="text"    onChange={(e)=> setFormData({ ...formData, step3OtherDependentsCredit: e.target.value })} placeholder="$" />
           </Form.Group>
           <p style={{ fontWeight: "500" }}>
             Add the amounts above for qualifying children and other dependents.
@@ -194,7 +257,7 @@ export const FW4Form = () => {
             >
               Company Administrator Name:
             </Form.Label> */}
-            <Form.Control type="text" placeholder="$" />
+            <Form.Control  required  onChange={(e)=> setFormData({ ...formData, step3TotalCredits: e.target.value })} type="text" placeholder="$" />
           </Form.Group>
           <p>Step 4 (optional): Other Adjustments</p>
           <p>
@@ -209,7 +272,7 @@ export const FW4Form = () => {
             <span style={{ fontWeight: "500" }}>4(a)</span>
           </p>
           <Form.Group className="mb-3">
-            <Form.Control type="text" placeholder="$" />
+            <Form.Control type="text"  required  onChange={(e)=> setFormData({ ...formData, step4OtherIncome: e.target.value })} placeholder="$" />
           </Form.Group>
 
           <p>
@@ -232,7 +295,7 @@ export const FW4Form = () => {
             >
               Company Administrator Name:
             </Form.Label> */}
-            <Form.Control type="text" placeholder="$" />
+            <Form.Control type="text"  required  onChange={(e)=> setFormData({ ...formData, step4Deductions: e.target.value })} placeholder="$" />
           </Form.Group>
           <p>
             (c) Extra withholding.{" "}
@@ -243,7 +306,7 @@ export const FW4Form = () => {
             <span style={{ fontWeight: "500" }}>4(c)</span>
           </p>
           <Form.Group className="mb-3">
-            <Form.Control type="text" placeholder="$" />
+            <Form.Control type="text"  required  onChange={(e)=> setFormData({ ...formData, step4ExtraWithholding: e.target.value })} placeholder="$" />
           </Form.Group>
           <p>Step 5: Sign Here</p>
           <p style={{ fontWeight: "500" }}>
@@ -271,12 +334,13 @@ export const FW4Form = () => {
               Employee’s signature <br /> (This form is not valid unless you
               sign it.)
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control type="text"  required  onChange={(e)=> setFormData({ ...formData, step5EmployeeSignature: e.target.value })} placeholder="Enter  text" />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Employer Signature:
+              Employer Date:
             </Form.Label>
+            <Form.Control type="date"  required  onChange={(e)=> setFormData({ ...formData, step5Date: e.target.value })} placeholder="Enter  text" />
           </Form.Group>
           <div className="save-as-draft-btn-personal">
             <div style={{ maxWidth: "100px" }}>
@@ -296,36 +360,31 @@ export const FW4Form = () => {
             </div>
           </div>
 
-          <Form.Group className="mb-3">
-            <Form.Label
-              style={{
-                fontWeight: "bold",
-                fontSize: ".9rem",
-                marginTop: "2rem",
-              }}
-            >
-              Date :
-            </Form.Label>
-            <Form.Control type="date" placeholder="Enter  text" />
-          </Form.Group>
+         
           <p style={{ fontSize: "1rem" }}>Employers Only </p>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-              Employer’s name and address
+              Employer’s Name
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control  required  onChange={(e)=> setFormData({ ...formData, employerName: e.target.value })} type="text" placeholder="Enter  text" />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
+              Employer’s Address
+            </Form.Label>
+            <Form.Control  required  onChange={(e)=> setFormData({ ...formData, employerAddress: e.target.value })} type="text" placeholder="Enter  text" />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               First date of employment
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control  required  onChange={(e)=> setFormData({ ...formData, firstDateOfEmployment: e.target.value })} type="date" placeholder="Enter  text" />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
               Employer identification number (EIN)
             </Form.Label>
-            <Form.Control type="text" placeholder="Enter  text" />
+            <Form.Control  required  onChange={(e)=> setFormData({ ...formData, employerEIN: e.target.value })} type="text" placeholder="Enter  text" />
           </Form.Group>
           <p style={{ fontSize: "1rem" }}>Instructions</p>
           <p>Section references are to the Internal Revenue Code. </p>
@@ -490,7 +549,7 @@ export const FW4Form = () => {
             </span>
           </p>
           <Form.Group className="mb-3">
-            <Form.Control type="text" placeholder="$" />
+            <Form.Control type="text"  required  onChange={(e) => setFormData({ ...formData, step2bLine1: e.target.value })} placeholder="$" />
           </Form.Group>
           <p>
             2 Three jobs.
@@ -513,7 +572,7 @@ export const FW4Form = () => {
             </span>
           </p>
           <Form.Group className="mb-3">
-            <Form.Control type="text" placeholder="$" />
+            <Form.Control type="text"  required  onChange={(e) => setFormData({ ...formData, step2bLine2a: e.target.value })} placeholder="$" />
           </Form.Group>
           <p>
             b
@@ -527,7 +586,7 @@ export const FW4Form = () => {
             </span>
           </p>
           <Form.Group className="mb-3">
-            <Form.Control type="text" placeholder="$" />
+            <Form.Control type="text"  required  onChange={(e) => setFormData({ ...formData, step2bLine2b: e.target.value })} placeholder="$" />
           </Form.Group>
           <p>
             c
@@ -538,7 +597,7 @@ export const FW4Form = () => {
             </span>
           </p>
           <Form.Group className="mb-3">
-            <Form.Control type="text" placeholder="$" />
+            <Form.Control type="text"  required  onChange={(e) => setFormData({ ...formData, step2bLine2c: e.target.value })} placeholder="$" />
           </Form.Group>
           <p>
             3
@@ -551,7 +610,7 @@ export const FW4Form = () => {
             </span>
           </p>
           <Form.Group className="mb-3">
-            <Form.Control type="text" placeholder="$" />
+            <Form.Control type="text"  required  onChange={(e) => setFormData({ ...formData, step2bLine3: e.target.value })} placeholder="$" />
           </Form.Group>
           <p>
             4.
@@ -563,7 +622,7 @@ export const FW4Form = () => {
             </span>
           </p>
           <Form.Group className="mb-3">
-            <Form.Control type="text" placeholder="$" />
+            <Form.Control type="text"  required  onChange={(e) => setFormData({ ...formData, step2bLine4: e.target.value })} placeholder="$" />
           </Form.Group>
           <p>
             Step 4(b)—Deductions Worksheet
@@ -581,7 +640,7 @@ export const FW4Form = () => {
             </span>
           </p>
           <Form.Group className="mb-3">
-            <Form.Control type="text" placeholder="$" />
+            <Form.Control type="text"  required  onChange={(e) => setFormData({ ...formData, step4bLine1: e.target.value })} placeholder="$" />
           </Form.Group>
           <p>
             2.
@@ -592,7 +651,7 @@ export const FW4Form = () => {
             </span>
           </p>
           <Form.Group className="mb-3">
-            <Form.Control type="text" placeholder="$" />
+            <Form.Control type="text"   required  onChange={(e) => setFormData({ ...formData, step4bLine2: e.target.value })} placeholder="$" />
           </Form.Group>
           <p>
             3.
@@ -603,7 +662,17 @@ export const FW4Form = () => {
             </span>
           </p>
           <Form.Group className="mb-3">
-            <Form.Control type="text" placeholder="$" />
+            <Form.Control type="text"  required  onChange={(e) => setFormData({ ...formData, step4bLine3: e.target.value })} placeholder="$" />
+          </Form.Group>
+          <p>
+            4.
+            <span style={{ fontWeight: "500" }}>
+            Enter an estimate of your student loan interest, deductible IRA contributions, and certain other
+adjustments (from Part II of Schedule 1 (Form 1040)). See Pub. 505 for more information  . . . .
+            </span>
+          </p>
+          <Form.Group className="mb-3">
+            <Form.Control type="text"  required  onChange={(e) => setFormData({ ...formData, step4bLine4: e.target.value })} placeholder="$" />
           </Form.Group>
           <p>
             5.
@@ -613,7 +682,7 @@ export const FW4Form = () => {
             </span>
           </p>
           <Form.Group className="mb-3">
-            <Form.Control type="text" placeholder="$" />
+            <Form.Control type="text"  required  onChange={(e) => setFormData({ ...formData, step4bLine5: e.target.value })} placeholder="$" />
           </Form.Group>
           <p>
             Privacy Act and Paperwork Reduction Act Notice.
@@ -686,8 +755,8 @@ export const FW4Form = () => {
               SUBMIT
             </button>
           </div>
-        </Form>
+        </div>
       </div>
-    </div>
+    </Form>
   );
 };
