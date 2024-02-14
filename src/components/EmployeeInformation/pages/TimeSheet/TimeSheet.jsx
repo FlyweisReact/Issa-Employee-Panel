@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Auth } from "../../../../Baseurl";
+import { downloadReport } from "../../../../Repository/Apis";
 import Loader from "../../../Loader/Loader";
 
 const TimeSheet = () => {
@@ -10,6 +11,9 @@ const TimeSheet = () => {
   const [profile, setProfile] = useState("");
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
+  const [updateMonth, setUpdatedMonth] = useState(0);
+  const [month, setMonth] = useState(0);
+  const [year, setYear] = useState(0);
 
   const getProfile = async () => {
     try {
@@ -26,9 +30,17 @@ const TimeSheet = () => {
   }, []);
 
   const today = new Date();
-  const month = today.getMonth() + 1;
-  const updateMonth = month < 10 ? `0${month}` : month;
-  const year = today.getFullYear();
+
+  useEffect(() => {
+    setMonth(today.getMonth() + 1);
+    setYear(today.getFullYear());
+  }, []);
+
+  useEffect(() => {
+    if (month) {
+      setUpdatedMonth(month < 10 ? `0${month}` : month);
+    }
+  }, [month]);
 
   const getAppointments = async () => {
     setLoading(true);
@@ -46,7 +58,6 @@ const TimeSheet = () => {
           },
         }
       );
-      const data = res?.data?.data?.schedule;
       setData(res?.data?.data);
       setLoading(false);
     } catch {
@@ -58,7 +69,7 @@ const TimeSheet = () => {
     if (profile) {
       getAppointments();
     }
-  }, [profile]);
+  }, [profile, year, updateMonth]);
 
   const renderTable = (startIndex, endIndex) => {
     return (
@@ -67,45 +78,75 @@ const TimeSheet = () => {
           <thead>
             <tr>
               <th>Shift</th>
-              {data?.slice(startIndex, endIndex)?.map((day, index) => (
+              {/* {data?.slice(startIndex, endIndex)?.map((day, index) => (
                 <th key={`head${index}`}>
                   <span>{day.day}</span>
                   <br />
                   <span>{day.currentDate}</span>
                 </th>
-              ))}
+              ))} */}
+              <th>Monday</th>
+              <th>Tuesday</th>
+              <th>Wednesday</th>
+              <th>Thursday</th>
+              <th>Friday</th>
+              <th>Saturday</th>
+              <th>Sunday</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>Am to Am</td>
-              {data?.slice(startIndex, endIndex)?.map((day, index) => (
+              <td>7am to 2pm</td>
+              <td>Employee1</td>
+              <td>Employee2</td>
+              <td>Employee1</td>
+              <td>Employee1</td>
+              <td>Employee2</td>
+              <td>Employee1</td>
+              <td>Employee1</td>
+              {/* {data?.slice(startIndex, endIndex)?.map((day, index) => (
                 <td key={`amToAm${index}`}>
                   {day.schedule.find((item) => item.type === "amToPm")?.start}
                   {" - "}
                   {day.schedule.find((item) => item.type === "amToPm")?.end}
                 </td>
-              ))}
+              ))} */}
             </tr>
             <tr>
-              <td>Am to Pm</td>
-              {data?.slice(startIndex, endIndex)?.map((day, index) => (
+              <td>2pm to 10am</td>
+              {/* {data?.slice(startIndex, endIndex)?.map((day, index) => (
                 <td key={`amToPm${index}`}>
                   {day.schedule.find((item) => item.type === "amToPm")?.start}
                   {" - "}
                   {day.schedule.find((item) => item.type === "amToPm")?.end}
                 </td>
-              ))}
+              ))} */}
+              <td>Employee1</td>
+              <td>Employee2</td>
+              <td>Employee1</td>
+              <td>Employee1</td>
+              <td>Employee2</td>
+              <td>Employee1</td>
+              <td>Employee1</td>
             </tr>
             <tr>
-              <td>Pm to Am</td>
-              {data?.slice(startIndex, endIndex)?.map((day, index) => (
+              <td>10am to 7pm</td>
+              {/* {data?.slice(startIndex, endIndex)?.map((day, index) => (
                 <td key={`pmToAm${index}`}>
                   {day.schedule.find((item) => item.type === "pmToAm")?.start}
                   {" - "}
                   {day.schedule.find((item) => item.type === "pmToAm")?.end}
                 </td>
-              ))}
+              ))} */}
+              <td>Employee1</td>
+              <td>Employee2</td>
+              <td>Employee1</td>
+              <td>Employee1</td>
+              <td>Employee2</td>
+              <td>Employee1</td>
+              <td>Employee1</td>
+
+
             </tr>
           </tbody>
         </table>
@@ -114,7 +155,8 @@ const TimeSheet = () => {
   };
 
   const generateTables = () => {
-    const tableCount = Math.ceil(data?.length / 7);
+    const tableCount = Math.ceil(28 / 7);
+    // const tableCount = Math.ceil(data?.length / 7);
     const tables = [];
 
     for (let i = 0; i < tableCount; i++) {
@@ -141,6 +183,18 @@ const TimeSheet = () => {
     "November",
     "December",
   ];
+
+  const MonthHandler = (newMonth) => {
+    if (newMonth > 12) {
+      setYear(year + 1);
+      setMonth(1);
+    } else if (newMonth < 1) {
+      setYear(year - 1);
+      setMonth(12);
+    } else {
+      setMonth(newMonth);
+    }
+  };
 
   return (
     <>
@@ -171,7 +225,17 @@ const TimeSheet = () => {
       </div>
 
       <div className="monthOnLast fw-bold">
-        Month/Year : {monthInEng[updateMonth - 1]}  {year}
+        <i
+          className="fa-solid fa-caret-left"
+          onClick={() => MonthHandler(month - 1)}
+        ></i>
+        <p>
+          Month/Year : {monthInEng[updateMonth - 1]} {year}
+        </p>
+        <i
+          className="fa-solid fa-caret-right"
+          onClick={() => MonthHandler(month + 1)}
+        ></i>
       </div>
 
       {loading ? (
@@ -202,6 +266,13 @@ const TimeSheet = () => {
               </div>
             </form>
           </div>
+
+          <button
+            className="print_btn"
+            onClick={() => downloadReport(`EMPLOYEE_SCHEDULE`)}
+          >
+            PRINT REPORT{" "}
+          </button>
         </>
       )}
     </>

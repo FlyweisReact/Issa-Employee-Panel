@@ -108,3 +108,26 @@ export const TextareaMaker = ({ label, setValue, value, placeholder, row }) => {
     </Form.Group>
   );
 };
+
+export const BorderlessInput = ({ setState, placeholder, type, value }) => {
+  return (
+    <input
+      type={type}
+      placeholder={placeholder}
+      value={value}
+      onChange={(e) => setState(e.target.value)}
+      className="borderless_input"
+    />
+  );
+};
+
+export const DefaultInput = ({ value, isBots, label }) => {
+  return isBots ? (
+    <Form.Group className="mb-3 ">
+      <Form.Label> {label} </Form.Label>
+      <Form.Control value={value} />
+    </Form.Group>
+  ) : (
+    <input value={value} className="borderless_input" />
+  );
+};

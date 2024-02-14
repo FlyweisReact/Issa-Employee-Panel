@@ -3,7 +3,12 @@
 import React, { useState } from "react";
 import HOC2 from "../../layout/HOC2";
 import { Form } from "react-bootstrap";
-import { InputMaker, RadioMaker } from "../../../../Helper/Makers.js";
+import {
+  BorderlessInput,
+  DateFormatter,
+  InputMaker,
+  RadioMaker,
+} from "../../../../Helper/Makers.js";
 import { SignatureModal } from "../../../../Mod/Modal";
 import { postApi } from "../../../../Repository/Apis";
 import { ClipLoader } from "react-spinners";
@@ -88,43 +93,71 @@ const EmployeePerformance = () => {
               Employee Information:
             </p>
 
-            <InputMaker
-              label="Name"
-              setState={setName}
-              placeholder="Enter Name"
-              type="text"
-              value={name}
-            />
+            <div className="wraaped_div mb-3">
+              <div className="Main half-width">
+                <span className="label">Name:</span>
+                <span className="Input_span">
+                  <BorderlessInput
+                    setState={setName}
+                    placeholder={""}
+                    type={"text"}
+                    value={name}
+                  />
+                </span>
+              </div>
+              <div className="Main half-width">
+                <span className="label">Date:</span>
+                <span className="Input_span">
+                  <BorderlessInput
+                    setState={setEmployeeDate}
+                    placeholder={""}
+                    type={"date"}
+                    value={DateFormatter(employeeDate)}
+                  />
+                </span>
+              </div>
+              <div className="Main half-width">
+                <span className="label">Hire Date:</span>
+                <span className="Input_span">
+                  <BorderlessInput
+                    setState={setEmployeeHireDate}
+                    placeholder={""}
+                    type={"date"}
+                    value={DateFormatter(employeeHireDate)}
+                  />
+                </span>
+              </div>
+            </div>
 
-            <InputMaker
-              label="Date"
-              setState={setEmployeeDate}
-              placeholder=""
-              type="date"
-              value={employeeDate}
-            />
-
-            <InputMaker
-              label="Job Title"
-              setState={setEmployeeJobTitle}
-              placeholder=""
-              type="text"
-              value={employeeJobTitle}
-            />
-            <InputMaker
-              label="Manager"
-              setState={setEmployeeManager}
-              placeholder=""
-              type="text"
-              value={employeeManager}
-            />
+            <div className="wraaped_div mb-3">
+              <div className="Main half-width">
+                <span className="label">Job Title:</span>
+                <span className="Input_span">
+                  <BorderlessInput
+                    setState={setEmployeeJobTitle}
+                    placeholder={""}
+                    type={"text"}
+                    value={employeeJobTitle}
+                  />
+                </span>
+              </div>
+              <div className="Main half-width">
+                <span className="label">Manager:</span>
+                <span className="Input_span">
+                  <BorderlessInput
+                    setState={setEmployeeManager}
+                    placeholder={""}
+                    type={"text"}
+                    value={DateFormatter(employeeManager)}
+                  />
+                </span>
+              </div>
+            </div>
 
             <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-                Type of Review
-              </Form.Label>
-              <div className="Radio_btns">
-                <div className="btns d-block">
+              <Form.Label className="Radio_btns">
+                <span style={{ marginRight: "10px" }}>Type of Review</span>
+                <div className="btns">
                   <RadioMaker
                     name="Reviews"
                     setValue={setTypeOfReview}
@@ -150,16 +183,8 @@ const EmployeePerformance = () => {
                     checked={typeOfReview}
                   />
                 </div>
-              </div>
+              </Form.Label>
             </Form.Group>
-
-            <InputMaker
-              label="Hire Date"
-              setState={setEmployeeHireDate}
-              placeholder=""
-              type="date"
-              value={employeeHireDate}
-            />
 
             <div>
               <p>Review Period:</p>

@@ -104,28 +104,30 @@ const Sidebar2 = ({ hamb, setHamb }) => {
     toast.success("Log -Out Successful");
   };
   const [employeeData, setEmployeeData] = useState({});
+
   const getEmployeeData = () => {
     axios.get(`${Baseurl}employee/getProfile`, Auth()).then((res) => {
       setEmployeeData(res.data?.data);
     });
   };
+
   useEffect(() => {
     getEmployeeData();
   }, []);
+
   return (
     <>
       <aside
         style={{ height: "auto", alignItems: "center" }}
         className="p-4 sm:bg-[#1A9FB2]"
       >
-        {/* Top */}
         <div className="w-full md:hidden relative  p-2 mb-4">
           <RiCloseLine
             onClick={() => setHamb(!hamb)}
             className="text-3xl  absolute top-2 sm:hover:rotate-[228deg] transition-transform font-bold right-2 sm:hover:text-[22px] text-[rgb(241,146,46)] cursor-pointer"
           />
         </div>
-        {/* Logo */}
+
         <figure className="flex  flex-col items-center">
           <span
             style={{
@@ -203,7 +205,6 @@ const Sidebar2 = ({ hamb, setHamb }) => {
                       whiteSpace: "normal",
                       fontSize: "0.7rem",
                       textDecoration: "none",
-                      opacity: location.pathname === nav.link ? "100%" : "60%",
                     }}
                   >
                     {nav.name}

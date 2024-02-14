@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { showMsg } from "../Baseurl";
+import html2pdf from "html2pdf.js";
 
 export const fetchApi = async (setLoading, url, setResponse) => {
   setLoading(true);
@@ -91,4 +92,16 @@ export const UploadImage = async (file, setResponse) => {
     );
     setResponse(res?.data?.data);
   } catch {}
+};
+
+export const downloadReport = (fileName) => {
+  const element = document.body;
+  const options = {
+    margin: 0.5,
+    filename: `${fileName}.pdf`,
+    image: { type: "jpeg", quality: 1 },
+    html2canvas: { scale: 2 , logging : false },
+    jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+  };
+  html2pdf().from(element).set(options).save();
 };

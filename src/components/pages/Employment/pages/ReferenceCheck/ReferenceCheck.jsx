@@ -1,11 +1,36 @@
 /** @format */
 
-import React from "react";
+import React, { useState } from "react";
 import { Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import {
+  DateFormatter,
+  DefaultInput,
+  InputMaker,
+} from "../../../../../Helper/Makers";
 
 export const ReferenceCheck = () => {
   const navigate = useNavigate();
+  const [arr, setArr] = useState([]);
+  const [refrence, setRefrence] = useState("");
+  const [date, setDate] = useState("");
+  const [recommend, setRecommend] = useState("");
+
+  const payload = {
+    refrence,
+    date,
+    recommend,
+  };
+
+  const addMore = () => {
+    setArr((prev) => [...prev, payload]);
+  };
+  const removeOne = (index) => {
+    setArr((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  console.log(arr);
+
   return (
     <>
       <div className="nav-wrap-personal">
@@ -24,57 +49,29 @@ export const ReferenceCheck = () => {
             id="form-appendix"
             className="form-personal offer-letter appendix1"
           >
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-                Reference :
-              </Form.Label>
-              <Form.Control required type="text" placeholder="Enter  text" />
-            </Form.Group>
+            <InputMaker
+              label={"Reference:"}
+              setState={setRefrence}
+              value={refrence}
+              placeholder={""}
+              type="text"
+            />
 
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-                Date of Contact:
-              </Form.Label>
-              <Form.Control required type="Date" placeholder="Enter  text" />
-            </Form.Group>
+            <InputMaker
+              label={"Date of Contact:"}
+              setState={setDate}
+              value={DateFormatter(date)}
+              placeholder={""}
+              type="date"
+            />
 
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-                Reference Recommendation:
-              </Form.Label>
-              <Form.Control required type="text" placeholder="Enter  text" />
-            </Form.Group>
-
-            <div className="custome-cloud-btn">
-              <div className="btns">
-                <button className="draft"> SAVE AS DRAFT</button>
-                <button type="button" className="signed">
-                  {" "}
-                  SAVED AND SIGNED
-                </button>
-              </div>
-            </div>
-
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-                Reference :
-              </Form.Label>
-              <Form.Control required type="text" placeholder="Enter  text" />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-                Date of Contact:
-              </Form.Label>
-              <Form.Control required type="Date" placeholder="Enter  text" />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-                Reference Recommendation:
-              </Form.Label>
-              <Form.Control required type="text" placeholder="Enter  text" />
-            </Form.Group>
+            <InputMaker
+              label={"Reference Recommendation:"}
+              setState={setRecommend}
+              value={recommend}
+              placeholder={""}
+              type="text"
+            />
 
             <div className="custome-cloud-btn">
               <div className="btns">
@@ -86,36 +83,36 @@ export const ReferenceCheck = () => {
               </div>
             </div>
 
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-                Reference :
-              </Form.Label>
-              <Form.Control required type="text" placeholder="Enter  text" />
-            </Form.Group>
+            <button
+              className="add_more"
+              type="button"
+              onClick={() => addMore()}
+            >
+              Add More
+            </button>
 
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-                Date of Contact:
-              </Form.Label>
-              <Form.Control required type="Date" placeholder="Enter  text" />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
-                Reference Recommendation:
-              </Form.Label>
-              <Form.Control required type="text" placeholder="Enter  text" />
-            </Form.Group>
-
-            <div className="custome-cloud-btn">
-              <div className="btns">
-                <button className="draft"> SAVE AS DRAFT</button>
-                <button type="button" className="signed">
-                  {" "}
-                  SAVED AND SIGNED
+            {arr?.map((i, index) => (
+              <div key={index} className="mt-3">
+                <DefaultInput
+                  isBots={true}
+                  value={i.refrence}
+                  label={"Reference:"}
+                />
+                <DefaultInput isBots={true} value={i.date} label={"Date:"} />
+                <DefaultInput
+                  isBots={true}
+                  value={i.recommend}
+                  label={"Reference Recommendation:"}
+                />
+                <button
+                  className="remove_this"
+                  type="button"
+                  onClick={() => removeOne(index)}
+                >
+                  Remove
                 </button>
               </div>
-            </div>
+            ))}
 
             <div style={{ textAlign: "center", width: "100%", margin: "auto" }}>
               <button
