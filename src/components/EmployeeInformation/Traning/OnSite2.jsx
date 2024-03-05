@@ -1,14 +1,115 @@
 /** @format */
 
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Form } from "react-bootstrap";
-import { InputMaker } from "../../../Helper/Makers.js";
+import { Container, Form } from "react-bootstrap";
+import {
+  BorderlessInput,
+  DateFormatter,
+  MultiSelect,
+} from "../../../Helper/Makers.js";
 import { ClipLoader } from "react-spinners";
 import { postApi } from "../../../Repository/Apis.js";
+import NavWrapper from "../../../Helper/NavWrapper.js";
+import { SignatureModal } from "../../../Mod/Modal.js";
+
+const dropDownOptions = [
+  {
+    value: "Chain of Command",
+    label: "Chain of Command",
+  },
+  {
+    value: "Resident Rights",
+    label: "Resident Rights",
+  },
+  {
+    value:
+      "Immediately report suspected or alleged abuse, neglect, or exploitation or a violation of a resident’s rights.",
+    label:
+      "Immediately report suspected or alleged abuse, neglect, or exploitation or a violation of a resident’s rights.",
+  },
+  {
+    value: "Program evacuation path/Safety Disaster Plan",
+    label: "Program evacuation path/Safety Disaster Plan",
+  },
+  {
+    value: "Ethics/professionalism",
+    label: "Ethics/professionalism",
+  },
+  {
+    value: "Residents' activities/treatment schedule",
+    label: "Residents' activities/treatment schedule",
+  },
+  {
+    value: "Current Resident issues",
+    label: "Current Resident issues",
+  },
+  {
+    value: "Personnel – payroll, benefits, disciplinary process",
+    label: "Personnel – payroll, benefits, disciplinary process",
+  },
+  {
+    value: "Supervision",
+    label: "Supervision",
+  },
+  {
+    value: "Training Plan",
+    label: "Training Plan",
+  },
+  {
+    value: "Policy and Procedure Manual",
+    label: "Policy and Procedure Manual",
+  },
+  {
+    value: "Use of facility equipment",
+    label: "Use of facility equipment",
+  },
+  {
+    value:
+      "Documentation in the medical record, and how information is protected",
+    label:
+      "Documentation in the medical record, and how information is protected",
+  },
+  {
+    value: "Confidentiality/HIPAA",
+    label: "Confidentiality/HIPAA",
+  },
+  {
+    value: "Incident and Accident reporting",
+    label: "Incident and Accident reporting",
+  },
+  {
+    value: "Job description",
+    label: "Job description",
+  },
+  {
+    value: "Program Rules",
+    label: "Program Rules",
+  },
+  {
+    value:
+      "Procedures for responding to a fire, disaster, hazard, a medical emergency, and a resident experiencing a crisis situation",
+    label:
+      "Procedures for responding to a fire, disaster, hazard, a medical emergency, and a resident experiencing a crisis situation",
+  },
+  {
+    value: "Infectious diseases and bloodborne pathogens",
+    label: "Infectious diseases and bloodborne pathogens",
+  },
+  {
+    value: "Sexual Harassment - Q & A's",
+    label: "Sexual Harassment - Q & A's",
+  },
+  {
+    value: "Personal Protective Equipment",
+    label: "Personal Protective Equipment",
+  },
+  {
+    value: "Fire Safety",
+    label: "Fire Safety",
+  },
+];
 
 const OnSite2 = () => {
-  const navigate = useNavigate();
   const [date, setDate] = useState("");
   const [duration, setDuration] = useState("");
   const [description, setDescription] = useState("");
@@ -17,14 +118,34 @@ const OnSite2 = () => {
   const [trainerSignature, setTrainerSignature] = useState("");
   const [trainerDate, setTrainerDate] = useState("");
   const [loading, setLoading] = useState(false);
+  const [arr, setArr] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [open2, setOpen2] = useState(false);
+  const [values, setValues] = useState({
+    value: "Supervision",
+    label: "Supervision",
+  });
+
+  const arrPayload = {
+    date,
+    duration,
+  };
+
+  const pushInArr = () => {
+    setArr((prev) => [...prev, arrPayload]);
+    setDuration("");
+    setDate("");
+  };
+
+  const removefromArr = (index) => {
+    setArr((prev) => prev.filter((_, i) => i !== index));
+  };
 
   const payload = {
-    training: [
-      {
-        date,
-        duration,
-      },
-    ],
+    training: arr?.map((i) => ({
+      date: i.date,
+      duration: i.duration,
+    })),
     description,
     employeeDate,
     employeeSignature,
@@ -46,112 +167,175 @@ const OnSite2 = () => {
 
   return (
     <>
-      <div className="nav-wrap-personal">
-        <div className="nav-div-personal1">
-          <img
-            onClick={() => navigate("/employee/training/on-site")}
-            src="/back_button2.png"
-            alt="da"
-          />
-        </div>
-        <div
-          className="nav-div-personal"
-          style={{
-            width: "80%",
-            marginBottom: "1rem",
-            display: "flex",
-            paddingRight: "1rem",
-            padding: "10px",
-          }}
-        >
-          <p style={{ fontSize: ".9rem", fontWeight: "bold", flex: "1" }}>
-            ON SITE AND FACILITY ORIENTATION VERIFICATION
+      <SignatureModal
+        show={open2}
+        onHide={() => setOpen2(false)}
+        setValue={setTrainerSignature}
+        value={trainerSignature}
+      />
+      <SignatureModal
+        show={open}
+        onHide={() => setOpen(false)}
+        setValue={setEmployeeSignature}
+        value={employeeSignature}
+      />
+      <NavWrapper title={"FACILITY ORIENTATION CURRICULUM"} isArrow={true} />
+
+      <Container className="full-width-container">
+        <form className="w-100 text-start" onSubmit={submitHandler}>
+          <p className="fw-bold text-desc text-center">
+            The following orientation trainings are conducted during the 1 st
+            week of hire and before providing services to residents. <br />
+            Document more than one training date and duration of training if
+            training occurs more than in one time period.
           </p>
-          <button
-            className="new_btn"
-            onClick={() => navigate("/employee/training/on-site")}
-          >
-            Data
-          </button>
-        </div>
-      </div>
-      <div>
-        <div className="top-div-personal">
-          <Form
-            onSubmit={submitHandler}
-            style={{ textAlign: "left", width: "100%" }}
-          >
-            <InputMaker
-              label={"Training Date"}
-              setState={setDate}
-              placeholder={"Enter Date"}
-              type={"date"}
-              value={date}
-            />
-            <InputMaker
-              label={"Duration"}
-              setState={setDuration}
-              placeholder={"Enter Text"}
-              type={"text"}
-              value={duration}
-            />
-            <InputMaker
-              label={"Tranner  Date"}
-              setState={setTrainerDate}
-              placeholder={"Enter Text"}
-              type={"date"}
-              value={trainerDate}
-            />
 
-            <InputMaker
-              label={"Description"}
-              setState={setDescription}
-              placeholder={"Enter Text"}
-              type={"text"}
-              value={description}
-            />
-
-            <div className="mb-3">
-              I{" "}
-              <input
-                style={{
-                  border: "none",
-                  width: "150px",
-                  outline: "none",
-                  borderBottom: "1px dashed black",
-                  padding: 0,
-                }}
-                type="text"
-                placeholder=""
-                onChange={(e) => setEmployeeSignature(e.target.value)}
-                required
-              />{" "}
-              attest I have recieved facility orrientation traning evident by
-              the Signatures below,
+          <MultiSelect
+            options={dropDownOptions}
+            setValue={setValues}
+            value={values}
+          />
+          <div className="grid-container mt-3">
+            <div className="grid-item">
+              <label>Training Date:</label>
+              <BorderlessInput
+                setState={setDate}
+                value={DateFormatter(date)}
+                type="date"
+              />
             </div>
-            <InputMaker
-              label={"Employeer Signature / Date "}
-              setState={setEmployeeDate}
-              placeholder={"Enter Text"}
-              type={"date"}
-              value={employeeDate}
-            />
-            <InputMaker
-              label={"Trainer Signature / Creadational / Title / Date "}
-              setState={setTrainerSignature}
-              placeholder={"Enter Text"}
-              type={"text"}
-              value={trainerSignature}
-            />
+            <div className="grid-item long-input"></div>
 
-            <div className="employee_btn_div">
-              <button className="employee_create_btn" type="submit">
-                {loading ? <ClipLoader color="#fff" /> : "Submit"}
+            <div className="grid-item">
+              <label>Duration:</label>
+              <BorderlessInput
+                setState={setDuration}
+                value={duration}
+                type="text"
+              />
+            </div>
+
+            <div className="grid-item">
+              <button
+                className="add_more mb-3"
+                onClick={() => pushInArr()}
+                type="button"
+              >
+                Add More
               </button>
             </div>
-          </Form>
-        </div>
-      </div>
+          </div>
+          {arr?.length > 0 && (
+            <div className="overflow_table">
+              <table className="mb-3 color-full">
+                <thead>
+                  <tr>
+                    <th>Training Date</th>
+                    <th>Duration</th>
+
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {arr?.map((i, index) => (
+                    <tr key={index}>
+                      <td> {i.date?.slice(0, 10)} </td>
+                      <td> {i.duration} </td>
+
+                      <td>
+                        {" "}
+                        <i
+                          className="fa-solid fa-trash"
+                          onClick={() => removefromArr(index)}
+                        />{" "}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          <div className="grid-container">
+            <div className="grid-item">
+              <label>I, </label>
+              <BorderlessInput
+                setState={setDescription}
+                value={description}
+                type="text"
+              />
+            </div>
+            <div className="third-wid-input">
+              <label>
+                attest I have received facility orientation training evident by
+                the signatures below.
+              </label>
+            </div>
+            <div className="third-wid-input d-block">
+              <label>Employee signature</label>
+              <div className="custome-cloud-btn">
+                <div className="btns">
+                  <button className="draft"> SAVE AS DRAFT</button>
+                  <button
+                    type="button"
+                    className="signed"
+                    onClick={() => setOpen(true)}
+                  >
+                    SAVED AND SIGNED
+                  </button>
+                </div>
+                <div>
+                  {employeeSignature && (
+                    <p>Digitally Sign by {employeeSignature} </p>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="grid-item">
+              <label>Employee date</label>
+              <BorderlessInput
+                setState={setEmployeeDate}
+                value={DateFormatter(employeeDate)}
+                type="date"
+              />
+            </div>
+            <div className="third-wid-input d-block">
+              <label>Trainer signature</label>
+              <div className="custome-cloud-btn">
+                <div className="btns">
+                  <button className="draft"> SAVE AS DRAFT</button>
+                  <button
+                    type="button"
+                    className="signed"
+                    onClick={() => setOpen2(true)}
+                  >
+                    SAVED AND SIGNED
+                  </button>
+                </div>
+                <div>
+                  {trainerSignature && (
+                    <p>Digitally Sign by {trainerSignature} </p>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="grid-item">
+              <label>Trainer date</label>
+              <BorderlessInput
+                setState={setTrainerDate}
+                value={DateFormatter(trainerDate)}
+                type="date"
+              />
+            </div>
+          </div>
+
+          <div className="save-as-draft-btn123">
+            <button className="btn1233" type="submit">
+              {loading ? <ClipLoader color="#fff" /> : "SUBMIT"}
+            </button>
+          </div>
+        </form>
+      </Container>
     </>
   );
 };

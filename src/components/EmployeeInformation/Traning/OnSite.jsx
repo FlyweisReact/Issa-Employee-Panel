@@ -9,6 +9,7 @@ import { deleteApi, editApi, fetchApi } from "../../../Repository/Apis.js";
 import Loader from "../../Loader/Loader.js";
 import { InputMaker, MultiSelect } from "../../../Helper/Makers.js";
 import { ClipLoader } from "react-spinners";
+import CreateNav from "../../../Helper/CreateNav.js";
 
 const options = [
   {
@@ -269,227 +270,92 @@ const OnSite = () => {
   return (
     <>
       <MyVerticallyCenteredModal show={open} onHide={() => setOpen(false)} />
-      <div className="nav-wrap-personal">
-        <div className="nav-div-personal1">
-          <img
-            onClick={() => navigate("/employee/training")}
-            src="/back_button2.png"
-            alt="da"
-          />
-        </div>
-        <div
-          className="nav-div-personal"
-          style={{
-            width: "80%",
-            marginBottom: "1rem",
-            display: "flex",
-            paddingRight: "1rem",
-            padding: "20px",
-          }}
-        >
-          <p style={{ fontSize: ".9rem", fontWeight: "bold", flex: "1" }}>
-            ON SITE AND FACILITY ORIENTATION VERIFICATION
-          </p>
-          <button
-            className="new_btn"
-            onClick={() => navigate("/employee/training/on-site2")}
-          >
-            + New
-          </button>
-        </div>
-      </div>
-
-   
-
+      <CreateNav title={"ON SITE AND FACILITY ORIENTATION VERIFICATION"} link={'/employee/training/on-site2'} />
+ 
 
       {loading ? (
         <Loader />
       ) : (
         <div>
           <div className="top-div-personal">
-            <Form
-              style={{ width: "100%" }}
-              id="form-appendix"
-              className="form-personal offer-letter appendix1"
-            >
-              <p>
-                The following orientation trainings are conducted during the 1st
-                week of hire and before providing services to residents.
-              </p>
-              <MultiSelect
-                options={options}
-                setValue={setValue}
-                value={value}
-              />
+            <Table responsive className="mt-3">
+              <thead>
+                <tr>
+                  <th
+                    style={{
+                      backgroundColor: "#D1ECF0",
+                      borderRadius: "5px 0 0 0",
+                    }}
+                  >
+                    <input type="checkbox" />
+                  </th>
+                  <th style={{ backgroundColor: "#D1ECF0" }}>Training Date</th>
+                  <th style={{ backgroundColor: "#D1ECF0" }}>Duration</th>
+                  <th style={{ backgroundColor: "#D1ECF0" }}>Trainer Date</th>
 
-              <p className="mt-3 fw-bold">
-                Document more than one training date and duration of training if
-                training occurs more than in one time period.
-              </p>
+                  <th style={{ backgroundColor: "#D1ECF0" }}>Employee Date</th>
+                  <th style={{ backgroundColor: "#D1ECF0" }}>
+                    Employee signature
+                  </th>
+                  <th style={{ backgroundColor: "#D1ECF0" }}>
+                    Trainer signature
+                  </th>
+                  <th
+                    style={{
+                      backgroundColor: "#D1ECF0",
+                      borderRadius: "0 5px 0 0",
+                    }}
+                  ></th>
+                </tr>
+              </thead>
+              <tbody>
+                {list?.data?.data?.length > 0 &&
+                  list?.data?.data?.map((item) => (
+                    <tr>
+                      <td>
+                        <input type="checkbox" />
+                      </td>
+                      <td>{item.training?.[0]?.date?.slice(0, 10)}</td>
+                      <td>{item.training?.[0]?.duration}</td>
+                      <td> {item.trainerDate?.split("").reverse()}</td>
 
-              <div>
-                <span>
-                  <span className="fw-bold">Training Date</span>
-                  <span>
-                    <input type={"date"} className="wrapped_input" />
-                  </span>
-                </span>
-                <span className="ml-5">
-                  <span className="fw-bold">Duration</span>
-                  <span>
-                    <input type={"text"} className="wrapped_input" />
-                  </span>
-                </span>
-              </div>
-
-              <div className="mt-3">
-                <span>
-                  <span className="fw-bold">Training Date</span>
-                  <span>
-                    <input type={"date"} className="wrapped_input" />
-                  </span>
-                </span>
-                <span className="ml-5">
-                  <span className="fw-bold">Duration</span>
-                  <span>
-                    <input type={"text"} className="wrapped_input" />
-                  </span>
-                </span>
-              </div>
-
-              <div className="mt-3">
-                <span className="fw-bold">I,</span>
-                <span>
-                  {" "}
-                  <input type={"text"} className="wrapped_input" />
-                </span>
-                <span className="fw-bold">
-                  attest I have received facility orientation training evident
-                  by the signatures below.
-                </span>
-              </div>
-
-              <div className="mt-3">
-                <p style={{ margin: 0 }} className="fw-bold">
-                  Employee signature / Date
-                </p>
-                <div className="custome-cloud-btn mt-2">
-                  <div className="btns">
-                    <button className="draft"> SAVE AS DRAFT</button>
-                    <button type="button" className="signed">
-                      {" "}
-                      SAVED AND SIGNED
-                    </button>
-                  </div>
-                  <div>
-                    <p>Digitally Sign by Employee Name / Date </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-3">
-                <p style={{ margin: 0 }} className="fw-bold">
-                  Trainer signature /Credential/Title/Date
-                </p>
-                <div className="custome-cloud-btn mt-2">
-                  <div className="btns">
-                    <button className="draft"> SAVE AS DRAFT</button>
-                    <button type="button" className="signed">
-                      {" "}
-                      SAVED AND SIGNED
-                    </button>
-                  </div>
-                  <div>
-                    <p>Digitally Sign by Trainer Name / Date </p>
-                  </div>
-                </div>
-              </div>
-
-              <Table responsive className="mt-3">
-                <thead>
-                  <tr>
-                    <th
-                      style={{
-                        backgroundColor: "#D1ECF0",
-                        borderRadius: "5px 0 0 0",
-                      }}
-                    >
-                      <input type="checkbox" />
-                    </th>
-                    <th style={{ backgroundColor: "#D1ECF0" }}>
-                      Training Date
-                    </th>
-                    <th style={{ backgroundColor: "#D1ECF0" }}>Duration</th>
-                    <th style={{ backgroundColor: "#D1ECF0" }}>Trainer Date</th>
-
-                    <th style={{ backgroundColor: "#D1ECF0" }}>
-                      Employee Date
-                    </th>
-                    <th style={{ backgroundColor: "#D1ECF0" }}>
-                      Employee signature
-                    </th>
-                    <th style={{ backgroundColor: "#D1ECF0" }}>
-                      Trainer signature
-                    </th>
-                    <th
-                      style={{
-                        backgroundColor: "#D1ECF0",
-                        borderRadius: "0 5px 0 0",
-                      }}
-                    ></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {list?.data?.data?.length > 0 &&
-                    list?.data?.data?.map((item) => (
-                      <tr>
-                        <td>
-                          <input type="checkbox" />
-                        </td>
-                        <td>{item.training?.[0]?.date?.slice(0, 10)}</td>
-                        <td>{item.training?.[0]?.duration}</td>
-                        <td> {item.trainerDate?.split("").reverse()}</td>
-
-                        <td> {item.employeeDate?.slice(0, 10)}</td>
-                        <td> {item.employeeSignature}</td>
-                        <td> {item.trainerSignature}</td>
-                        <td className="icon-joiner">
-                          <span
-                            onClick={() => {
-                              setPrev(item);
-                              setId(item._id);
-                              setOpen(true);
-                            }}
-                          >
-                            {" "}
-                            <FaRegEdit />
+                      <td> {item.employeeDate?.slice(0, 10)}</td>
+                      <td> {item.employeeSignature}</td>
+                      <td> {item.trainerSignature}</td>
+                      <td className="icon-joiner">
+                        <span
+                          onClick={() => {
+                            setPrev(item);
+                            setId(item._id);
+                            setOpen(true);
+                          }}
+                        >
+                          {" "}
+                          <FaRegEdit />
+                        </span>
+                        <span
+                          style={{
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                          onClick={() => handleDelete(item?._id)}
+                        >
+                          {" "}
+                          <RiDeleteBin5Fill style={{ color: "red" }} />
+                          <span style={{ color: "red", fontSize: "1.1.1rem" }}>
+                            DELETE
                           </span>
-                          <span
-                            style={{
-                              cursor: "pointer",
-                              display: "flex",
-                              alignItems: "center",
-                            }}
-                            onClick={() => handleDelete(item?._id)}
-                          >
-                            {" "}
-                            <RiDeleteBin5Fill style={{ color: "red" }} />
-                            <span
-                              style={{ color: "red", fontSize: "1.1.1rem" }}
-                            >
-                              DELETE
-                            </span>
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </Table>
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </Table>
 
-              <button className="print_btn" type="button">
-                PRINT REPORT
-              </button>
-            </Form>
+            <button className="print_btn" type="button">
+              PRINT REPORT
+            </button>
           </div>
         </div>
       )}

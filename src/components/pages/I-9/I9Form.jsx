@@ -13,6 +13,16 @@ import {
 import NavWrapper from "../../../Helper/NavWrapper";
 import { SignatureModal } from "../../../Mod/Modal";
 
+const ListABody = [
+  {
+    first: " 1. U.S. Passport or U.S. Passport Card",
+    second:
+      " 1. Driver's license or ID card issued by a State or outlying possession of the United States provided it contains a photograph or information such as name, date of birth, gender, height, eye color, and address",
+    third:
+      "1. A Social Security Account Number card, unless the  card includes one of the following restrictions: (1)  NOT VALID FOR EMPLOYMENT (2) VALID FOR WORK ONLY WITH  INS AUTHORIZATION (3) VALID FOR WORK ONLY WITH DHS  AUTHORIZATION",
+  }
+];
+
 export const I9Form = () => {
   const [date, setDate] = useState(null);
 
@@ -836,7 +846,7 @@ export const I9Form = () => {
 
           <div className="instruction-content">
             <div className="deivider">
-              <div className="items">
+              <div className="items w-100 " style={{ border: "none" }}>
                 <div>
                   <table className="text-start under-table">
                     <thead>
@@ -846,26 +856,19 @@ export const I9Form = () => {
                           LIST A Documents that Establish Both Identity and
                           Employment Authorization{" "}
                         </th>
+                        <th>LIST B Documents that Establish Identity</th>
+                        <th>
+                          LIST C Documents that Establish Employment
+                          Authorization
+                        </th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr>
-                        <td> 1. U.S. Passport or U.S. Passport Card </td>
-                        <td>
-                          {" "}
-                          1. Driver's license or ID card issued by a State or
-                          outlying possession of the United States provided it
-                          contains a photograph or information such as name,
-                          date of birth, gender, height, eye color, and address
-                        </td>
-                      </tr>
-                    </tbody>
+                    <tbody></tbody>
                   </table>
                 </div>
               </div>
             </div>
           </div>
-          
         </form>
       </Container>
 

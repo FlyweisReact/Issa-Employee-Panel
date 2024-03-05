@@ -2,10 +2,11 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Form } from "react-bootstrap";
+import { Button, Container, Form } from "react-bootstrap";
 import { Auth, showMsg } from "../../../../../Baseurl";
 import axios from "axios";
 import { ClipLoader } from "react-spinners";
+import NavWrapper from "../../../../../Helper/NavWrapper";
 
 const MilageLog2 = () => {
   const navigate = useNavigate();
@@ -54,39 +55,15 @@ const MilageLog2 = () => {
       setLoading(false);
     }
   };
+
   return (
     <>
-      <div className="nav-wrap-personal">
-        <div className="nav-div-personal1">
-          <img onClick={() => navigate(-1)} src="/back_button2.png" alt="da" />
-        </div>
-        <div
-          className="nav-div-personal"
-          style={{
-            width: "80%",
-            marginBottom: "1rem",
-            display: "flex",
-            paddingRight: "1rem",
-          }}
-        >
-          <p style={{ fontWeight: "bold", flex: "1" }}> MILEAGE LOG</p>
-          <p>
-            <Button
-              style={{
-                fontSize: ".9rem",
-                fontWeight: "bold",
-                backgroundColor: "#1A9FB2",
-                padding: ".5rem 1.5rem",
-                border: "none",
-              }}
-              onClick={() => navigate("/employee/therapy-notes/milage-log")}
-            >
-              LOGS
-            </Button>
-          </p>
-        </div>
-      </div>
+    <NavWrapper title="Milega Log" isArrow={true} />
+   
+  
       <div>
+
+
         <div className="top-div-personal">
           <Form className="form-personal" onSubmit={submitHandler}>
             <Form.Group className="mb-3">
