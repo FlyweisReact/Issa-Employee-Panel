@@ -1,7 +1,7 @@
 export const EmploymentCards: { src: string; link: string }[] = [
     {
         src : "/Employment/Personal_Information.png" , 
-        link : "/Personal-Information"
+        link : "/employee-information"
     },
     {
         src : "/Employment/Offer_Letter.png" , 
@@ -32,8 +32,8 @@ export const EmploymentCards: { src: string; link: string }[] = [
         link : "/fw4"
     },
     {
-        src : "/Employment/Termination.png" , 
-        link : "/aps-consent-form"
+        src : "/Employment/Group 17715.png" , 
+        link : "/all-aps"
     },
     {
         src : "/Employment/fw9.png" , 

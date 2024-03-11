@@ -20,7 +20,8 @@ const NavWrapper = ({ title, filled, empty, isArrow }) => {
               onClick={() => navigate(-1)}
               src="/back_button2.png"
               alt=""
-              className="arrow"
+              className="arrow cursor-pointer"
+
             />
             <div className="header">
               <p className="heading">

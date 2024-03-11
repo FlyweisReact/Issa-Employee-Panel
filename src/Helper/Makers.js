@@ -108,7 +108,13 @@ export const TextareaMaker = ({ label, setValue, value, placeholder, row }) => {
   );
 };
 
-export const BorderlessInput = ({ setState, placeholder, type, value , className}) => {
+export const BorderlessInput = ({
+  setState,
+  placeholder,
+  type,
+  value,
+  className,
+}) => {
   return (
     <input
       type={type}

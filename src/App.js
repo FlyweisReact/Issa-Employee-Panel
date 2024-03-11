@@ -1,7 +1,6 @@
 /** @format */
 
 import { Routes, Route } from "react-router-dom";
-import Dashboard from "./components/pages/Dashboard";
 import { ReactNotifications } from "react-notifications-component";
 import Login from "./components/forms/Login";
 import { RegisterPage } from "./components/forms/RegisterPage";
@@ -106,6 +105,12 @@ import ViewPrn from "./components/EmployeeInformation/pages/Medications/PRNLOG/V
 import Employment from "./Pages/EmploymentInformation/EmplymentMenu/Employment";
 import ProgressNote2 from "./Pages/PatientChart/Progress/ProgressNote2";
 import ProgressNote from "./Pages/PatientChart/Progress/ProgressNote";
+import PersonalInfo from "./Pages/EmploymentInformation/Peronal_Information/PersonalInfo";
+import ViewInfo from "./Pages/EmploymentInformation/Peronal_Information/ViewInfo";
+import AllAps from "./Pages/EmploymentInformation/APS/AllAps";
+import EditAPS from "./Pages/EmploymentInformation/APS/EditAPS";
+import Dashboard from "./Pages/Dashboard/Dashboard";
+import SearchPage from "./Pages/Search/SearchPage";
 
 function App() {
   return (
@@ -330,12 +335,20 @@ function App() {
         <Route path="/view-prn/:id" element={<ViewPrn />} />
         {/* --- */}
         <Route path="/Personal-Information" element={<Personal />} />
+
         <Route path="/employee/patient-chart" element={<PatientChart />} />
         <Route
           path="/employee/patient-chart/progress"
           element={<ProgressNote />}
         />
         <Route path="/create-progress-note" element={<ProgressNote2 />} />
+
+        <Route path="/employee-information" element={<PersonalInfo />} />
+        <Route path="/view-employee-information" element={<ViewInfo />} />
+        <Route path="/all-aps" element={<AllAps />} />
+        <Route path="/edit-aps/:id" element={<EditAPS />} />
+
+        <Route path="/search-list/:id" element={<SearchPage />} />
         {/* Not Found */}
 
         <Route path="*" element={<h1>Not Found</h1>} />

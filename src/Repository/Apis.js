@@ -17,6 +17,7 @@ export const fetchApi = async (setLoading, url, setResponse) => {
   } catch (e) {
     console.log(e);
     setLoading(false);
+    setResponse({})
   }
 };
 

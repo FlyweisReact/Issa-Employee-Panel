@@ -381,9 +381,7 @@ const Personal = () => {
       <div className="d-none">
         <Container className="full-width-container" ref={ref}>
           <form onSubmit={submitHandler} className="w-100 text-start">
-            <p className="text-center fw-bold text-desc mt-5">
-            OASIS NOTE
-            </p>
+            <p className="text-center fw-bold text-desc mt-5">OASIS NOTE</p>
             <p className="text-center fw-bold text-desc">
               EMPLOYEE PERSONNEL INFORMATION/EMERGENCY CONTACT
             </p>

@@ -1476,17 +1476,7 @@ code {
 
 
 
-.search-page .tabs-list ul {
+.search-page .tabs-list {
   display: flex;
-  padding: 0;
-  gap: 20px;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #1a9fb2;
-  padding: 10px;
-}
-.search-page .tabs-list ul li {
-  color: #fff;
-  font-size: 14px;
-  cursor: pointer;
+  flex-wrap: wrap;
 }

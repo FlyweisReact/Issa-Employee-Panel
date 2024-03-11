@@ -12,10 +12,11 @@ import {
 import { SignatureModal } from "../../../Mod/Modal";
 import { ClipLoader } from "react-spinners";
 import { getData } from "../../../components/api/api";
-import { postApi } from "../../../Repository/Apis";
+import { editApi } from "../../../Repository/Apis";
 import HOC from "../../../Layout/Outer/HOC";
+import { useParams } from "react-router-dom";
 
-const APS = () => {
+const EditAPS = () => {
   const [data, setData] = useState({});
   const [employeeName, setEmployeeName] = useState("");
   const [employeeSignature, setEmployeeSignature] = useState("");
@@ -33,6 +34,7 @@ const APS = () => {
   const [employeeTime, setEmplyeeTime] = useState("");
   const [adminDate, setAdminDate] = useState("");
   const [adminTime, setAdminTime] = useState("");
+  const { id } = useParams();
 
   const options = [
     {
@@ -46,7 +48,7 @@ const APS = () => {
   ];
 
   const getProfile = () => {
-    getData(setData, "employee/getProfile");
+    getData(setData, `employee/getApsConsentById/${id}`);
   };
 
   useEffect(() => {
@@ -74,12 +76,24 @@ const APS = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    postApi(setLoading, "employee/createApsConsent", payload);
+    editApi(setLoading, `employee/editApsConsentById/${id}`, payload);
   };
 
   const companyName = offerLetter?.data?.companyName;
 
-  console.log(data);
+  useEffect(() => {
+    if (data) {
+      const item = data?.data;
+      setClassification(item?.classification);
+      setDate(item?.date);
+      setDateOfIncident(item?.dateOfIncident);
+      setNoRecordFound(item?.noRecordFound);
+      setEmployeeName(item?.employeeName);
+      setEmployeeSignature(item?.employeeSignature);
+      setAdministratorName(item?.administratorName);
+      setAdministratorSignature(item?.administratorSignature);
+    }
+  }, [data]);
 
   return (
     <>
@@ -243,4 +257,4 @@ const APS = () => {
   );
 };
 
-export default HOC({ Wcomponenet: APS, isNavbar: false });
+export default HOC({ Wcomponenet: EditAPS, isNavbar: false });

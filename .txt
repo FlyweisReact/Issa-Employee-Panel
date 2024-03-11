@@ -1,36 +1,9 @@
-{
-    "residentId": [
-        "residentId1",
-        "residentId2"
-    ],
-    "date": "2023-01-01",
-    "startTime": "09:00 AM",
-    "endTime": "10:00 AM",
-    "totalDuration": "1 hour",
-    "behaviorTech": "Some behavior",
-    "location": "Therapy room",
-    "topicId": "someTopicId",
-    "residentCompletedSession": true,
-    "attitude": [
-        "cooperative"
-    ],
-    "treatmentGoalsAddressed": true,
-    "residentParticipation": 3,
-    "residentQuality": [
-        "Attentive"
-    ],
-    "significantInfoNotSpecifiedAbove": false,
-    "residentAppearance": [
-        "Neat"
-    ],
-    "residentMood": [
-        "Normal"
-    ],
-    "residentProgress": [
-        "Good Progress"
-    ],
-    "pleaseSpecify": "Some details",
-    "residentResponse": "Positive response",
-    "significantInfoNotSpecifiedAbove1": false,
-    "pleaseSpecify1": "Some other details"
-}
+menu sidebar in all inner forms 
+Digitally Sign by Signed by ⇒ the date and time too
+print button in all the pages 
+scrool bar
+make radio buttons on whole aaplication including patient and admin panel
+for the inside boxes inside sidebar and for outside boxs outside sidebar
+multi select dropdown to enter new key by typing 
+
+Home ⇒ upload button for home page with typehttps://documentation.calpads.org/UploadViewSubmission/FileUpload/
