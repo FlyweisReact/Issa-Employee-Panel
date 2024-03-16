@@ -14,7 +14,6 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [show, setShow] = useState(false);
   const [forgetPassword, setForgetPassword] = useState(false);
   const [showOtp, setShowOtp] = useState(false);
   const [otp, setOtp] = useState("");
@@ -31,10 +30,13 @@ const Login = () => {
         email,
         password,
       });
+      const data = res?.data;
+      const profile = JSON.stringify(data?.data);
+      localStorage.setItem("user-profile", profile);
+      localStorage.setItem("token", data?.accessToken);
       setLoading(false);
-      localStorage.setItem("token", res.data.accessToken);
+      navigate("/dashboard");
       showMsg("Success", "Welcome ", "success");
-      navigate("/dashboard/");
     } catch (error) {
       setLoading(false);
       showMsg(
@@ -341,17 +343,6 @@ const Login = () => {
                     placeholder="Password"
                     required
                   />{" "}
-                  {/* {show ? (
-                    <i
-                      class="fa-solid fa-eye-slash"
-                      onClick={() => setShow(false)}
-                    ></i>
-                  ) : (
-                    <i
-                      className="fa-solid fa-eye"
-                      onClick={() => setShow(true)}
-                    ></i>
-                  )} */}
                 </Form.Group>
 
                 <div

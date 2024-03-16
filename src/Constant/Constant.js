@@ -502,3 +502,42 @@ export const TrainingConstant = [
     link: "/skills-knowledge-training",
   },
 ];
+
+export const MainSidebar = [
+  {
+    icon: <img src="/Dashboard/home.png" alt="" />,
+    link: "/dashboard",
+    name: "Home",
+    newIcon: <img src="/Dashboard/New folder/home.png" alt="" />,
+  },
+  {
+    icon: <img src="/book.svg" alt="" />,
+    link: "/employee/patient-chart",
+    name: "Menu",
+    newIcon: <img src="/Dashboard/New folder/home.png" alt="" />,
+  },
+  {
+    icon: <img src="/Dashboard/icon.png" alt="" />,
+    link: "/employment/",
+    name: "Employment Information",
+    newIcon: <img src="/Dashboard/New folder/icon.png" alt="" />,
+  },
+  {
+    icon: <img src="/Dashboard/group.png" alt="" />,
+    link: "/assigned-patient/",
+    name: "Assigned Patients",
+    newIcon: <img src="/Dashboard/New folder/group.png" alt="" />,
+  },
+  {
+    icon: <img src="/Dashboard/user.png" alt="" />,
+    link: "/profile/",
+    name: "Profile",
+    newIcon: <img src=" /Dashboard/New folder/user.png" alt="" />,
+  },
+  {
+    icon: <img src="/tlist.png" alt="" />,
+    link: "/patient-list",
+    name: "Patient List",
+    newIcon: <img src="/list.png" alt="" />,
+  },
+];

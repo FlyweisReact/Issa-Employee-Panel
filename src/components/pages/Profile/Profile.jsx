@@ -64,6 +64,10 @@ const Profile = () => {
       );
       const msg = res.data.message;
       showMsg("", msg, "Success");
+      if (profileData) {
+        const parsingData = JSON.stringify(profileData);
+        localStorage.setItem("user-profile", parsingData);
+      }
       fetchHandler();
     } catch {}
   };

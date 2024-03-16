@@ -71,7 +71,7 @@ const TimeOfRequest = () => {
         setDate={setSignatureDate}
         setTime={setSignatureTime}
       />
-      <NavWrapper title={"TIME OF REQUEST"} />
+      <NavWrapper title={"TIME OF REQUEST"} isArrow={true} />
       <Container className="full-width-container">
         <div className="therapy-notes-multiple-radio-wb mb-3">
           <div className="main">
@@ -122,11 +122,11 @@ const TimeOfRequest = () => {
             </div>
             <div className="grid-item long-input" />
             <div className="grid-item">
-              <label>Begin Date requested:</label>
+              <label>End Date requested:</label>
               <BorderlessInput
-                setState={setBeginDate}
+                setState={setEndDate}
                 type={"date"}
-                value={DateFormatter(beginDate)}
+                value={DateFormatter(endDate)}
               />
             </div>
             <div className="grid-item">

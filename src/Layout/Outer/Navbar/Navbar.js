@@ -22,7 +22,6 @@ const Navbar = ({ hamb }) => {
   const [show, setShow] = useState(false);
   const [searchActive, setSearchActive] = useState(false);
   const [showD, setShowD] = useState(false);
-
   const navigate = useNavigate();
   const handleCloseD = () => setShowD(false);
   const handleShowD = () => setShowD(true);
@@ -31,17 +30,6 @@ const Navbar = ({ hamb }) => {
   const notify = () => {
     setShowA(!showA);
   };
-
-  const [employeeData, setEmployeeData] = useState({});
-
-  const getEmployeeData = () => {
-    axios.get(`${Baseurl}employee/getProfile`, Auth()).then((res) => {
-      setEmployeeData(res.data.data);
-    });
-  };
-  useEffect(() => {
-    getEmployeeData();
-  }, []);
 
   const debouncedSetQuery = (term) => {
     clearTimeout(debouncedSetQuery.timeoutId);
@@ -84,6 +72,8 @@ const Navbar = ({ hamb }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const profileData = JSON.parse(localStorage.getItem("user-profile"));
   return (
     <>
       <NotificationCanvas show={showD} handleClose={handleCloseD} />
@@ -111,7 +101,7 @@ const Navbar = ({ hamb }) => {
               fontWeight: "bold",
             }}
           >
-            {employeeData?.fullName}👋!
+            {profileData?.fullName}👋
           </p>
         </div>
 
@@ -135,13 +125,14 @@ const Navbar = ({ hamb }) => {
             </div>
           )}
         </section>
-
-        <Image
-          src={employeeData?.profilePic}
-          className="profile_img"
-          roundedCircle
-          onClick={() => navigate("/profile")}
-        />
+        {profileData?.profilePic && (
+          <Image
+            src={profileData?.profilePic}
+            className="profile_img"
+            roundedCircle
+            onClick={() => navigate("/profile")}
+          />
+        )}
         <Image
           src="/Navbar/chat.png"
           className="navbar-notify-image"

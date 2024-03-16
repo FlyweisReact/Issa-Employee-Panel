@@ -315,14 +315,16 @@ code {
 }
 
 .print_btn {
-  padding: 10px 24px;
-  background-color: #1a9fb2;
-  color: #fff;
-  border-radius: 10px;
   display: block;
   margin: auto;
+  background-color: #1a9fb2;
+  color: white;
   margin-top: 1rem;
+  border-radius: 4px;
+  font-size: 1rem;
   text-transform: uppercase;
+  width: 280px;
+  padding: 10px;
 }
 
 .profile_img {

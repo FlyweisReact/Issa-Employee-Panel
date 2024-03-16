@@ -5,49 +5,11 @@ import { RiCloseLine } from "react-icons/ri";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BiLogOutCircle } from "react-icons/bi";
 import { toast } from "react-toastify";
+import { MainSidebar } from "../../Constant/Constant";
 
 const Sidebar = ({ hamb, setHamb }) => {
   const navigate = useNavigate();
   const location = useLocation();
-
-  const nav = [
-    {
-      icon: <img src="/Dashboard/home.png" alt="fdn" />,
-      link: "/dashboard",
-      name: "Home",
-      newIcon: <img src="/Dashboard/New folder/home.png" alt="fdn" />,
-    },
-    {
-      icon: <img src="/book.svg" alt="" />,
-      link: "/employee/patient-chart",
-      name: "Menu",
-      newIcon: <img src="/Dashboard/New folder/home.png" alt="fdn" />,
-    },
-    {
-      icon: <img src="/Dashboard/icon.png" alt="fdn" />,
-      link: "/employment/",
-      name: "Employment Information",
-      newIcon: <img src="/Dashboard/New folder/icon.png" alt="fdn" />,
-    },
-    {
-      icon: <img src="/Dashboard/group.png" alt="fdn" />,
-      link: "/assigned-patient/",
-      name: "Assigned Patients",
-      newIcon: <img src="/Dashboard/New folder/group.png" alt="fdn" />,
-    },
-    {
-      icon: <img src="/Dashboard/user.png" alt="fdn" />,
-      link: "/profile/",
-      name: "Profile",
-      newIcon: <img src=" /Dashboard/New folder/user.png" alt="fdn" />,
-    },
-    {
-      icon: <img src="/tlist.png" alt="fdn" />,
-      link: "/patient-list",
-      name: "Patient List",
-      newIcon: <img src="/list.png" alt="fdn" />,
-    },
-  ];
 
   const logOut = () => {
     navigate("/");
@@ -80,12 +42,11 @@ const Sidebar = ({ hamb, setHamb }) => {
         </figure>
         {/* Nav-menu */}
         <nav className="py-6">
-          {nav.map((nav) => {
+          {MainSidebar?.map((nav, index) => {
             return (
               <Link
                 to={nav.link}
-                key={nav.name}
-                className=""
+                key={index}
                 style={{ textDecoration: "none" }}
               >
                 <div

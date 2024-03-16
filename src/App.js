@@ -48,7 +48,6 @@ import EmployeePerformance from "./Pages/Employee Performance/EmployeePerformanc
 import EmployeeTracking from "./Pages/Employee Tracking/EmployeeTracking";
 import Setting from "./components/EmployeeInformation/pages/Setting/Setting";
 import TimeSheet from "./Pages/Time Sheet/TimeSheet";
-import EmployeeSheet from "./Pages/Time Sheet/EmployeeSheet";
 import All_Appointments from "./components/pages/All_Appointments/All_Appointments";
 import MARS from "./components/EmployeeInformation/pages/Medications/MARS";
 import PatientList from "./Pages/Patients/PatientList";
@@ -117,6 +116,10 @@ import ViewSite from "./Pages/Training/OnSite/ViewSite";
 import ViewServiceLog from "./Pages/Training/ServiceLog/ViewServiceLog";
 import EditSkill from "./Pages/Training/SkillTraining/EditSkill";
 import ViewSkills from "./Pages/Training/SkillTraining/ViewSkills";
+import GetTimeOfRequest from "./Pages/Time Off Request/GetTimeOfRequest";
+import ViewTimeOfRequest from "./Pages/Time Off Request/ViewTimeOfRequest";
+import Schedule from "./Pages/Time Sheet/Schedule";
+import ViewAps from "./Pages/EmploymentInformation/APS/ViewAps";
 
 function App() {
   return (
@@ -129,7 +132,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/employment/" element={<Employment />} />
         <Route path="/assigned-patient/" element={<Assigned_Patient />} />
-        <Route path="/profile/" element={<Profile />} />
+        <Route path="/profile" element={<Profile />} />
 
         <Route path="/patient-list/intake" element={<Intake />} />
         <Route
@@ -317,6 +320,7 @@ function App() {
         <Route path="/view-employee-information" element={<ViewInfo />} />
         <Route path="/all-aps" element={<AllAps />} />
         <Route path="/edit-aps/:id" element={<EditAPS />} />
+        <Route path="/view-aps/:id" element={<ViewAps />} />
         <Route path="/search-list/:id" element={<SearchPage />} />
 
         <Route path="/basic-information" element={<BasicInformation />} />
@@ -329,10 +333,8 @@ function App() {
         <Route path="/acknowledgement" element={<Acknowledgement />} />
         <Route path="/group-notes" element={<GroupNotes />} />
         <Route path="/employee/training" element={<Traning />} />
+
        
-        <Route path="/time-sheet" element={<TimeSheet />} />
-        <Route path="/employee-schedule" element={<EmployeeSheet />} />
-        <Route path="/employee-performance" element={<EmployeePerformance />} />
         <Route path="/employee-tracking" element={<EmployeeTracking />} />
         <Route path="/employee/patient-chart" element={<PatientChart />} />
         <Route path="/vitals" element={<Vitals />} />
@@ -353,7 +355,12 @@ function App() {
         <Route path="/create-skill-training" element={<Skills2 />} />
         <Route path="/edit-skill-training/:id" element={<EditSkill />} />
         <Route path="/view-site-training/:id" element={<ViewSkills />} />
-        <Route path="/time-of-request" element={<TimeOfRequest />} />
+        <Route path="/create-time-of-request" element={<TimeOfRequest />} />
+        <Route path="/get-time-of-request" element={<GetTimeOfRequest />} />
+        <Route path="/view-time-of-request" element={<ViewTimeOfRequest />} />
+        <Route path="/schedule" element={<Schedule />} />
+        <Route path="/time-sheet" element={<TimeSheet />} />
+        <Route path="/employee-performance" element={<EmployeePerformance />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>

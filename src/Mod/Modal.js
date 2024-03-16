@@ -80,9 +80,9 @@ export function OuterSidebar({ show, handleClose }) {
 
             <nav className="py-6">
               <ul>
-                {nav.map((nav) => {
+                {nav.map((nav , index) => {
                   return (
-                    <li>
+                    <li key={index} >
                       <Link to={nav.link} key={nav.name}>
                         {imgFetcher(nav.newIcon, nav.icon, nav.link)}
                         <span className="title"> {nav.name} </span>

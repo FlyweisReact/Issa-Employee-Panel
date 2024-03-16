@@ -1,28 +1,67 @@
 /** @format */
+
+import React, { useEffect, useState } from "react";
+import { postApi } from "../../Repository/Apis.js";
+import { Form, Table } from "react-bootstrap";
+import { InputMaker } from "../../Helper/Makers.js";
+import { SignatureModal } from "../../Mod/Modal.js";
+import { ClipLoader } from "react-spinners";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Auth } from "../../Baseurl";
-import { downloadReport } from "../../Repository/Apis";
-import Loader from "../../components/Loader/Loader";
-import HOC from "../../Layout/Inner/HOC";
+import { Auth } from "../../Baseurl.js";
+import HOC from "../../Layout/Inner/HOC.js";
+import NavWrapper from "../../Helper/NavWrapper.js";
 
 const TimeSheet = () => {
-  const navigate = useNavigate();
-  const [profile, setProfile] = useState("");
+  const [employeeId, setEmployeeId] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [year, setYear] = useState("");
+  const [month, setMonth] = useState("");
+  const [employeeName, setEmployeeName] = useState("");
+  const [employeeSignature, setEmployeeSignature] = useState("");
+  const [registeredHours, setRegisteredHours] = useState(0);
+  const [otHours, setOtHours] = useState(0);
+  const [holiday, setHoliday] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [managerName, setManagerName] = useState("");
+  const [savedSigned, setSavedSigned] = useState("");
+  const [open, setOpen] = useState(false);
+  const [open2, setOpen2] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState({});
-  const [updateMonth, setUpdatedMonth] = useState(0);
-  const [month, setMonth] = useState(0);
-  const [year, setYear] = useState(0);
+  const [sheet, setSheet] = useState({});
+  const [employeeDate, setEmployeeDate] = useState("");
+  const [employeeTime, setEmployeeTime] = useState("");
 
+  const payload = {
+    employeeId,
+    startDate,
+    endDate,
+    year,
+    month,
+    employeeName,
+    employeeSignature,
+    registeredHours,
+    otHours,
+    holiday,
+    total,
+    managerName,
+    savedSigned,
+  };
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    postApi(setLoading, `employee/createTimeSheet`, payload);
+  };
+
+  //  Get Profile --
   const getProfile = async () => {
     try {
       const res = await axios.get(
         `${process.env.React_App_Baseurl}employee/getProfile`,
         Auth()
       );
-      setProfile(res.data.data._id);
+      setEmployeeId(res?.data?.data?._id);
+      setEmployeeName(res?.data?.data?.fullName);
     } catch {}
   };
 
@@ -30,250 +69,391 @@ const TimeSheet = () => {
     getProfile();
   }, []);
 
-  const today = new Date();
-
-  useEffect(() => {
-    setMonth(today.getMonth() + 1);
-    setYear(today.getFullYear());
-  }, []);
-
-  useEffect(() => {
-    if (month) {
-      setUpdatedMonth(month < 10 ? `0${month}` : month);
-    }
-  }, [month]);
-
-  const getAppointments = async () => {
-    setLoading(true);
+  // Fetch Previous Sheet
+  const fetchSheet = async () => {
     try {
       const res = await axios.get(
-        `${process.env.React_App_Baseurl}StaffSchedule/getStaffScheduleByEmployeeId`,
+        `${process.env.React_App_Baseurl}employee/getTimeSheet`,
+        {
+          params: {
+            employeeId,
+            stateDate: startDate,
+            endDate,
+            year,
+            month,
+          },
+        },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          params: {
-            employeeId: profile,
-            year: year,
-            month: updateMonth,
-          },
         }
       );
-      setData(res?.data?.data);
-      setLoading(false);
-    } catch {
-      setLoading(false);
+      setSheet(res?.data?.data);
+    } catch (error) {
+      console.error("Error fetching timesheet:", error);
     }
   };
 
   useEffect(() => {
-    if (profile) {
-      getAppointments();
+    if (employeeId) {
+      fetchSheet();
     }
-  }, [profile, year, updateMonth]);
+  }, [employeeId]);
 
-  const renderTable = (startIndex, endIndex) => {
-    return (
-      <div className="staff_schedule_sheet">
-        <table>
-          <thead>
-            <tr>
-              <th>Shift</th>
-              {/* {data?.slice(startIndex, endIndex)?.map((day, index) => (
-                <th key={`head${index}`}>
-                  <span>{day.day}</span>
-                  <br />
-                  <span>{day.currentDate}</span>
-                </th>
-              ))} */}
-              <th>Monday</th>
-              <th>Tuesday</th>
-              <th>Wednesday</th>
-              <th>Thursday</th>
-              <th>Friday</th>
-              <th>Saturday</th>
-              <th>Sunday</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>7am to 2pm</td>
-              <td>Employee1</td>
-              <td>Employee2</td>
-              <td>Employee1</td>
-              <td>Employee1</td>
-              <td>Employee2</td>
-              <td>Employee1</td>
-              <td>Employee1</td>
-              {/* {data?.slice(startIndex, endIndex)?.map((day, index) => (
-                <td key={`amToAm${index}`}>
-                  {day.schedule.find((item) => item.type === "amToPm")?.start}
-                  {" - "}
-                  {day.schedule.find((item) => item.type === "amToPm")?.end}
-                </td>
-              ))} */}
-            </tr>
-            <tr>
-              <td>2pm to 10am</td>
-              {/* {data?.slice(startIndex, endIndex)?.map((day, index) => (
-                <td key={`amToPm${index}`}>
-                  {day.schedule.find((item) => item.type === "amToPm")?.start}
-                  {" - "}
-                  {day.schedule.find((item) => item.type === "amToPm")?.end}
-                </td>
-              ))} */}
-              <td>Employee1</td>
-              <td>Employee2</td>
-              <td>Employee1</td>
-              <td>Employee1</td>
-              <td>Employee2</td>
-              <td>Employee1</td>
-              <td>Employee1</td>
-            </tr>
-            <tr>
-              <td>10am to 7pm</td>
-              {/* {data?.slice(startIndex, endIndex)?.map((day, index) => (
-                <td key={`pmToAm${index}`}>
-                  {day.schedule.find((item) => item.type === "pmToAm")?.start}
-                  {" - "}
-                  {day.schedule.find((item) => item.type === "pmToAm")?.end}
-                </td>
-              ))} */}
-              <td>Employee1</td>
-              <td>Employee2</td>
-              <td>Employee1</td>
-              <td>Employee1</td>
-              <td>Employee2</td>
-              <td>Employee1</td>
-              <td>Employee1</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    );
-  };
-
-  const generateTables = () => {
-    const tableCount = Math.ceil(28 / 7);
-    // const tableCount = Math.ceil(data?.length / 7);
-    const tables = [];
-
-    for (let i = 0; i < tableCount; i++) {
-      const startIndex = i * 7;
-      const endIndex = Math.min((i + 1) * 7, data?.length);
-      tables.push(
-        <div key={`table${i}`}>{renderTable(startIndex, endIndex)}</div>
-      );
+  useEffect(() => {
+    if (endDate) {
+      const updatedMonth = new Date(endDate);
+      setMonth(updatedMonth?.getMonth() + 1);
+      setYear(updatedMonth?.getFullYear());
     }
-    return tables;
-  };
+  }, [endDate]);
 
-  const monthInEng = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  const MonthHandler = (newMonth) => {
-    if (newMonth > 12) {
-      setYear(year + 1);
-      setMonth(1);
-    } else if (newMonth < 1) {
-      setYear(year - 1);
-      setMonth(12);
-    } else {
-      setMonth(newMonth);
-    }
-  };
+  function getDay(date) {
+    const updatedDate = new Date(date);
+    const daysOfWeek = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    const dayIndex = updatedDate.getDay();
+    const dayName = daysOfWeek[dayIndex];
+    return dayName;
+  }
 
   return (
     <>
-      <div className="nav-wrap-personal">
-        <div className="nav-div-personal1">
-          <img onClick={() => navigate(-1)} src="/back_button2.png" alt="da" />
-        </div>
-        <div
-          className="nav-div-personal"
-          style={{ width: "80%", marginBottom: "1rem", display: "flex" }}
-        >
-          <p style={{ fontSize: ".9rem", fontWeight: "bold", flex: "1" }}>
-            <p id="drColter" className="menu-sidebar"></p> EMPLOYEE SCHEDULE
-          </p>
-          <p
-            onClick={() => navigate("/employee-schedule")}
-            style={{
-              paddingRight: "3px",
-              color: "#0C5C75",
-              textDecoration: "underline",
-              fontWeight: "bold",
-              cursor: "pointer",
-            }}
-          >
-            TIME SHEET{" "}
-          </p>
+      <SignatureModal
+        show={open}
+        onHide={() => setOpen(false)}
+        setValue={setEmployeeSignature}
+        value={employeeSignature}
+        text={"Digitally Sign by employee name"}
+        setDate={setEmployeeDate}
+        setTime={setEmployeeTime}
+      />
+      <SignatureModal
+        show={open2}
+        onHide={() => setOpen2(false)}
+        setValue={setSavedSigned}
+        value={savedSigned}
+        setDate={setEmployeeDate}
+        setTime={setEmployeeTime}
+        text={"Digitally Sign by employee name"}
+      />
+
+      <NavWrapper title={"TIME SHEET"} isArrow={true} />
+
+      <div>
+        <div className="top-div-personal">
+          <Form className="w-100 text-start" onSubmit={submitHandler}>
+            <InputMaker
+              label={"Pay period Start Date"}
+              placeholder=""
+              type="date"
+              setState={setStartDate}
+              value={startDate}
+            />
+            <InputMaker
+              label={"Pay period End Date"}
+              placeholder=""
+              type="date"
+              setState={setEndDate}
+              value={endDate}
+            />
+            <Form.Group className="mb-3">
+              <Form.Label>Employee Name</Form.Label>
+              <Form.Control defaultValue={employeeName} disabled />
+            </Form.Group>
+
+            <Form.Group className="mb-3 ">
+              <Form.Label style={{ fontWeight: "bold", fontSize: ".9rem" }}>
+                Employee Signature
+              </Form.Label>
+
+              <div className="custome-cloud-btn">
+                <div className="btns">
+                  <button className="draft"> SAVE AS DRAFT</button>
+                  <button
+                    type="button"
+                    onClick={() => setOpen(true)}
+                    className="signed"
+                  >
+                    {" "}
+                    SAVED AND SIGNED
+                  </button>
+                </div>
+                <div>
+                  {employeeSignature && (
+                    <p>Digitally Sign by {employeeSignature} </p>
+                  )}
+                </div>
+              </div>
+            </Form.Group>
+
+            <p
+              style={{
+                fontSize: "1rem",
+                fontWeight: "bold",
+                marginTop: "2rem",
+              }}
+            >
+              Office Use Only
+            </p>
+
+            <InputMaker
+              label={"Register Hours"}
+              placeholder=""
+              type="number"
+              setState={setRegisteredHours}
+              value={registeredHours}
+            />
+            <InputMaker
+              label={"O.T. Hours"}
+              placeholder=""
+              type="number"
+              setState={setOtHours}
+              value={otHours}
+            />
+            <InputMaker
+              label={"Holiday"}
+              placeholder=""
+              type="number"
+              setState={setHoliday}
+              value={holiday}
+            />
+            <InputMaker
+              label={"Total"}
+              placeholder=""
+              type="number"
+              setState={setTotal}
+              value={total}
+            />
+
+            <Form.Group className="mb-3 ">
+              {sheet?.scheduleData?.length > 0 && (
+                <div>
+                  <Table
+                    bordered
+                    responsive
+                    style={{
+                      marginTop: "2rem",
+                      borderColor: "black",
+                      marginBottom: "1rem",
+                    }}
+                  >
+                    <thead>
+                      <tr>
+                        <th>Day</th>
+                        <th>Date</th>
+                        <th>Clock IN 1</th>
+                        <th>Clock OUT 1</th>
+                        <th>Total 1</th>
+                        <th>Clock IN 2</th>
+                        <th>Clock OUT 2</th>
+                        <th>Total 2</th>
+                        <th>Clock IN 3</th>
+                        <th>Clock OUT 3</th>
+                        <th>Total 3</th>
+                        <th>Daily Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sheet?.scheduleData?.map((i, index) => (
+                        <tr key={`sheet${index}`}>
+                          <td> {getDay(i.date)} </td>
+                          <td> {i.date} </td>
+                          <td>
+                            {
+                              i?.work?.find((item) => item.type === "amToAm")
+                                ?.start
+                            }
+                          </td>
+                          <td>
+                            {
+                              i?.work?.find((item) => item.type === "amToAm")
+                                ?.end
+                            }
+                          </td>
+                          <td>
+                            {
+                              i?.work?.find((item) => item.type === "amToAm")
+                                ?.timeTaken
+                            }
+                          </td>
+                          <td>
+                            {
+                              i?.work?.find((item) => item.type === "amToPm")
+                                ?.start
+                            }
+                          </td>
+                          <td>
+                            {
+                              i?.work?.find((item) => item.type === "amToPm")
+                                ?.end
+                            }
+                          </td>
+                          <td>
+                            {
+                              i?.work?.find((item) => item.type === "amToPm")
+                                ?.timeTaken
+                            }
+                          </td>
+                          <td>
+                            {
+                              i?.work?.find((item) => item.type === "pmToAm")
+                                ?.start
+                            }
+                          </td>
+                          <td>
+                            {
+                              i?.work?.find((item) => item.type === "pmToAm")
+                                ?.end
+                            }
+                          </td>
+                          <td>
+                            {
+                              i?.work?.find((item) => item.type === "pmToAm")
+                                ?.timeTaken
+                            }
+                          </td>
+                          <td> {i.totalTime} </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
+              )}
+
+              <div className="payCheck">
+                {sheet?.week1TotalHr > 0 && (
+                  <span
+                    style={{
+                      backgroundColor: "#D3F091",
+                      padding: ".2rem",
+                    }}
+                  >
+                    WEEK 1 TOTAL HOURS: {sheet?.week1TotalHr}
+                  </span>
+                )}
+                {sheet?.week2TotalHr > 0 && (
+                  <span
+                    style={{
+                      backgroundColor: "#D1F3FE",
+
+                      padding: ".2rem",
+                      paddingLeft: "1rem",
+                      paddingRight: "1rem",
+                    }}
+                  >
+                    WEEK 2 TOTAL HOURS: {sheet?.week2TotalHr}
+                  </span>
+                )}
+                {sheet?.week3TotalHr > 0 && (
+                  <span
+                    style={{
+                      backgroundColor: "#D1F3FE",
+
+                      padding: ".2rem",
+                      paddingLeft: "1rem",
+                      paddingRight: "1rem",
+                    }}
+                  >
+                    WEEK 3 TOTAL HOURS: {sheet?.week3TotalHr}
+                  </span>
+                )}
+                {sheet?.week4TotalHr > 0 && (
+                  <span
+                    style={{
+                      backgroundColor: "#D1F3FE",
+
+                      padding: ".2rem",
+                      paddingLeft: "1rem",
+                      paddingRight: "1rem",
+                    }}
+                  >
+                    WEEK 4 TOTAL HOURS: {sheet?.week4TotalHr}
+                  </span>
+                )}
+                {sheet?.week5TotalHr > 0 && (
+                  <span
+                    style={{
+                      backgroundColor: "#D1F3FE",
+
+                      padding: ".2rem",
+                      paddingLeft: "1rem",
+                      paddingRight: "1rem",
+                    }}
+                  >
+                    WEEK 5 TOTAL HOURS: {sheet?.week5TotalHr}
+                  </span>
+                )}
+                {sheet?.paycheckTotalHr > 0 && (
+                  <span
+                    style={{
+                      backgroundColor: "#FFFF00",
+                      padding: ".2rem",
+                    }}
+                  >
+                    PAYCHECK TOTAL HOURS: {sheet?.paycheckTotalHr}
+                  </span>
+                )}
+              </div>
+            </Form.Group>
+
+            <InputMaker
+              label={"Manager Name"}
+              placeholder=""
+              type="text"
+              setState={setManagerName}
+              value={managerName}
+            />
+
+            <Form.Group className="mb-3 ">
+              <div className="custome-cloud-btn">
+                <div className="btns">
+                  <button className="draft"> SAVE AS DRAFT</button>
+                  <button
+                    type="button"
+                    onClick={() => setOpen2(true)}
+                    className="signed"
+                  >
+                    {" "}
+                    SAVED AND SIGNED
+                  </button>
+                </div>
+                <div>
+                  {savedSigned && <p>Digitally Sign by {savedSigned} </p>}
+                </div>
+              </div>
+            </Form.Group>
+
+            <div style={{ textAlign: "center", width: "100%", margin: "auto" }}>
+              <button
+                style={{
+                  padding: "10px 24px",
+                  backgroundColor: "#1A9FB2",
+                  color: "white",
+                  marginTop: "1rem",
+                  borderRadius: "10px",
+                }}
+                type="submit"
+              >
+                PRINT REPORT
+              </button>
+            </div>
+            <div className="save-as-draft-btn123">
+              <button className="btn1233" type="submit">
+                {loading ? <ClipLoader color="#fff" /> : "SUBMIT"}
+              </button>
+            </div>
+          </Form>
         </div>
       </div>
-
-      <div className="monthOnLast fw-bold">
-        <i
-          className="fa-solid fa-caret-left"
-          onClick={() => MonthHandler(month - 1)}
-        ></i>
-        <p>
-          Month/Year : {monthInEng[updateMonth - 1]} {year}
-        </p>
-        <i
-          className="fa-solid fa-caret-right"
-          onClick={() => MonthHandler(month + 1)}
-        ></i>
-      </div>
-
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          {generateTables()}
-          <div className="scheduling_form">
-            <h5>
-              Administrator, House manager, BHT and Registered Nurse are On-Call
-              24/7
-            </h5>
-            <form>
-              <div>
-                <label>Administrator and Number</label>
-                <input type="text" value={data?.[0]?.administratorAndNumber} />
-              </div>
-              <div>
-                <label>Registered Nurse and Number</label>
-                <input
-                  type="text"
-                  value={data?.[0]?.registeredNurseAndNumber}
-                />
-              </div>
-              <div>
-                <label>BHT Name and Number</label>
-                <input type="text" value={data?.[0]?.bhtNameAndNumber} />
-              </div>
-            </form>
-          </div>
-
-          <button
-            className="print_btn"
-            onClick={() => downloadReport(`EMPLOYEE_SCHEDULE`)}
-          >
-            PRINT REPORT{" "}
-          </button>
-        </>
-      )}
     </>
   );
 };

@@ -63,6 +63,9 @@ const AllAps = () => {
                         <td> {i.administratorName} </td>
                         <td> {i.administratorSignature} </td>
                         <td className="icon-container">
+                          <Link to={`/view-aps/${i._id}`}>
+                            <i className="fa-solid fa-eye" />
+                          </Link>
                           <Link to={`/edit-aps/${i._id}`}>
                             <FaRegEdit />
                           </Link>
