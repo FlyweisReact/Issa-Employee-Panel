@@ -1,0 +1,251 @@
+/** @format */
+
+import React, { useEffect, useState } from "react";
+import { Container } from "react-bootstrap";
+import { ClipLoader } from "react-spinners";
+import { SignatureModal } from "../../../Mod/Modal";
+import { getData } from "../../../components/api/api";
+import {
+  TextareaMaker,
+  CheckBoxMaker,
+  BorderlessInput,
+  DefaultInput,
+} from "../../../Helper/Makers";
+import { DateInMMDDYY, editApi } from "../../../Repository/Apis";
+import HOC from "../../../Layout/Inner/HOC";
+import NavWrapper from "../../../Helper/NavWrapper";
+import { useParams } from "react-router-dom";
+
+const ViewContactNote = () => {
+  const [data, setData] = useState({});
+  const [patientId, setPatientId] = useState("");
+  const [residentName, setResidentName] = useState("");
+  const [guardian, setGuardian] = useState("");
+  const [caseManager, setCaseManager] = useState("");
+  const [pharmacy, setPharmacy] = useState("");
+  const [familyMember, setFamilyMember] = useState("");
+  const [doctorsOffice, setDoctorsOffice] = useState("");
+  const [personContactedOther, setPersonContactedOther] = useState("");
+  const [contactName, setContactName] = useState("");
+  const [email, setEmail] = useState("");
+  const [textMessage, setTextMessage] = useState("");
+  const [phoneCall, setPhoneCall] = useState("");
+  const [inPerson, setInPerson] = useState("");
+  const [modeOfContactOther, setModeOfContactOther] = useState("");
+  const [contactSummaryNote, setContactSummaryNote] = useState("");
+  const [emergencyIssue, setEmergencyIssue] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [savedSigned, setSavedSigned] = useState("");
+  const [open, setOpen] = useState(false);
+  const [savedTime, setSavedTime] = useState("");
+  const [savedDate, setSavedDate] = useState("");
+  const [details, setDetails] = useState({});
+  const { id } = useParams();
+
+  const fetchDetail = () => {
+    getData(setDetails, `employee/getContactNoteById/${id}`);
+  };
+
+  useEffect(() => {
+    getData(setData, "employee/getPatient");
+    fetchDetail();
+  }, []);
+
+  const payload = {
+    patientId,
+    residentName,
+    guardian,
+    caseManager,
+    pharmacy,
+    familyMember,
+    doctorsOffice,
+    personContactedOther,
+    contactName,
+    email,
+    textMessage,
+    phoneCall,
+    contactSummaryNote,
+    inPerson,
+    modeOfContactOther,
+    emergencyIssue,
+    savedSigned,
+    signedTime: savedTime,
+    signedDate: savedDate,
+  };
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    await editApi(setLoading, `employee/editContactNoteById/${id}`, payload);
+    fetchDetail();
+  };
+
+  const selectHandler = (e) => {
+    const obj = JSON.parse(e);
+    setPatientId(obj?._id);
+    setResidentName(obj?.fullName);
+  };
+
+  useEffect(() => {
+    if (details) {
+      const item = details?.data;
+      setPatientId(item?.patientId?._id);
+      setResidentName(item?.residentName);
+      setGuardian(item?.guardian);
+      setCaseManager(item?.caseManager);
+      setPharmacy(item?.pharmacy);
+      setFamilyMember(item?.familyMember);
+      setDoctorsOffice(item?.doctorsOffice);
+      setPersonContactedOther(item?.personContactedOther);
+      setContactName(item?.contactName);
+      setTextMessage(item?.textMessage);
+      setPhoneCall(item?.phoneCall);
+      setInPerson(item?.inPerson);
+      setModeOfContactOther(item?.modeOfContactOther);
+      setContactSummaryNote(item?.contactSummaryNote);
+      setEmergencyIssue(item?.emergencyIssue);
+      setSavedSigned(item?.savedSigned);
+      setSavedDate(item?.savedDate);
+      setSavedTime(item?.savedTime);
+    }
+  }, [details]);
+
+  return (
+    <>
+      <NavWrapper title={"Contact Note"} isArrow={true} />
+
+      <Container className="full-width-container">
+        <form className="w-100 text-start" onSubmit={submitHandler}>
+          <div className="grid-container">
+            <div className="grid-item">
+              <label>Resident’s Name:</label>
+              <DefaultInput
+                value={details?.data?.patientId?.fullName}
+                isBots={false}
+              />
+            </div>
+            <div className="grid-item third-wid-input" />
+            <div className="grid-item full-wid-input">
+              <label>Person contacted:</label>
+            </div>
+            <div className="grid-item">
+              <label>Guardian</label>
+              <DefaultInput value={details?.data?.guardian} isBots={false} />
+            </div>
+
+            <div className="grid-item">
+              <label>Case Manager</label>
+              <DefaultInput value={details?.data?.caseManager} isBots={false} />
+            </div>
+
+            <div className="grid-item">
+              <label>Pharmacy</label>
+              <DefaultInput value={details?.data?.pharmacy} isBots={false} />
+            </div>
+
+            <div className="grid-item">
+              <label>Family member</label>
+              <DefaultInput
+                value={details?.data?.familyMember}
+                isBots={false}
+              />
+            </div>
+
+            <div className="grid-item">
+              <label>Doctors office</label>
+              <DefaultInput
+                value={details?.data?.doctorsOffice}
+                isBots={false}
+              />
+            </div>
+
+            <div className="grid-item long-input">
+              <label>Other</label>
+              <DefaultInput
+                value={details?.data?.personContactedOther}
+                isBots={false}
+              />
+            </div>
+            <div className="grid-item" />
+            <div className="grid-item">
+              <label>Contact Name</label>
+              <DefaultInput value={details?.data?.contactName} isBots={false} />
+            </div>
+
+            <div className="grid-item full-wid-input">
+              <label>Mode of contact:</label>
+            </div>
+            <div className="grid-item">
+              <label>Email</label>
+              <DefaultInput value={details?.data?.email} isBots={false} />
+            </div>
+
+            <div className="grid-item">
+              <label>Text message</label>
+              <DefaultInput value={details?.data?.textMessage} isBots={false} />
+            </div>
+
+            <div className="grid-item">
+              <label>Phone call</label>
+              <DefaultInput value={details?.data?.phoneCall} isBots={false} />
+            </div>
+
+            <div className="grid-item">
+              <label>In person</label>
+              <DefaultInput value={details?.data?.inPerson} isBots={false} />
+            </div>
+            <div className="grid-item full-wid-input">
+              <label>Other, please specify</label>
+              <DefaultInput
+                value={details?.data?.modeOfContactOther}
+                isBots={false}
+              />
+            </div>
+
+            <div className="grid-item full-wid-input">
+              <DefaultInput
+                value={details?.data?.contactSummaryNote}
+                isBots={false}
+              />
+            </div>
+
+            <div className="grid-item full-wid-input">
+              <label>Emergency issue</label>
+              <DefaultInput
+                value={details?.data?.emergencyIssue ? "Yes" : "No"}
+                isBots={false}
+              />
+            </div>
+
+            <div className="grid-item  full-wid-input d-block">
+              <div className="custome-cloud-btn">
+                <div className="btns">
+                  <button className="draft"> SAVE AS DRAFT</button>
+                  <button
+                    type="button"
+                    className="signed"
+                    onClick={() => setOpen(true)}
+                  >
+                    SAVED AND SIGNED
+                  </button>
+                </div>
+                <div>
+                  {savedSigned && (
+                    <p>
+                      Digitally Sign by {savedSigned}{" "}
+                      {savedDate && DateInMMDDYY(savedDate)} {savedTime}{" "}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+          <button className="employee_create_btn">
+            {loading ? <ClipLoader color="#fff" /> : "SUBMIT"}
+          </button>
+        </form>
+      </Container>
+    </>
+  );
+};
+
+export default HOC(ViewContactNote);
