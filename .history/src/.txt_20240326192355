@@ -1,0 +1,25 @@
+{
+    "patientId": "patientId_value",
+    "clientName": "clientName_value",
+    "dateOfBirth": "2023-01-01", // Replace with an actual date
+    "dateOfAdmission": "2023-02-01", // Replace with an actual date
+    "dateOfDischarge": "2023-03-01", // Replace with an actual date
+    "presentingIssue": "presentingIssue_value",
+    "treatmentProvided": "treatmentProvided_value",
+    "progress": "progress_value",
+    "medicationUponDischarge": "medicationUponDischarge_value",
+    "fundsPropertiesUponDischarge": "fundsPropertiesUponDischarge_value",
+    "reasonForDischarge": "reasonForDischarge_value",
+    "dischargePlanReferralAftercarePlan": "dischargePlanReferralAftercarePlan_value",
+    "patientGuardianSignature": "patientGuardianSignature_value",
+    "patientGuardianSignatureDate": "2023-03-15", // Replace with an actual date
+    "staffNameAndTitle": "staffNameAndTitle_value",
+    "staffSignature": "staffSignature_value",
+    "staffSignatureDate": "2023-03-20", // Replace with an actual date
+    "staffSignatureTime": "",
+    "staffSignatureSaveAsDraft": false,
+    "bhpNameAndCredentials": "bhpNameAndCredentials_value",
+    "bhpSignature": "bhpSignature_value",
+    "bhpSignatureDate": "2023-03-25", // Replace with an actual date
+    "bhpSignatureTime": "",
+    "bhpSignatureSaveAsDraft": false
