@@ -3,7 +3,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { IoIosMenu } from "react-icons/io";
-import { patient_chart } from "../../../Constant/Constant";
+import { patient_chart } from "../../../assets/Constant/Constant";
 import { Container } from "react-bootstrap";
 import HOC from "../../../Layout/Inner/HOC";
 import NavWrapper from "../../../Helper/NavWrapper";

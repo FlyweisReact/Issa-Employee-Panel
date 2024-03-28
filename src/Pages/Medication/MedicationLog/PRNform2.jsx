@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { ClipLoader } from "react-spinners";
 import NavWrapper from "../../../Helper/NavWrapper";
-import { DateInMMDDYY, postApi } from "../../../Repository/Apis";
+import { postApi } from "../../../Repository/Apis";
 import { SignatureModal } from "../../../Mod/Modal";
 import {
   BorderlessInput,
@@ -13,6 +13,7 @@ import {
 } from "../../../Helper/Makers";
 import { getData } from "../../../components/api/api";
 import HOC from "../../../Layout/Inner/HOC";
+import { signatureFormat } from "../../../utils/utils";
 
 const PRNform2 = () => {
   const [patients, setPatients] = useState([]);
@@ -41,6 +42,7 @@ const PRNform2 = () => {
   const [loading, setLoading] = useState(false);
   const [signedDate, setSignedDate] = useState("");
   const [signedTime, setSignedTime] = useState("");
+  const [signatureSaveAsDraft, setSignatureSaveAsDraft] = useState(false);
 
   const payload = {
     patientId,
@@ -62,6 +64,9 @@ const PRNform2 = () => {
     staff: multipleTable?.map((i) => ({
       staffNameAndSignature: i.staffNameAndSignature,
       staffInitials: i.staffInitials1,
+      signatureDate: signedDate,
+      signatureTime: signedTime,
+      signatureSaveAsDraft,
     })),
   };
 
@@ -264,7 +269,13 @@ const PRNform2 = () => {
 
           <div className="custome-cloud-btn">
             <div className="btns">
-              <button className="draft"> SAVE AS DRAFT</button>
+              <button
+                className="draft"
+                onClick={() => setSignatureSaveAsDraft(!signatureSaveAsDraft)}
+              >
+                {" "}
+                SAVE AS DRAFT
+              </button>
               <button
                 type="button"
                 className="signed"
@@ -274,12 +285,11 @@ const PRNform2 = () => {
               </button>
             </div>
             <div>
-              {staffNameAndSignature && (
-                <p>
-                  Digitally Sign by {staffNameAndSignature}{" "}
-                  {signedDate && DateInMMDDYY(signedDate)} {signedTime}{" "}
-                </p>
-              )}
+              {signatureFormat({
+                sign: staffNameAndSignature,
+                date: signedDate,
+                time: signedTime,
+              })}
             </div>
           </div>
 

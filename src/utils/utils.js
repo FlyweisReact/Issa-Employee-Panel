@@ -24,7 +24,7 @@ export const DateforInput = (date) => {
   }
 };
 
-// print report 
+// print report
 export const PrintThis = (handlePrint) => {
   var elements = document.getElementsByClassName("hidePrint");
   for (var i = 0; i < elements.length; i++) {
@@ -36,4 +36,19 @@ export const PrintThis = (handlePrint) => {
       elements[i].style.display = "block";
     }
   }, 1000);
+};
+
+// Return Signature
+export const signatureFormat = ({ sign, date, time, withText = true }) => {
+  return withText === true
+    ? sign && (
+        <p>
+          Digitally Sign by {sign} {date && DateFormtter(date)} {time}{" "}
+        </p>
+      )
+    : sign && (
+        <p>
+          {sign} {date && DateFormtter(date)} {time}{" "}
+        </p>
+      );
 };

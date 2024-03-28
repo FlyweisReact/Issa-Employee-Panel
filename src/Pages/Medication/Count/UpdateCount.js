@@ -12,7 +12,7 @@ import {
 } from "../../../Helper/Makers";
 import { ClipLoader } from "react-spinners";
 import { SignatureModal } from "../../../Mod/Modal";
-import { editApi } from "../../../Repository/Apis";
+import { DateInMMDDYY, editApi } from "../../../Repository/Apis";
 import NavWrapper from "../../../Helper/NavWrapper";
 import HOC from "../../../Layout/Inner/HOC";
 
@@ -54,6 +54,14 @@ const UpdateCount = () => {
   const [initials, setInitials] = useState("");
   const [loading, setLoading] = useState(false);
   const [multipleTable, setMultipleTable] = useState([]);
+  const [
+    currentStaffOnShiftSignatureSaveAsDraft,
+    setCurrentStaffOnShiftSignatureAsDraft,
+  ] = useState(false);
+  const [
+    relievingStaffSignatureSaveAsDraft,
+    setRelievingStaffSignatureSaveAsDraft,
+  ] = useState(false);
 
   const table = {
     date,
@@ -103,11 +111,17 @@ const UpdateCount = () => {
       date: i.date,
       shift: i.shift,
       painLevel: i.painLevel,
-      beginningCount: i.beginningCount,
       numberOfTabsGiven: i.numberOfTabsGiven,
+      beginningCount: i.beginningCount,
       endingCount: i.endingCount,
       currentStaffOnShiftSignature: i.currentStaffOnShiftSignature,
       relievingStaffSignature: i.relievingStaffSignature,
+      currentStaffOnShiftSignatureDate: i.currentDate,
+      currentStaffOnShiftSignatureTime: i.currentTime,
+      currentStaffOnShiftSignatureSaveAsDraft,
+      relievingStaffSignatureDate: i.relievingDate,
+      relievingStaffSignatureTime: i.relievingTime,
+      relievingStaffSignatureSaveAsDraft,
     })),
     staff: multipleTable?.map((i) => ({
       name: i.name,
@@ -347,7 +361,17 @@ const UpdateCount = () => {
             </Form.Label>
             <div className="custome-cloud-btn">
               <div className="btns">
-                <button className="draft"> SAVE AS DRAFT</button>
+                <button
+                  className="draft"
+                  onClick={() =>
+                    setCurrentStaffOnShiftSignatureAsDraft(
+                      !currentStaffOnShiftSignatureSaveAsDraft
+                    )
+                  }
+                >
+                  {" "}
+                  SAVE AS DRAFT
+                </button>
                 <button
                   type="button"
                   className="signed"
@@ -358,7 +382,11 @@ const UpdateCount = () => {
               </div>
               <div>
                 {currentStaffOnShiftSignature && (
-                  <p>Digitally Sign by {currentStaffOnShiftSignature} </p>
+                  <p>
+                    Digitally Sign by {currentStaffOnShiftSignature}
+                    {currentDate && DateInMMDDYY(currentDate)}
+                    {currentTime}
+                  </p>
                 )}
               </div>
             </div>
@@ -370,7 +398,17 @@ const UpdateCount = () => {
             </Form.Label>
             <div className="custome-cloud-btn">
               <div className="btns">
-                <button className="draft"> SAVE AS DRAFT</button>
+                <button
+                  className="draft"
+                  onClick={() =>
+                    setRelievingStaffSignatureSaveAsDraft(
+                      !relievingStaffSignatureSaveAsDraft
+                    )
+                  }
+                >
+                  {" "}
+                  SAVE AS DRAFT
+                </button>
                 <button
                   type="button"
                   className="signed"
@@ -381,7 +419,11 @@ const UpdateCount = () => {
               </div>
               <div>
                 {relievingStaffSignature && (
-                  <p>Digitally Sign by {relievingStaffSignature} </p>
+                  <p>
+                    Digitally Sign by {relievingStaffSignature}{" "}
+                    {relievingDate && DateInMMDDYY(relievingDate)}{" "}
+                    {relievingTime}{" "}
+                  </p>
                 )}
               </div>
             </div>

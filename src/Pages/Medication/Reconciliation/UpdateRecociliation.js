@@ -5,15 +5,12 @@ import { useParams } from "react-router-dom";
 import { Button, Container, Form } from "react-bootstrap";
 import { getData } from "../../../components/api/api";
 import { SignatureModal } from "../../../Mod/Modal";
-import {
-  BorderlessInput,
-  BorderlessSelect,
-  DateFormatter,
-} from "../../../Helper/Makers";
+import { BorderlessInput, BorderlessSelect } from "../../../Helper/Makers";
 import { ClipLoader } from "react-spinners";
 import { editApi } from "../../../Repository/Apis";
 import NavWrapper from "../../../Helper/NavWrapper";
 import HOC from "../../../Layout/Inner/HOC";
+import { DateforInput, DateFormtter } from "../../../utils/utils";
 
 const UpdateRecociliation = () => {
   const [patients, setPatients] = useState([]);
@@ -35,6 +32,10 @@ const UpdateRecociliation = () => {
   const [arr, setArr] = useState([]);
   const [details, setDetails] = useState({});
   const { id } = useParams();
+  const [signedTime, setSignedTime] = useState("");
+  const [providerSignatureDate, setProviderSignatureDate] = useState("");
+  const [providerSignatureSaveAsDraft, setProviderSignatureSaveAsDraft] =
+    useState(false);
 
   useEffect(() => {
     getData(setPatients, "employee/getPatient");
@@ -69,7 +70,10 @@ const UpdateRecociliation = () => {
     })),
     providerName,
     providerSignature,
+    providerSignatureDate,
     date,
+    providerSignatureTime: signedTime,
+    providerSignatureSaveAsDraft,
   };
 
   const addData = () => {
@@ -104,6 +108,9 @@ const UpdateRecociliation = () => {
       setProviderName(item?.providerName);
       setProviderSignature(item?.providerSignature);
       setArr(item?.medications);
+      setProviderSignatureSaveAsDraft(item?.providerSignatureSaveAsDraft);
+      setProviderSignatureDate(item?.providerSignatureDate);
+      setSignedTime(item?.providerSignatureTime);
     }
   }, [details]);
 
@@ -114,7 +121,8 @@ const UpdateRecociliation = () => {
         onHide={() => setOpen(false)}
         setValue={setProviderSignature}
         value={providerSignature}
-        text={"Digitally Sign by"}
+        setDate={setProviderSignatureDate}
+        setTime={setSignedTime}
       />
       <NavWrapper isArrow={true} title={"Medication Reconciliation"} />
       <Container className="full-width-container">
@@ -131,7 +139,16 @@ const UpdateRecociliation = () => {
                 value={patientId}
               />
             </div>
-            <div className="grid-item long-input"></div>
+            <div className="grid-item">
+              <label>Date:</label>
+              <BorderlessInput
+                setState={setDate}
+                placeholder=""
+                type={"date"}
+                value={DateforInput(date)}
+              />
+            </div>
+            <div className="grid-item"></div>
             <div className="grid-item long-input">
               <label>Allergies and reactions:</label>
               <BorderlessInput
@@ -184,7 +201,7 @@ const UpdateRecociliation = () => {
                 setState={setStartDate}
                 placeholder=""
                 type="date"
-                value={DateFormatter(startDate)}
+                value={DateforInput(startDate)}
               />
             </div>
             <div className="grid-item">
@@ -193,7 +210,7 @@ const UpdateRecociliation = () => {
                 setState={setStopChangeDate}
                 placeholder=""
                 type="date"
-                value={DateFormatter(stopChangeDate)}
+                value={DateforInput(stopChangeDate)}
               />
             </div>
             <div className="grid-item long-input">
@@ -268,14 +285,22 @@ const UpdateRecociliation = () => {
                 setState={setDate}
                 placeholder=""
                 type={"date"}
-                value={DateFormatter(date)}
+                value={DateforInput(date)}
               />
             </div>
           </div>
 
           <div className="custome-cloud-btn">
             <div className="btns">
-              <button className="draft"> SAVE AS DRAFT</button>
+              <button
+                className="draft"
+                onClick={() =>
+                  setProviderSignatureSaveAsDraft(!providerSignatureSaveAsDraft)
+                }
+              >
+                {" "}
+                SAVE AS DRAFT
+              </button>
               <button
                 type="button"
                 className="signed"
@@ -286,7 +311,11 @@ const UpdateRecociliation = () => {
             </div>
             <div>
               {providerSignature && (
-                <p>Digitally Sign by {providerSignature} </p>
+                <p>
+                  Digitally Sign by {providerSignature}{" "}
+                  {date && DateFormtter(date)}
+                  {signedTime}
+                </p>
               )}
             </div>
           </div>

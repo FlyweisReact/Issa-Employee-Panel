@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Modal, Offcanvas } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BiLogOutCircle } from "react-icons/bi";
-import { showMsg } from "../Baseurl";
+import { showNotification } from "../Repository/Apis";
 
 export function OuterSidebar({ show, handleClose }) {
   const location = useLocation();
@@ -50,7 +50,7 @@ export function OuterSidebar({ show, handleClose }) {
 
   const logOut = () => {
     navigate("/");
-    showMsg("", "Logged Out Successfully", "success");
+    showNotification({message : "Logged Out !" });
   };
 
   const imgFetcher = (icon, icon2, link) => {

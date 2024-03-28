@@ -34,10 +34,15 @@ const InformedConsent2 = () => {
   const [open1, setOpen1] = useState(false);
   const [loading, setLoading] = useState(false);
   const [multipleTable, setMultipleTable] = useState([]);
-  const [ staffSignedDate , setStaffSignedDate ] = useState("")
-  const [ staffSignedTime , setStaffSignedTime ] = useState("")
-  const [  fiduciarySignedDate , setFiduciarySignedDate  ] = useState("")
-  const [ fiduciarySignedTime , setFiduciarySignedTime ] = useState("")
+  const [staffSignedDate, setStaffSignedDate] = useState("");
+  const [staffSignedTime, setStaffSignedTime] = useState("");
+  const [fiduciarySignedDate, setFiduciarySignedDate] = useState("");
+  const [fiduciarySignedTime, setFiduciarySignedTime] = useState("");
+  const [signatureSaveAsDraft, setSignatureSaveAsDraft] = useState(false);
+  const [
+    residentGuardianSignatureSaveAsDraft,
+    setResidentGuardianSignatureSaveAsDraft,
+  ] = useState(false);
 
   useEffect(() => {
     getData(setPatients, "employee/getPatient");
@@ -68,9 +73,15 @@ const InformedConsent2 = () => {
         initial,
         title,
         signature,
+        signatureDate: staffSignedDate,
+        signatureTime: staffSignedTime,
+        signatureSaveAsDraft,
       },
     ],
     residentGuardianSignature,
+    residentGuardianSignatureDate: fiduciarySignedDate,
+    residentGuardianSignatureTime: fiduciarySignedTime,
+    residentGuardianSignatureSaveAsDraft,
   };
 
   const addTable = async () => {
@@ -284,7 +295,15 @@ const InformedConsent2 = () => {
               <label>Signature of Staff</label>
               <div className="custome-cloud-btn">
                 <div className="btns">
-                  <button className="draft"> SAVE AS DRAFT</button>
+                  <button
+                    className="draft"
+                    onClick={() =>
+                      setSignatureSaveAsDraft(!signatureSaveAsDraft)
+                    }
+                  >
+                    {" "}
+                    SAVE AS DRAFT
+                  </button>
                   <button
                     type="button"
                     className="signed"
@@ -293,14 +312,32 @@ const InformedConsent2 = () => {
                     SAVED AND SIGNED
                   </button>
                 </div>
-                <div>{signature && <p>Digitally Sign by {signature} {staffSignedDate && DateInMMDDYY(staffSignedDate) } {staffSignedTime} </p>}</div>
+                <div>
+                  {signature && (
+                    <p>
+                      Digitally Sign by {signature}{" "}
+                      {staffSignedDate && DateInMMDDYY(staffSignedDate)}{" "}
+                      {staffSignedTime}{" "}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
             <div className="grid-item full-wid-input d-block">
               <label>Resident/Guardian/Public Fiduciary Signature</label>
               <div className="custome-cloud-btn">
                 <div className="btns">
-                  <button className="draft"> SAVE AS DRAFT</button>
+                  <button
+                    className="draft"
+                    onClick={() =>
+                      setResidentGuardianSignatureSaveAsDraft(
+                        !residentGuardianSignatureSaveAsDraft
+                      )
+                    }
+                  >
+                    {" "}
+                    SAVE AS DRAFT
+                  </button>
                   <button
                     type="button"
                     className="signed"
@@ -311,9 +348,12 @@ const InformedConsent2 = () => {
                 </div>
                 <div>
                   {residentGuardianSignature && (
-                    <p>Digitally Sign by {residentGuardianSignature}
-                    {fiduciarySignedDate && DateInMMDDYY(fiduciarySignedDate) } {fiduciarySignedTime}
-                     </p>
+                    <p>
+                      Digitally Sign by {residentGuardianSignature}
+                      {fiduciarySignedDate &&
+                        DateInMMDDYY(fiduciarySignedDate)}{" "}
+                      {fiduciarySignedTime}
+                    </p>
                   )}
                 </div>
               </div>

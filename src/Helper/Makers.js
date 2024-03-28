@@ -146,10 +146,10 @@ export const DefaultInput = ({ value, isBots, label }) => {
   return isBots ? (
     <Form.Group className="mb-3 ">
       <Form.Label> {label} </Form.Label>
-      <Form.Control value={value} />
+      <Form.Control defaultValue={value} disabled />
     </Form.Group>
   ) : (
-    <input value={value} className="borderless_input" />
+    <input defaultValue={value} disabled className="borderless_input" />
   );
 };
 

@@ -5,7 +5,7 @@ import { RiCloseLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button } from "react-bootstrap";
-import { Innernav } from "../../Constant/Constant";
+import { Innernav } from "../../assets/Constant/Constant";
 
 const Sidebar = ({ hamb, setHamb }) => {
   const navigate = useNavigate();

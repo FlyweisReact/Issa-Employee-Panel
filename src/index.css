@@ -222,7 +222,6 @@ code {
 
 .staff_schedule_sheet {
   width: 100%;
-  max-width: 1200px;
   margin: auto;
 }
 
@@ -1158,7 +1157,8 @@ code {
 }
 .small-text thead tr th,
 .small-text tbody tr td {
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: 600;
 }
 .password_input_group {
   position: relative;

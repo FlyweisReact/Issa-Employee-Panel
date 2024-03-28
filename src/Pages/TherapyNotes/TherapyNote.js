@@ -4,7 +4,7 @@ import React from "react";
 import { Container } from "react-bootstrap";
 import NavWrapper from "../../Helper/NavWrapper";
 import HOC from "../../Layout/Inner/HOC";
-import { TherapyNotesOptions } from "../../Constant/Constant";
+import { TherapyNotesOptions } from "../../assets/Constant/Constant";
 import { Link } from "react-router-dom";
 
 const TherapyNote = () => {

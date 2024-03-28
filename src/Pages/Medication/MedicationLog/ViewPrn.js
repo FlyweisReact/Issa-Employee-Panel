@@ -9,33 +9,15 @@ import { getData } from "../../../components/api/api";
 import { useReactToPrint } from "react-to-print";
 import { downloadReport } from "../../../Repository/Apis";
 import HOC from "../../../Layout/Inner/HOC";
+import { DateFormtter } from "../../../utils/utils";
 
 const ViewPrn = () => {
-  const [multipleTable, setMultipleTable] = useState([]);
   const { id } = useParams();
   const [details, setDetails] = useState({});
 
   useEffect(() => {
     getData(setDetails, `employee/getPrnMedicationLogById/${id}`);
   }, [id]);
-
-  useEffect(() => {
-    if (details) {
-      const table = details?.data?.tableData;
-      const staffData = details?.data?.staff;
-      function mergeArraysIntoObject(arr) {
-        return arr.reduce((result, obj) => {
-          return { ...result, ...obj };
-        }, {});
-      }
-      const merged = {
-        ...mergeArraysIntoObject(table || []),
-        ...mergeArraysIntoObject(staffData || []),
-      };
-
-      setMultipleTable([merged]);
-    }
-  }, [details]);
 
   const componentRef = React.useRef();
   const handlePrint = useReactToPrint({
@@ -88,7 +70,7 @@ const ViewPrn = () => {
               </div>
             </div>
 
-            {multipleTable?.length > 0 && (
+            {details?.data?.tableData?.length > 0 && (
               <div className="overflow_table">
                 <table className="mb-3 color-full small-text">
                   <thead>
@@ -102,14 +84,12 @@ const ViewPrn = () => {
                       <th>Time Re-evaluated</th>
                       <th>Response Code</th>
                       <th>Staff initials</th>
-                      <th>Inititals</th>
-                      <th>Signature</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {multipleTable?.map((i, index) => (
+                    {details?.data?.tableData?.map((i, index) => (
                       <tr key={index}>
-                        <td> {i.date?.slice(0, 10)} </td>
+                        <td> {i.date && DateFormtter(i.date)} </td>
                         <td> {i.time} </td>
                         <td> {i.tabsGiven} </td>
                         <td> {i.reason} </td>
@@ -118,7 +98,29 @@ const ViewPrn = () => {
                         <td> {i.timeReevaluated} </td>
                         <td> {i.responseCode} </td>
                         <td> {i.staffReevaluatedInitials} </td>
-                        <td> {i.staffInitials1} </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+            <p className="fw-bold ">
+              Response Code: A=Relief | B=No relief | C=Sleeping | D=Out of
+              Facility | E=Other ( Please specify)
+            </p>
+            {details?.data?.staff?.length > 0 && (
+              <div className="overflow_table">
+                <table className="mb-3 color-full small-text">
+                  <thead>
+                    <tr>
+                      <th>Inititals</th>
+                      <th>Signature</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {details?.data?.staff?.map((i, index) => (
+                      <tr key={index}>
+                        <td> {i.staffInitials} </td>
                         <td> {i.staffNameAndSignature} </td>
                       </tr>
                     ))}
@@ -126,12 +128,6 @@ const ViewPrn = () => {
                 </table>
               </div>
             )}
-
-            <p className="fw-bold ">
-              Response Code: A=Relief | B=No relief | C=Sleeping | D=Out of
-              Facility | E=Other ( Please specify)
-            </p>
-
             <button
               className="print_btn hidePrint"
               type="button"

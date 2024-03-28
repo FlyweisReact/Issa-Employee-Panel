@@ -9,35 +9,15 @@ import { getData } from "../../../components/api/api";
 import HOC from "../../../Layout/Inner/HOC";
 import { useReactToPrint } from "react-to-print";
 import { downloadReport } from "../../../Repository/Apis";
+import { DateFormtter, signatureFormat } from "../../../utils/utils";
 
 const ViewCount = () => {
   const { id } = useParams();
   const [details, setDetails] = useState({});
-  const [multipleTable, setMultipleTable] = useState([]);
 
   useEffect(() => {
     getData(setDetails, `employee/getMedicationOpioidCountById/${id}`);
   }, []);
-
-  useEffect(() => {
-    if (details) {
-      const table = details?.data?.data;
-      const staffData = details?.data?.staff;
-
-      // Function to merge array of objects into a single object
-      function mergeArraysIntoObject(arr) {
-        return arr.reduce((result, obj) => {
-          return { ...result, ...obj };
-        }, {});
-      }
-      const merged = {
-        ...mergeArraysIntoObject(table || []),
-        ...mergeArraysIntoObject(staffData || []),
-      };
-
-      setMultipleTable([merged]);
-    }
-  }, [details]);
 
   const componentRef = React.useRef();
   const handlePrint = useReactToPrint({
@@ -125,27 +105,52 @@ const ViewCount = () => {
                   <tr>
                     <th>Date</th>
                     <th>Shift</th>
-                    <th>Pain Lavel</th>
-                    <th>Number of Tab given</th>
                     <th>Beginning Count</th>
                     <th>Ending Count</th>
                     <th>Current Staff on shift Signature</th>
                     <th>Relieving staff Name and Signature</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {details?.data?.data?.map((i, index) => (
+                    <tr key={index}>
+                      <td> {i.date && DateFormtter(i.date)} </td>
+                      <td> {i.shift} </td>
+                      <td> {i.beginningCount} </td>
+                      <td> {i.endingCount} </td>
+                      <td>
+                        {signatureFormat({
+                          sign: i.currentStaffOnShiftSignature,
+                          date: i.currentStaffOnShiftSignatureDate,
+                          time: i.currentStaffOnShiftSignatureTime,
+                          withText: false,
+                        })}
+                      </td>
+                      <td>
+                        {signatureFormat({
+                          sign: i.relievingStaffSignature,
+                          date: i.relievingStaffSignatureDate,
+                          time: i.relievingStaffSignatureTime,
+                          withText: false,
+                        })}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="overflow_table">
+              <table className="mb-3 color-full small-text">
+                <thead>
+                  <tr>
                     <th>Staff Name and Last Name</th>
                     <th>Staff Initials</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {multipleTable?.map((i, index) => (
+                  {details?.data?.staff?.map((i, index) => (
                     <tr key={index}>
-                      <td> {i.date?.slice(0, 10)} </td>
-                      <td> {i.shift} </td>
-                      <td> {i.painLevel} </td>
-                      <td> {i.numberOfTabsGiven} </td>
-                      <td> {i.beginningCount} </td>
-                      <td> {i.endingCount} </td>
-                      <td> {i.currentStaffOnShiftSignature} </td>
-                      <td> {i.relievingStaffSignature} </td>
                       <td> {i.name} </td>
                       <td> {i.initials} </td>
                     </tr>

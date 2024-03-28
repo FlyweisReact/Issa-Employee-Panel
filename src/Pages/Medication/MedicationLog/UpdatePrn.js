@@ -14,6 +14,7 @@ import { DateInMMDDYY, editApi } from "../../../Repository/Apis";
 import { ClipLoader } from "react-spinners";
 import NavWrapper from "../../../Helper/NavWrapper";
 import HOC from "../../../Layout/Inner/HOC";
+import { signatureFormat } from "../../../utils/utils";
 
 const UpdatePrn = () => {
   const [patients, setPatients] = useState([]);
@@ -44,6 +45,7 @@ const UpdatePrn = () => {
   const [details, setDetails] = useState({});
   const [signedDate, setSignedDate] = useState("");
   const [signedTime, setSignedTime] = useState("");
+  const [signatureSaveAsDraft, setSignatureSaveAsDraft] = useState(false);
 
   const payload = {
     patientId,
@@ -65,6 +67,9 @@ const UpdatePrn = () => {
     staff: multipleTable?.map((i) => ({
       staffNameAndSignature: i.staffNameAndSignature,
       staffInitials: i.staffInitials1,
+      signatureDate: signedDate,
+      signatureTime: signedTime,
+      signatureSaveAsDraft,
     })),
   };
 
@@ -291,7 +296,13 @@ const UpdatePrn = () => {
 
           <div className="custome-cloud-btn">
             <div className="btns">
-              <button className="draft"> SAVE AS DRAFT</button>
+              <button
+                className="draft"
+                onClick={() => setSignatureSaveAsDraft(!signatureSaveAsDraft)}
+              >
+                {" "}
+                SAVE AS DRAFT
+              </button>
               <button
                 type="button"
                 className="signed"
@@ -301,12 +312,11 @@ const UpdatePrn = () => {
               </button>
             </div>
             <div>
-              {staffNameAndSignature && (
-                <p>
-                  Digitally Sign by {staffNameAndSignature}{" "}
-                  {signedDate && DateInMMDDYY(signedDate)} {signedTime}{" "}
-                </p>
-              )}
+              {signatureFormat({
+                sign: staffNameAndSignature,
+                date: signedDate,
+                time: signedTime,
+              })}
             </div>
           </div>
 

@@ -1,13 +1,11 @@
 /** @format */
 
 import React, { useEffect, useState } from "react";
-import { Container, Table } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { deleteData } from "../../../components/api/api.js";
 import CreateNav from "../../../Helper/CreateNav.js";
 import { fetchApi } from "../../../Repository/Apis.js";
 import { Link } from "react-router-dom";
-import { FaRegEdit } from "react-icons/fa";
-import { RiDeleteBin5Fill } from "react-icons/ri";
 import Loader from "../../../components/Loader/Loader.js";
 import HOC from "../../../Layout/Inner/HOC.js";
 

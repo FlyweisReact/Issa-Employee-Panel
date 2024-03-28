@@ -1,7 +1,7 @@
 /** @format */
 
 import React from "react";
-import { NotesOptions } from "../../Constant/Constant";
+import { NotesOptions } from "../../assets/Constant/Constant";
 import { Link } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import HOC from "../../Layout/Inner/HOC";

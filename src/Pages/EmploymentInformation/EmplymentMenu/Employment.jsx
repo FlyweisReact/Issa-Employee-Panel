@@ -5,7 +5,7 @@ import "./Employment.css";
 import { Link } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import HOC from "../../../Layout/Outer/HOC";
-import { EmploymentCards } from "../../../Constant/UpdatedContstant.ts";
+import { EmploymentCards } from "../../../assets/Constant/UpdatedContstant.ts";
 
 const Employment = () => {
   return (

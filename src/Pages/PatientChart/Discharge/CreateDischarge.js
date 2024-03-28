@@ -74,6 +74,8 @@ const CreateDischarge = () => {
     staffNameAndTitle,
     staffSignature,
     staffSignatureDate,
+    staffSignatureTime : staffTime ,
+    staffSignatureSaveAsDraft ,
     bhpNameAndCredentials,
     bhpSignature,
     bhpSignatureDate,

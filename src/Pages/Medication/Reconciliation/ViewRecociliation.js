@@ -96,6 +96,7 @@ const ViewRecociliation = () => {
                       Digitally Sign by {details?.data?.providerSignature}{" "}
                       {details?.data?.providerSignatureDate &&
                         DateInMMDDYY(details?.data?.providerSignatureDate)}{" "}
+                      {details?.data?.providerSignatureTime}
                     </p>
                   )}
                 </label>

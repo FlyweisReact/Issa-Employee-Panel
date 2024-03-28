@@ -1,7 +1,6 @@
 /** @format */
 
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Container, Form } from "react-bootstrap";
 import { getData } from "../../../components/api/api";
 import {
@@ -17,7 +16,6 @@ import HOC from "../../../Layout/Inner/HOC";
 import NavWrapper from "../../../Helper/NavWrapper";
 
 const MedicautionCount2 = () => {
-  const navigate = useNavigate();
   const [patients, setPatients] = useState([]);
 
   useEffect(() => {
@@ -31,7 +29,7 @@ const MedicautionCount2 = () => {
   const [dose, setDose] = useState("");
   const [prescriptionInstruction, setPrescriptionInstruction] = useState("");
   const [prescribingProvider, setPrescribingProvider] = useState("");
-  const [beginningMedCount, setBeginningMedCount] = useState("");
+  const [beginningMedCount, setBeginningMedCount] = useState(0);
   const [monthYear, setMonthYear] = useState("");
   const [countType, setCountType] = useState("medication");
 
@@ -39,9 +37,9 @@ const MedicautionCount2 = () => {
   const [date, setDate] = useState("");
   const [shift, setShift] = useState("");
   const [painLevel, setPainLevel] = useState("");
-  const [numberOfTabsGiven, setNumberOfTabsGiven] = useState("");
-  const [beginningCount, setBeginningCount] = useState("");
-  const [endingCount, setEndingCount] = useState("");
+  const [numberOfTabsGiven, setNumberOfTabsGiven] = useState(0);
+  const [beginningCount, setBeginningCount] = useState(0);
+  const [endingCount, setEndingCount] = useState(0);
   const [currentStaffOnShiftSignature, setCurrentStaffOnShiftSignature] =
     useState("");
   const [relievingStaffSignature, setRelievingStaffSignature] = useState("");
@@ -54,6 +52,11 @@ const MedicautionCount2 = () => {
   const [initials, setInitials] = useState("");
   const [loading, setLoading] = useState(false);
   const [multipleTable, setMultipleTable] = useState([]);
+  const [
+    currentStaffOnShiftSignatureSaveAsDraft,
+    setCurrentStaffOnShiftSignatureAsDraft,
+  ] = useState(false);
+  const [ relievingStaffSignatureSaveAsDraft , setRelievingStaffSignatureSaveAsDraft] = useState(false)
 
   const table = {
     date,
@@ -116,11 +119,17 @@ const MedicautionCount2 = () => {
       date: i.date,
       shift: i.shift,
       painLevel: i.painLevel,
-      beginningCount: i.beginningCount,
       numberOfTabsGiven: i.numberOfTabsGiven,
+      beginningCount: i.beginningCount,
       endingCount: i.endingCount,
       currentStaffOnShiftSignature: i.currentStaffOnShiftSignature,
       relievingStaffSignature: i.relievingStaffSignature,
+      currentStaffOnShiftSignatureDate: i.currentDate,
+      currentStaffOnShiftSignatureTime: i.currentTime,
+      currentStaffOnShiftSignatureSaveAsDraft,
+      relievingStaffSignatureDate : i.relievingDate ,
+      relievingStaffSignatureTime : i.relievingTime ,
+      relievingStaffSignatureSaveAsDraft
     })),
     staff: multipleTable?.map((i) => ({
       name: i.name,
@@ -201,7 +210,8 @@ const MedicautionCount2 = () => {
               <label>DOB:</label>
               <DefaultInput
                 value={
-                  dateOfBirth?.[0]?.dateOfBirth && DateInMMDDYY(dateOfBirth?.[0]?.dateOfBirth)
+                  dateOfBirth?.[0]?.dateOfBirth &&
+                  DateInMMDDYY(dateOfBirth?.[0]?.dateOfBirth)
                 }
                 isBots={false}
               />
@@ -258,7 +268,7 @@ const MedicautionCount2 = () => {
               <BorderlessInput
                 setState={setBeginningMedCount}
                 placeholder=""
-                type={"text"}
+                type={"number"}
                 value={beginningMedCount}
               />
             </div>
@@ -295,7 +305,7 @@ const MedicautionCount2 = () => {
               <BorderlessInput
                 setState={setNumberOfTabsGiven}
                 placeholder=""
-                type="text"
+                type="number"
                 value={numberOfTabsGiven}
               />
             </div>
@@ -304,7 +314,7 @@ const MedicautionCount2 = () => {
               <BorderlessInput
                 setState={setBeginningCount}
                 placeholder=""
-                type="text"
+                type="number"
                 value={beginningCount}
               />
             </div>
@@ -313,7 +323,7 @@ const MedicautionCount2 = () => {
               <BorderlessInput
                 setState={setEndingCount}
                 placeholder=""
-                type="text"
+                type="number"
                 value={endingCount}
               />
             </div>
@@ -325,7 +335,17 @@ const MedicautionCount2 = () => {
             </Form.Label>
             <div className="custome-cloud-btn">
               <div className="btns">
-                <button className="draft"> SAVE AS DRAFT</button>
+                <button
+                  className="draft"
+                  onClick={() =>
+                    setCurrentStaffOnShiftSignatureAsDraft(
+                      !currentStaffOnShiftSignatureSaveAsDraft
+                    )
+                  }
+                >
+                  {" "}
+                  SAVE AS DRAFT
+                </button>
                 <button
                   type="button"
                   className="signed"
@@ -352,7 +372,9 @@ const MedicautionCount2 = () => {
             </Form.Label>
             <div className="custome-cloud-btn">
               <div className="btns">
-                <button className="draft"> SAVE AS DRAFT</button>
+                <button className="draft" 
+                onClick={() => setRelievingStaffSignatureSaveAsDraft(!relievingStaffSignatureSaveAsDraft)}
+                > SAVE AS DRAFT</button>
                 <button
                   type="button"
                   className="signed"

@@ -4,6 +4,7 @@ import scheduleImg from "./satff.png";
 import trimImg from "./timeSheet.png";
 import chart from "./Chart.png";
 import renewal from "./Renewal.png";
+import LoginImage from "./background.png";
 // Sidebar Icons
 import HomeIcon from "./home.png";
 import ApplicatoinIcon from "./application.png";
@@ -21,8 +22,8 @@ import informationIcon from "./informationIcon.png";
 import filledInformation from "./filled/information.png";
 import userGroup from "./multiUser.png";
 import filledUserGroup from "./filled/userGroup.png";
-import listIcon from './list.png'
-import filledList from './filled/list.png'
+import listIcon from "./list.png";
+import filledList from "./filled/list.png";
 
 export {
   scheduleImg,
@@ -45,6 +46,7 @@ export {
   filledInformation,
   userGroup,
   filledUserGroup,
-  listIcon ,
-  filledList
+  listIcon,
+  filledList,
+  LoginImage,
 };

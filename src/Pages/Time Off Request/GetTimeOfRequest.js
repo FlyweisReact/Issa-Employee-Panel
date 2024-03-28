@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { DateInMMDDYY } from "../../Repository/Apis.js";
 import Loader from "../../components/Loader/Loader.js";
 import { fetchApi, deleteApi } from "../../Repository/Apis.js";
-import NoData from "../../Helper/NoData.js";
+import NoFound from "../../components/Loader/NoFound.js";
 
 const GetTimeOfRequest = () => {
   const [data, setData] = useState([]);
@@ -80,7 +80,7 @@ const GetTimeOfRequest = () => {
               </table>
             </div>
           ) : (
-            <NoData />
+            <NoFound />
           )}
         </Container>
       )}

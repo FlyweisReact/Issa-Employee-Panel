@@ -1,7 +1,7 @@
 /** @format */
 import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { TrainingConstant } from "../../Constant/Constant";
+import { TrainingConstant } from "../../assets/Constant/Constant";
 import HOC from "../../Layout/Inner/HOC";
 
 const Training = () => {

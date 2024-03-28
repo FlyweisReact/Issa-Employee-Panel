@@ -51,6 +51,9 @@ const UpdateDischarge = () => {
   const [detail, setDetail] = useState({});
   const { id } = useParams();
   const [data, setData] = useState({});
+  const [staffSignatureSaveAsDraft, setStaffSignatureSaveAsDraft] =
+    useState(false);
+  const [bhpSignatureSaveAsDraft, setBhpSignatureSaveAsDraft] = useState(false);
 
   useEffect(() => {
     getData(setDetail, "employee/getPatient");
@@ -74,9 +77,14 @@ const UpdateDischarge = () => {
     staffNameAndTitle,
     staffSignature,
     staffSignatureDate,
+    staffSignatureTime: staffTime,
+    staffSignatureSaveAsDraft,
     bhpNameAndCredentials,
     bhpSignature,
     bhpSignatureDate,
+    staffSignatureTime: setStaffTime,
+    bhpSignatureTime: setBhpTime,
+    bhpSignatureSaveAsDraft,
   };
 
   const submitHandler = (e) => {
@@ -304,7 +312,14 @@ const UpdateDischarge = () => {
               <label>Signature:</label>
               <div className="custome-cloud-btn">
                 <div className="btns">
-                  <button className="draft">SAVE AS DRAFT</button>
+                  <button
+                    className="draft"
+                    onClick={() =>
+                      setStaffSignatureSaveAsDraft(!staffSignatureSaveAsDraft)
+                    }
+                  >
+                    SAVE AS DRAFT
+                  </button>
                   <button
                     type="button"
                     onClick={() => setOpen2(true)}
@@ -339,7 +354,14 @@ const UpdateDischarge = () => {
               <label>Signature:</label>
               <div className="custome-cloud-btn">
                 <div className="btns">
-                  <button className="draft">SAVE AS DRAFT</button>
+                  <button
+                    className="draft"
+                    onClick={() =>
+                      setBhpSignatureSaveAsDraft(!bhpSignatureSaveAsDraft)
+                    }
+                  >
+                    SAVE AS DRAFT
+                  </button>
                   <button
                     type="button"
                     onClick={() => setOpen3(true)}

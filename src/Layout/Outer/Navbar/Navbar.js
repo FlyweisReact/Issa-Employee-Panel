@@ -1,5 +1,5 @@
 /** @format */
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import Image from "react-bootstrap/Image";
 import { SlMenu } from "react-icons/sl";
@@ -10,8 +10,6 @@ import {
   NotificationToast,
 } from "../../../Canvas/Canvases";
 import { getData } from "../../../components/api/api";
-import { LazyImage } from "../../../Helper/Arranged";
-import { getApi } from "../../../Repository/Apis";
 
 const imgUrl =
   "https://img.freepik.com/free-vector/isolated-young-handsome-man-different-poses-white-background-illustration_632498-859.jpg?t=st=1710916807~exp=1710920407~hmac=ba4f8620de76cb8c5dc2e0e05c1ab5e6a22916c0837d1b919528f55ee1a1b968&w=740";
@@ -128,9 +126,9 @@ const Navbar = ({ hamb }) => {
         </section>
         <Link to="/profile">
           {profileData?.profilePic ? (
-            <LazyImage src={profileData?.profilePic} className="profile_img" />
+            <img src={profileData?.profilePic} alt="" className="profile_img" />
           ) : (
-            <LazyImage src={imgUrl} className="profile_img" />
+            <img src={imgUrl} alt="" className="profile_img" />
           )}
         </Link>
 

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Container, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
-import { showMsg } from "../../Baseurl";
+import { showNotification } from "../../Repository/Apis";
 import { InputMaker } from "../../Helper/Makers";
 import NavWrapper from "../../Helper/NavWrapper";
 import HOC from "../../Layout/Inner/HOC";
@@ -42,12 +42,12 @@ const Acknowledgement = () => {
       );
       setLoading(false);
       const msg = res.data.message;
-      showMsg("", msg, "success");
+      showNotification({ message: msg });
       navigate("/dashboard");
     } catch (e) {
       setLoading(false);
       const msg = e?.response?.data?.message;
-      showMsg("Error ||", msg, "danger");
+      showNotification({ message: msg , type : "danger" });
     }
   };
 

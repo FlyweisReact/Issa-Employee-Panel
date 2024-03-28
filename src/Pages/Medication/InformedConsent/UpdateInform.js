@@ -41,6 +41,11 @@ const UpdateInform = () => {
   const [staffSignedTime, setStaffSignedTime] = useState("");
   const [fiduciarySignedDate, setFiduciarySignedDate] = useState("");
   const [fiduciarySignedTime, setFiduciarySignedTime] = useState("");
+  const [signatureSaveAsDraft, setSignatureSaveAsDraft] = useState(false);
+  const [
+    residentGuardianSignatureSaveAsDraft,
+    setResidentGuardianSignatureSaveAsDraft,
+  ] = useState(false);
 
   useEffect(() => {
     getData(setPatients, "employee/getPatient");
@@ -60,6 +65,14 @@ const UpdateInform = () => {
       setResidentGuradianSignature(item?.residentGuardianSignature);
       setInitital(item?.staff?.[0]?.initial);
       setSignature(item?.staff?.[0]?.signature);
+      setStaffSignedDate(item?.staff?.[0]?.signatureDate);
+      setStaffSignedTime(item?.staff?.[0]?.signatureTime);
+      setSignatureSaveAsDraft(item?.staff?.[0]?.signatureSaveAsDraft);
+      setFiduciarySignedDate(item?.residentGuardianSignatureDate);
+      setFiduciarySignedTime(item?.fiduciarySignedTime);
+      setResidentGuardianSignatureSaveAsDraft(
+        item?.residentGuardianSignatureSaveAsDraft
+      );
       setTitle(item?.staff?.[0]?.title);
       if (item?.tableDate?.length > 0) {
         setMultipleTable(item?.tableDate);
@@ -92,9 +105,15 @@ const UpdateInform = () => {
         initial,
         title,
         signature,
+        signatureDate: staffSignedDate,
+        signatureTime: staffSignedTime,
+        signatureSaveAsDraft,
       },
     ],
     residentGuardianSignature,
+    residentGuardianSignatureDate: fiduciarySignedDate,
+    residentGuardianSignatureTime: fiduciarySignedTime,
+    residentGuardianSignatureSaveAsDraft,
   };
 
   const addTable = () => {
@@ -300,7 +319,15 @@ const UpdateInform = () => {
               <label>Signature of Staff</label>
               <div className="custome-cloud-btn">
                 <div className="btns">
-                  <button className="draft"> SAVE AS DRAFT</button>
+                  <button
+                    className="draft"
+                    onClick={() =>
+                      setSignatureSaveAsDraft(!signatureSaveAsDraft)
+                    }
+                  >
+                    {" "}
+                    SAVE AS DRAFT
+                  </button>
                   <button
                     type="button"
                     className="signed"
@@ -324,7 +351,17 @@ const UpdateInform = () => {
               <label>Resident/Guardian/Public Fiduciary Signature</label>
               <div className="custome-cloud-btn">
                 <div className="btns">
-                  <button className="draft"> SAVE AS DRAFT</button>
+                  <button
+                    className="draft"
+                    onClick={() =>
+                      setResidentGuardianSignatureSaveAsDraft(
+                        !residentGuardianSignatureSaveAsDraft
+                      )
+                    }
+                  >
+                    {" "}
+                    SAVE AS DRAFT
+                  </button>
                   <button
                     type="button"
                     className="signed"

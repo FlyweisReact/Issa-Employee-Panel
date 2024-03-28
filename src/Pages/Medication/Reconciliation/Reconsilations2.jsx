@@ -13,6 +13,7 @@ import { ClipLoader } from "react-spinners";
 import { DateInMMDDYY, postApi } from "../../../Repository/Apis";
 import NavWrapper from "../../../Helper/NavWrapper";
 import HOC from "../../../Layout/Inner/HOC";
+import { DateforInput } from "../../../utils/utils";
 
 const Reconciliations2 = () => {
   const [patients, setPatients] = useState([]);
@@ -33,6 +34,9 @@ const Reconciliations2 = () => {
   const [loading, setLoading] = useState(false);
   const [arr, setArr] = useState([]);
   const [signedTime, setSignedTime] = useState("");
+  const [providerSignatureDate, setProviderSignatureDate] = useState("");
+  const [providerSignatureSaveAsDraft, setProviderSignatureSaveAsDraft] =
+    useState(false);
 
   useEffect(() => {
     getData(setPatients, "employee/getPatient");
@@ -63,7 +67,10 @@ const Reconciliations2 = () => {
     })),
     providerName,
     providerSignature,
+    providerSignatureDate,
     date,
+    providerSignatureTime: signedTime,
+    providerSignatureSaveAsDraft,
   };
 
   const addData = () => {
@@ -93,7 +100,7 @@ const Reconciliations2 = () => {
         onHide={() => setOpen(false)}
         setValue={setProviderSignature}
         value={providerSignature}
-        setDate={setDate}
+        setDate={setProviderSignatureDate}
         setTime={setSignedTime}
       />
       <NavWrapper isArrow={true} title={"Medication Reconciliation"} />
@@ -111,7 +118,16 @@ const Reconciliations2 = () => {
                 value={patientId}
               />
             </div>
-            <div className="grid-item long-input"></div>
+            <div className="grid-item">
+              <label>Date:</label>
+              <BorderlessInput
+                setState={setDate}
+                placeholder=""
+                type={"date"}
+                value={DateforInput(date)}
+              />
+            </div>
+            <div className="grid-item"></div>
             <div className="grid-item long-input">
               <label>Allergies and reactions:</label>
               <BorderlessInput
@@ -241,12 +257,20 @@ const Reconciliations2 = () => {
                 value={providerName}
               />
             </div>
-            <div className="grid-item" />
+            <div className="grid-item"></div>
           </div>
 
           <div className="custome-cloud-btn">
             <div className="btns">
-              <button className="draft"> SAVE AS DRAFT</button>
+              <button
+                className="draft"
+                onClick={() =>
+                  setProviderSignatureSaveAsDraft(!providerSignatureSaveAsDraft)
+                }
+              >
+                {" "}
+                SAVE AS DRAFT
+              </button>
               <button
                 type="button"
                 className="signed"
@@ -259,7 +283,7 @@ const Reconciliations2 = () => {
               {providerSignature && (
                 <p>
                   Digitally Sign by {providerSignature}{" "}
-                  {date && DateInMMDDYY(date) }
+                  {date && DateInMMDDYY(date)}
                   {signedTime}
                 </p>
               )}

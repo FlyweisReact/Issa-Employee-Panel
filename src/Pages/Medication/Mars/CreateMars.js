@@ -1,20 +1,17 @@
 /** @format */
-
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button, Container, Form, Table } from "react-bootstrap";
-import { getData, postData } from "../../../components/api/api";
-import { showMsg } from "../../../Baseurl";
+import { Container } from "react-bootstrap";
+import { getData } from "../../../components/api/api";
 import HOC from "../../../Layout/Inner/HOC";
 import NavWrapper from "../../../Helper/NavWrapper";
 import {
   BorderlessInput,
   BorderlessSelect,
-  DateFormatter,
   MultiSelect,
 } from "../../../Helper/Makers";
 import { postApi } from "../../../Repository/Apis";
 import { ClipLoader } from "react-spinners";
+import { DateforInput } from "../../../utils/utils";
 
 const CreateMars = () => {
   const [patients, setPatients] = useState({});
@@ -195,7 +192,7 @@ const CreateMars = () => {
               <label>Admit Date:</label>
               <BorderlessInput
                 setState={setAdmitDate}
-                value={DateFormatter(admitDate)}
+                value={DateforInput(admitDate)}
                 type={"date"}
               />
             </div>
